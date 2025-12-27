@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { FaInstagram, FaGithub, FaLinkedin } from 'react-icons/fa';
 
+// Assets
 import goodreadsIcon from './assets/goodreads.png';
 import malIcon from './assets/myanimelist.png';
 import backloggdIcon from './assets/backloggd.png';
@@ -8,84 +9,17 @@ import letterboxdIcon from './assets/letterboxd.png';
 import serializedIcon from './assets/serializd.png';
 import musashiProfile from './assets/musashi.jpg';
 
-const WEBHOOK_URL = import.meta.env.VITE_DISCORD_WEBHOOK_URL;
-
-const getHashes = (envVar) => {
-  return envVar ? envVar.split(',') : [];
-};
-
-const normalize = (str) => {
-  return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[أإآ]/g, 'ا').replace(/ة/g, 'ه').replace(/ى/g, 'ي').trim();
-};
-
-const encodeAnswer = (str) => {
-  try { return btoa(unescape(encodeURIComponent(str))); } catch (e) { return ''; }
-};
-
-const sendDiscordLog = async (message, color = 3447003) => {
-  if (!WEBHOOK_URL) return;
-
-  try {
-    // Send data to Make.com, NOT directly to Discord
-    await fetch(WEBHOOK_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        message: message,
-        color: color
-      })
-    });
-  } catch (error) {
-    console.error("Log Error:", error);
-  }
-};
-
+// --- CONFIGURATION (No Secrets Here) ---
 const QUESTIONS_DB = [
-  { 
-    id: 'city_born', 
-    text: { en: "What city was I born in?", fr: "Dans quelle ville suis-je né ?", ar: "في أي مدينة ولدت؟" },
-    validHashes: getHashes(import.meta.env.VITE_HASH_CITY)
-  },
-  { 
-    id: 'mom_name', 
-    text: { en: "What is my mom’s name?", fr: "Quel est le nom de ma mère ?", ar: "ما اسم أمي؟" },
-    validHashes: getHashes(import.meta.env.VITE_HASH_MOM)
-  },
-  { 
-    id: 'dream_dest', 
-    text: { en: "What’s my dream travel destination?", fr: "Quelle est ma destination de rêve ?", ar: "ما هي وجهة سفري التي أحلم بها؟" },
-    validHashes: getHashes(import.meta.env.VITE_HASH_DREAM)
-  },
-  { 
-    id: 'current_city', 
-    text: { en: "What city do I currently live in?", fr: "Dans quelle ville j'habite ?", ar: "في أي مدينة أعيش حاليا؟" },
-    validHashes: getHashes(import.meta.env.VITE_HASH_CURRENT)
-  },
-  { 
-    id: 'tv_show', 
-    text: { en: "What’s my favorite TV show?", fr: "Quelle est ma série préférée ?", ar: "ما هو برنامجي التلفزيوني المفضل؟" },
-    validHashes: getHashes(import.meta.env.VITE_HASH_TV)
-  },
-  { 
-    id: 'animal', 
-    text: { en: "What’s my favorite type of animal?", fr: "Quel est mon animal préféré ?", ar: "ما هو حيواني المفضل؟" },
-    validHashes: getHashes(import.meta.env.VITE_HASH_ANIMAL)
-  },
-  { 
-    id: 'game', 
-    text: { en: "What’s my favorite video game?", fr: "Quel est mon jeu vidéo préféré ?", ar: "ما هي لعبة الفيديو المفضلة لدي؟" },
-    validHashes: getHashes(import.meta.env.VITE_HASH_GAME)
-  },
-  { 
-    id: 'subject', 
-    text: { en: "What’s my favorite subject in high school?", fr: "Quelle était ma matière préférée au lycée ?", ar: "ما هي مادتي المفضلة في الثانوية؟" },
-    validHashes: getHashes(import.meta.env.VITE_HASH_SUBJECT)
-  },
-  { 
-    id: 'anime', 
-    text: { en: "What is my favorite anime?", fr: "Quel est mon anime préféré ?", ar: "ما هو الأنمي المفضل لدي؟" },
-    validHashes: getHashes(import.meta.env.VITE_HASH_ANIME)
-  }
+  { id: 'city_born', text: { en: "What city was I born in?", fr: "Dans quelle ville suis-je né ?", ar: "في أي مدينة ولدت؟" } },
+  { id: 'mom_name', text: { en: "What is my mom’s name?", fr: "Quel est le nom de ma mère ?", ar: "ما اسم أمي؟" } },
+  { id: 'dream_dest', text: { en: "What’s my dream travel destination?", fr: "Quelle est ma destination de rêve ?", ar: "ما هي وجهة سفري التي أحلم بها؟" } },
+  { id: 'current_city', text: { en: "What city do I currently live in?", fr: "Dans quelle ville j'habite ?", ar: "في أي مدينة أعيش حاليا؟" } },
+  { id: 'tv_show', text: { en: "What’s my favorite TV show?", fr: "Quelle est ma série préférée ?", ar: "ما هو برنامجي التلفزيوني المفضل؟" } },
+  { id: 'animal', text: { en: "What’s my favorite type of animal?", fr: "Quel est mon animal préféré ?", ar: "ما هو حيواني المفضل؟" } },
+  { id: 'game', text: { en: "What’s my favorite video game?", fr: "Quel est mon jeu vidéo préféré ?", ar: "ما هي لعبة الفيديو المفضلة لدي؟" } },
+  { id: 'subject', text: { en: "What’s my favorite subject in high school?", fr: "Quelle était ma matière préférée au lycée ?", ar: "ما هي مادتي المفضلة في الثانوية؟" } },
+  { id: 'anime', text: { en: "What is my favorite anime?", fr: "Quel est mon anime préféré ?", ar: "ما هو الأنمي المفضل لدي؟" } }
 ];
 
 const UI_TEXT = {
@@ -94,6 +28,7 @@ const UI_TEXT = {
   ar: { title: "فحص الأمان", sub: "اختر وأجب عن سؤالين", unlock: "فتح الملف الشخصي", placeholder: "إجابتك...", select: "اختر سؤالاً" }
 };
 
+// Shared Background
 const Background = ({ children }) => (
   <div className="min-h-screen w-full flex items-center justify-center p-4 bg-[#f3f4f6]">
     <div className="fixed inset-0 z-0 opacity-40 pointer-events-none">
@@ -111,79 +46,105 @@ export default function PasswordGate() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [lang, setLang] = useState('en'); 
   
-  const [selections, setSelections] = useState({
-    0: QUESTIONS_DB[0].id,
-    1: QUESTIONS_DB[1].id
-  });
-
+  const [selections, setSelections] = useState({ 0: 'city_born', 1: 'mom_name' });
   const [userAnswers, setUserAnswers] = useState({ 0: '', 1: '' });
   const [inputStatus, setInputStatus] = useState({ 0: 'neutral', 1: 'neutral' }); 
+  const [shake, setShake] = useState(false); // Restored Shake State
 
+  // Log tracking refs
   const hasLoggedVisit = useRef(false);
   const loggedAnswers = useRef({ 0: false, 1: false });
   const hasLoggedSuccess = useRef(false);
 
+  // --- API HELPER ---
+  const callApi = async (endpoint, body) => {
+    try {
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      return await res.json();
+    } catch (e) {
+      console.error("API Error", e);
+      return { success: false };
+    }
+  };
+
+  // Log visit on load
   useEffect(() => {
     if (!hasLoggedVisit.current) {
-      sendDiscordLog("👀 **New Visitor** arrived at the gate.", 3447003); 
+      callApi('/api/log', { message: "👀 **Visitor Arrived** (Secure Backend)", color: 3447003 });
       hasLoggedVisit.current = true;
     }
   }, []);
 
+  // --- CHECK ANSWERS LOGIC ---
   useEffect(() => {
-    let correctCount = 0;
-    const newStatus = { ...inputStatus };
+    const verifyAnswers = async () => {
+      let correctCount = 0;
+      const newStatus = { ...inputStatus };
+      let hasError = false;
 
-    [0, 1].forEach((index) => {
-      const selectedId = selections[index];
-      const questionObj = QUESTIONS_DB.find(q => q.id === selectedId);
-      
-      const rawInput = userAnswers[index] || '';
-      
-      if (rawInput.length > 0) {
-        const normalized = normalize(rawInput);
-        const hash = encodeAnswer(normalized);
-        const rawHash = encodeAnswer(rawInput.trim().toLowerCase());
-        
-        const isCorrect = questionObj && (questionObj.validHashes.includes(hash) || questionObj.validHashes.includes(rawHash));
+      for (let index of [0, 1]) {
+        const questionId = selections[index];
+        const rawInput = userAnswers[index] || '';
 
-        if (isCorrect) {
-          newStatus[index] = 'correct';
-          correctCount++;
-
-          if (!loggedAnswers.current[index]) {
-            sendDiscordLog(`✅ Answered **${questionObj.text.en}** correctly.`, 16776960); 
-            loggedAnswers.current[index] = true; 
+        // Only check if user typed enough chars
+        if (rawInput.length > 2) {
+          // CALL BACKEND TO VERIFY
+          const result = await callApi('/api/verify', { questionId, answer: rawInput });
+          
+          if (result.success) {
+            newStatus[index] = 'correct';
+            correctCount++;
+            
+            // Log single correct answer (once per slot)
+            if (!loggedAnswers.current[index]) {
+              callApi('/api/log', { message: `✅ Correctly answered: **${questionId}**`, color: 16776960 });
+              loggedAnswers.current[index] = true;
+            }
+          } else {
+            newStatus[index] = 'error';
+            loggedAnswers.current[index] = false;
+            hasError = true;
           }
-
         } else {
-          newStatus[index] = rawInput.length > 2 ? 'error' : 'neutral';
-          loggedAnswers.current[index] = false; 
+          newStatus[index] = 'neutral';
+          loggedAnswers.current[index] = false;
         }
-      } else {
-        newStatus[index] = 'neutral';
-        loggedAnswers.current[index] = false;
       }
-    });
 
-    setInputStatus(newStatus);
+      setInputStatus(newStatus);
 
-    if (correctCount === 2) {
-      if (!hasLoggedSuccess.current) {
-        sendDiscordLog("🎉 **Profile Unlocked!** User granted access.", 5763719); 
-        hasLoggedSuccess.current = true;
+      // Trigger Shake if error detected
+      if (hasError) {
+        setShake(true);
+        setTimeout(() => setShake(false), 500);
       }
-      setTimeout(() => {
-        setIsAuthenticated(true);
-      }, 300);
-    }
+
+      // Unlock if both correct
+      if (correctCount === 2) {
+        if (!hasLoggedSuccess.current) {
+          callApi('/api/log', { message: "🎉 **ACCESS GRANTED!**", color: 5763719 });
+          hasLoggedSuccess.current = true;
+        }
+        // Small delay for visual satisfaction
+        setTimeout(() => setIsAuthenticated(true), 300);
+      }
+    };
+
+    // Debounce: Wait 500ms after typing stops before checking
+    const timer = setTimeout(verifyAnswers, 500);
+    return () => clearTimeout(timer);
+
   }, [userAnswers, selections]);
 
   const handleSelectionChange = (index, value) => {
     setSelections(prev => ({ ...prev, [index]: value }));
     setUserAnswers(prev => ({ ...prev, [index]: '' }));
     setInputStatus(prev => ({ ...prev, [index]: 'neutral' }));
-    loggedAnswers.current[index] = false; 
+    loggedAnswers.current[index] = false;
   };
 
   const handleInputChange = (index, value) => {
@@ -196,6 +157,7 @@ export default function PasswordGate() {
     return QUESTIONS_DB.filter(q => q.id !== otherSelection || q.id === selections[currentIndex]);
   };
 
+  // --- AUTHENTICATED PROFILE VIEW ---
   if (isAuthenticated) {
     const socialLinks = [
       { name: 'Instagram', url: 'https://instagram.com/marwane_m7b', icon: FaInstagram },
@@ -256,10 +218,15 @@ export default function PasswordGate() {
     );
   }
 
+  // --- SECURITY GATE VIEW ---
   return (
     <Background>
-      <div className={`bg-white/90 backdrop-blur-lg rounded-2xl shadow-xl p-6 w-full border border-white/50`} dir={lang === 'ar' ? 'rtl' : 'ltr'}>
+      <div 
+        className={`bg-white/90 backdrop-blur-lg rounded-2xl shadow-xl p-6 w-full border border-white/50 transition-transform ${shake ? 'animate-shake' : ''}`} 
+        dir={lang === 'ar' ? 'rtl' : 'ltr'}
+      >
         
+        {/* Language Switcher */}
         <div className="flex justify-end gap-2 mb-4">
           <button onClick={() => setLang('en')} className={`px-2 py-1 rounded text-xs font-bold ${lang === 'en' ? 'bg-indigo-100 text-indigo-700' : 'text-gray-400 hover:bg-gray-100'}`}>🇺🇸 EN</button>
           <button onClick={() => setLang('fr')} className={`px-2 py-1 rounded text-xs font-bold ${lang === 'fr' ? 'bg-indigo-100 text-indigo-700' : 'text-gray-400 hover:bg-gray-100'}`}>🇫🇷 FR</button>
@@ -275,8 +242,10 @@ export default function PasswordGate() {
         </div>
 
         <div className="space-y-6">
+          {/* Loop for 2 question slots */}
           {[0, 1].map((index) => (
             <div key={index} className="relative group bg-gray-50 rounded-xl p-3 border border-gray-200 hover:border-purple-200 transition-colors">
+              {/* Question Dropdown */}
               <div className="mb-2">
                 <label className="block text-[10px] uppercase font-bold text-gray-400 mb-1 tracking-wider">
                   {lang === 'ar' ? `السؤال ${index + 1}` : `Question ${index + 1}`}
@@ -294,6 +263,7 @@ export default function PasswordGate() {
                 </select>
               </div>
 
+              {/* Answer Input */}
               <div className="relative">
                 <input
                   type="text"
@@ -309,6 +279,7 @@ export default function PasswordGate() {
                   autoComplete="off"
                 />
                 
+                {/* Status Icons */}
                 <div className={`absolute ${lang === 'ar' ? 'left-3' : 'right-3'} top-3`}>
                    {inputStatus[index] === 'correct' && <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>}
                    {inputStatus[index] === 'error' && <svg className="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>}
@@ -318,13 +289,15 @@ export default function PasswordGate() {
           ))}
 
           <button
-            disabled={true}
+            disabled={true} // Auto-unlock is active, button is just for show
             className="w-full mt-4 bg-gradient-to-r from-gray-300 to-gray-400 text-white font-bold py-3 px-6 rounded-xl cursor-not-allowed opacity-50"
           >
             {UI_TEXT[lang].unlock} (Auto)
           </button>
         </div>
       </div>
+      
+      {/* CSS Animations */}
       <style>{`
         @keyframes fadeIn {
           from { opacity: 0; transform: scale(0.95); }
@@ -332,6 +305,14 @@ export default function PasswordGate() {
         }
         .animate-fade-in {
           animation: fadeIn 0.5s ease-out forwards;
+        }
+        @keyframes shake {
+          0%, 100% { transform: translateX(0); }
+          25% { transform: translateX(-5px); }
+          75% { transform: translateX(5px); }
+        }
+        .animate-shake {
+          animation: shake 0.4s ease-in-out;
         }
       `}</style>
     </Background>
