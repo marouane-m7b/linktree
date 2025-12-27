@@ -9,7 +9,7 @@ import letterboxdIcon from './assets/letterboxd.png';
 import serializedIcon from './assets/serializd.png';
 import musashiProfile from './assets/musashi.jpg';
 
-// --- CONFIGURATION (No Secrets Here) ---
+// --- CONFIGURATION ---
 const QUESTIONS_DB = [
   { id: 'city_born', text: { en: "What city was I born in?", fr: "Dans quelle ville suis-je né ?", ar: "في أي مدينة ولدت؟" } },
   { id: 'mom_name', text: { en: "What is my mom’s name?", fr: "Quel est le nom de ma mère ?", ar: "ما اسم أمي؟" } },
@@ -28,7 +28,18 @@ const UI_TEXT = {
   ar: { title: "فحص الأمان", sub: "اختر وأجب عن سؤالين", unlock: "فتح الملف الشخصي", placeholder: "إجابتك...", select: "اختر سؤالاً" }
 };
 
-// Shared Background
+// --- CUSTOM LOG DESIGNS ---
+const LINK_THEMES = {
+  'Books': { color: 9205843, emoji: '📚' }, // Brown
+  'Anime & Manga': { color: 3042722, emoji: '⛩️' }, // Blue
+  'Games': { color: 15158332, emoji: '🎮' }, // Red
+  'Movies': { color: 4439247, emoji: '🎬' }, // Green (Letterboxd)
+  'TV Shows': { color: 1752220, emoji: '📺' }, // Teal
+  'Instagram': { color: 13453419, emoji: '📸' }, // Pink
+  'GitHub': { color: 2303786, emoji: '💻' }, // Dark Grey
+  'LinkedIn': { color: 299355, emoji: '💼' }  // Linkedin Blue
+};
+
 const Background = ({ children }) => (
   <div className="min-h-screen w-full flex items-center justify-center p-4 bg-[#f3f4f6]">
     <div className="fixed inset-0 z-0 opacity-40 pointer-events-none">
@@ -45,18 +56,14 @@ const Background = ({ children }) => (
 export default function PasswordGate() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [lang, setLang] = useState('en'); 
-  
   const [selections, setSelections] = useState({ 0: 'city_born', 1: 'mom_name' });
   const [userAnswers, setUserAnswers] = useState({ 0: '', 1: '' });
   const [inputStatus, setInputStatus] = useState({ 0: 'neutral', 1: 'neutral' }); 
-  const [shake, setShake] = useState(false); // Restored Shake State
+  const [shake, setShake] = useState(false);
 
-  // Log tracking refs
   const hasLoggedVisit = useRef(false);
-  const loggedAnswers = useRef({ 0: false, 1: false });
-  const hasLoggedSuccess = useRef(false);
+  const isCheckingAuth = useRef(false);
 
-  // --- API HELPER ---
   const callApi = async (endpoint, body) => {
     try {
       const res = await fetch(endpoint, {
@@ -66,75 +73,92 @@ export default function PasswordGate() {
       });
       return await res.json();
     } catch (e) {
-      console.error("API Error", e);
       return { success: false };
     }
   };
 
-  // Log visit on load
+  // --- UPDATED: Cool Link Logger ---
+  const handleLinkClick = (e, name, url) => {
+    e.preventDefault();
+    
+    // Get custom design or default
+    const theme = LINK_THEMES[name] || { color: 3447003, emoji: '🔗' };
+    
+    callApi('/api/log', { 
+      message: `${theme.emoji} User clicked on **${name}**`, 
+      color: theme.color 
+    });
+    
+    window.open(url, '_blank');
+  };
+
   useEffect(() => {
     if (!hasLoggedVisit.current) {
-      callApi('/api/log', { message: "👀 **Visitor Arrived** (Secure Backend)", color: 3447003 });
+      callApi('/api/log', { message: "👀 **New Visitor** on the page.", color: 3447003 });
       hasLoggedVisit.current = true;
     }
   }, []);
 
-  // --- CHECK ANSWERS LOGIC ---
+  // --- MAIN LOGIC ---
   useEffect(() => {
     const verifyAnswers = async () => {
       let correctCount = 0;
       const newStatus = { ...inputStatus };
       let hasError = false;
 
+      // 1. Check visually one by one
       for (let index of [0, 1]) {
         const questionId = selections[index];
         const rawInput = userAnswers[index] || '';
 
-        // Only check if user typed enough chars
         if (rawInput.length > 2) {
-          // CALL BACKEND TO VERIFY
           const result = await callApi('/api/verify', { questionId, answer: rawInput });
           
           if (result.success) {
             newStatus[index] = 'correct';
             correctCount++;
-            
-            // Log single correct answer (once per slot)
-            if (!loggedAnswers.current[index]) {
-              callApi('/api/log', { message: `✅ Correctly answered: **${questionId}**`, color: 16776960 });
-              loggedAnswers.current[index] = true;
-            }
+            // Note: Single answer logging is now handled by the backend!
           } else {
             newStatus[index] = 'error';
-            loggedAnswers.current[index] = false;
             hasError = true;
           }
         } else {
           newStatus[index] = 'neutral';
-          loggedAnswers.current[index] = false;
         }
       }
 
       setInputStatus(newStatus);
 
-      // Trigger Shake if error detected
       if (hasError) {
         setShake(true);
         setTimeout(() => setShake(false), 500);
       }
 
-      // Unlock if both correct
-      if (correctCount === 2) {
-        if (!hasLoggedSuccess.current) {
-          callApi('/api/log', { message: "🎉 **ACCESS GRANTED!**", color: 5763719 });
-          hasLoggedSuccess.current = true;
+      // 2. FINAL AUTH CHECK
+      if (correctCount === 2 && !isCheckingAuth.current) {
+        isCheckingAuth.current = true;
+        
+        const authPayload = {
+          selections: {
+            0: { id: selections[0], answer: userAnswers[0] },
+            1: { id: selections[1], answer: userAnswers[1] }
+          }
+        };
+
+        const authRes = await callApi('/api/unlock', authPayload);
+        
+        if (authRes.success) {
+          setTimeout(() => setIsAuthenticated(true), 300);
+        } else {
+          setShake(true);
+          setTimeout(() => setShake(false), 500);
+          isCheckingAuth.current = false;
         }
-        // Small delay for visual satisfaction
-        setTimeout(() => setIsAuthenticated(true), 300);
+      } else if (correctCount < 2) {
+        isCheckingAuth.current = false;
       }
     };
 
-    // Debounce: Wait 500ms after typing stops before checking
     const timer = setTimeout(verifyAnswers, 500);
     return () => clearTimeout(timer);
 
@@ -144,7 +168,6 @@ export default function PasswordGate() {
     setSelections(prev => ({ ...prev, [index]: value }));
     setUserAnswers(prev => ({ ...prev, [index]: '' }));
     setInputStatus(prev => ({ ...prev, [index]: 'neutral' }));
-    loggedAnswers.current[index] = false;
   };
 
   const handleInputChange = (index, value) => {
@@ -157,7 +180,6 @@ export default function PasswordGate() {
     return QUESTIONS_DB.filter(q => q.id !== otherSelection || q.id === selections[currentIndex]);
   };
 
-  // --- AUTHENTICATED PROFILE VIEW ---
   if (isAuthenticated) {
     const socialLinks = [
       { name: 'Instagram', url: 'https://instagram.com/marwane_m7b', icon: FaInstagram },
@@ -191,17 +213,29 @@ export default function PasswordGate() {
                 </div>
                 <p className="text-gray-500 text-sm font-medium">Software Engineer, Web Developer • AI & LLM</p>
               </div>
+              
               <div className="flex gap-4 mt-5">
                 {socialLinks.map((social, index) => (
-                  <a key={index} href={social.url} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-800 hover:scale-110 transition-all duration-300">
+                  <a 
+                    key={index} 
+                    href={social.url} 
+                    onClick={(e) => handleLinkClick(e, social.name, social.url)}
+                    className="text-gray-400 hover:text-gray-800 hover:scale-110 transition-all duration-300 cursor-pointer"
+                  >
                     <social.icon className="w-6 h-6" />
                   </a>
                 ))}
               </div>
             </div>
+
             <div className="space-y-4">
               {links.map((link, index) => (
-                <a key={index} href={link.url} target="_blank" rel="noopener noreferrer" className={`group flex items-center p-3 rounded-2xl bg-gradient-to-r ${link.color} border ${link.borderColor} hover:shadow-lg hover:-translate-y-1 transition-all duration-300 ease-out`}>
+                <a 
+                  key={index} 
+                  href={link.url} 
+                  onClick={(e) => handleLinkClick(e, link.title, link.url)}
+                  className={`group flex items-center p-3 rounded-2xl bg-gradient-to-r ${link.color} border ${link.borderColor} hover:shadow-lg hover:-translate-y-1 transition-all duration-300 ease-out cursor-pointer`}
+                >
                   <div className="w-12 h-12 bg-white rounded-xl shadow-sm mr-4 flex-shrink-0 group-hover:scale-105 transition-transform duration-300 overflow-hidden">
                     <img src={link.iconImg} alt={link.title} className="w-full h-full object-cover" />
                   </div>
@@ -218,15 +252,13 @@ export default function PasswordGate() {
     );
   }
 
-  // --- SECURITY GATE VIEW ---
+  // --- GATE VIEW ---
   return (
     <Background>
       <div 
         className={`bg-white/90 backdrop-blur-lg rounded-2xl shadow-xl p-6 w-full border border-white/50 transition-transform ${shake ? 'animate-shake' : ''}`} 
         dir={lang === 'ar' ? 'rtl' : 'ltr'}
       >
-        
-        {/* Language Switcher */}
         <div className="flex justify-end gap-2 mb-4">
           <button onClick={() => setLang('en')} className={`px-2 py-1 rounded text-xs font-bold ${lang === 'en' ? 'bg-indigo-100 text-indigo-700' : 'text-gray-400 hover:bg-gray-100'}`}>🇺🇸 EN</button>
           <button onClick={() => setLang('fr')} className={`px-2 py-1 rounded text-xs font-bold ${lang === 'fr' ? 'bg-indigo-100 text-indigo-700' : 'text-gray-400 hover:bg-gray-100'}`}>🇫🇷 FR</button>
@@ -242,10 +274,8 @@ export default function PasswordGate() {
         </div>
 
         <div className="space-y-6">
-          {/* Loop for 2 question slots */}
           {[0, 1].map((index) => (
             <div key={index} className="relative group bg-gray-50 rounded-xl p-3 border border-gray-200 hover:border-purple-200 transition-colors">
-              {/* Question Dropdown */}
               <div className="mb-2">
                 <label className="block text-[10px] uppercase font-bold text-gray-400 mb-1 tracking-wider">
                   {lang === 'ar' ? `السؤال ${index + 1}` : `Question ${index + 1}`}
@@ -263,7 +293,6 @@ export default function PasswordGate() {
                 </select>
               </div>
 
-              {/* Answer Input */}
               <div className="relative">
                 <input
                   type="text"
@@ -279,7 +308,6 @@ export default function PasswordGate() {
                   autoComplete="off"
                 />
                 
-                {/* Status Icons */}
                 <div className={`absolute ${lang === 'ar' ? 'left-3' : 'right-3'} top-3`}>
                    {inputStatus[index] === 'correct' && <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>}
                    {inputStatus[index] === 'error' && <svg className="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>}
@@ -289,7 +317,7 @@ export default function PasswordGate() {
           ))}
 
           <button
-            disabled={true} // Auto-unlock is active, button is just for show
+            disabled={true}
             className="w-full mt-4 bg-gradient-to-r from-gray-300 to-gray-400 text-white font-bold py-3 px-6 rounded-xl cursor-not-allowed opacity-50"
           >
             {UI_TEXT[lang].unlock} (Auto)
@@ -297,7 +325,6 @@ export default function PasswordGate() {
         </div>
       </div>
       
-      {/* CSS Animations */}
       <style>{`
         @keyframes fadeIn {
           from { opacity: 0; transform: scale(0.95); }
