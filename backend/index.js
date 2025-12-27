@@ -31,7 +31,7 @@ const VALID_ANSWERS = {
   anime: ["hunter x hunter", "hxh", "هنتر"]
 };
 
-// --- HELPER: Send to Discord ---
+
 const logToDiscord = async (message, color = 3447003) => {
   if (!DISCORD_WEBHOOK) return;
   try {
@@ -52,8 +52,11 @@ const logToDiscord = async (message, color = 3447003) => {
   }
 };
 
-// --- ROUTE 1: Verify Single Answer ---
-// UPDATED: Now logs directly to Discord if successful
+
+app.get('/', (req, res) => {
+  res.send("You're in, thanks ✅");
+});
+
 app.post('/api/verify', (req, res) => {
   const { questionId, answer } = req.body;
   
@@ -62,14 +65,14 @@ app.post('/api/verify', (req, res) => {
   const isCorrect = VALID_ANSWERS[questionId].some(correct => normalize(correct) === normalize(answer));
   
   if (isCorrect) {
-    // Log success immediately from backend
+
     logToDiscord(`💡 **Correct Answer:** ${questionId}`, 16776960); // Yellow
   }
 
   res.json({ success: isCorrect });
 });
 
-// --- ROUTE 2: Secure Unlock ---
+
 app.post('/api/unlock', (req, res) => {
   const { selections } = req.body; 
 
@@ -92,7 +95,7 @@ app.post('/api/unlock', (req, res) => {
   }
 });
 
-// --- ROUTE 3: Log Link Clicks ---
+
 app.post('/api/log', (req, res) => {
   const { message, color } = req.body;
   logToDiscord(message, color);

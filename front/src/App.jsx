@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { FaInstagram, FaGithub, FaLinkedin } from 'react-icons/fa';
 
-// Assets
+
 import goodreadsIcon from './assets/goodreads.png';
 import malIcon from './assets/myanimelist.png';
 import backloggdIcon from './assets/backloggd.png';
@@ -9,7 +9,7 @@ import letterboxdIcon from './assets/letterboxd.png';
 import serializedIcon from './assets/serializd.png';
 import musashiProfile from './assets/musashi.jpg';
 
-// --- CONFIGURATION ---
+
 const QUESTIONS_DB = [
   { id: 'city_born', text: { en: "What city was I born in?", fr: "Dans quelle ville suis-je né ?", ar: "في أي مدينة ولدت؟" } },
   { id: 'mom_name', text: { en: "What is my mom’s name?", fr: "Quel est le nom de ma mère ?", ar: "ما اسم أمي؟" } },
@@ -28,7 +28,7 @@ const UI_TEXT = {
   ar: { title: "فحص الأمان", sub: "اختر وأجب عن سؤالين", unlock: "فتح الملف الشخصي", placeholder: "إجابتك...", select: "اختر سؤالاً" }
 };
 
-// --- CUSTOM LOG DESIGNS ---
+
 const LINK_THEMES = {
   'Books': { color: 9205843, emoji: '📚' }, // Brown
   'Anime & Manga': { color: 3042722, emoji: '⛩️' }, // Blue
@@ -77,11 +77,9 @@ export default function PasswordGate() {
     }
   };
 
-  // --- UPDATED: Cool Link Logger ---
   const handleLinkClick = (e, name, url) => {
     e.preventDefault();
     
-    // Get custom design or default
     const theme = LINK_THEMES[name] || { color: 3447003, emoji: '🔗' };
     
     callApi('/api/log', { 
@@ -99,14 +97,12 @@ export default function PasswordGate() {
     }
   }, []);
 
-  // --- MAIN LOGIC ---
   useEffect(() => {
     const verifyAnswers = async () => {
       let correctCount = 0;
       const newStatus = { ...inputStatus };
       let hasError = false;
 
-      // 1. Check visually one by one
       for (let index of [0, 1]) {
         const questionId = selections[index];
         const rawInput = userAnswers[index] || '';
@@ -117,7 +113,6 @@ export default function PasswordGate() {
           if (result.success) {
             newStatus[index] = 'correct';
             correctCount++;
-            // Note: Single answer logging is now handled by the backend!
           } else {
             newStatus[index] = 'error';
             hasError = true;
@@ -134,7 +129,6 @@ export default function PasswordGate() {
         setTimeout(() => setShake(false), 500);
       }
 
-      // 2. FINAL AUTH CHECK
       if (correctCount === 2 && !isCheckingAuth.current) {
         isCheckingAuth.current = true;
         
@@ -252,7 +246,6 @@ export default function PasswordGate() {
     );
   }
 
-  // --- GATE VIEW ---
   return (
     <Background>
       <div 
