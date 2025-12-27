@@ -1,5 +1,13 @@
 import { useState, useEffect } from 'react';
 
+// Import your icons from assets folder
+import goodreadsIcon from './assets/goodreads.png';
+import malIcon from './assets/myanimelist.png';
+import backloggdIcon from './assets/backloggd.png';
+import letterboxdIcon from './assets/letterboxd.png';
+import serializedIcon from './assets/serializd.png';
+import musashiProfile from './assets/musashi.jpg'
+
 export default function PasswordGate() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -8,8 +16,8 @@ export default function PasswordGate() {
   const [lockTimer, setLockTimer] = useState(0);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // SHA-256 hash of "fatiha" in lowercase
-  const encodedHash = 'ZmJkYzI0YzEzYzk0MzQ2ZTFiYTVkNDJkMWNmYzc5MzNlZWRhMjU1ZDhhMTQwMzI5YjQyNWZiZDU3MWRlZTlhOQ==';
+  // Simple password - will hash later
+  const correctPassword = 'fatiha';
   
   const socialLinks = [
     { name: 'Instagram', url: 'https://instagram.com/marwane_m7b', icon: 'M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z' },
@@ -18,13 +26,39 @@ export default function PasswordGate() {
   ];
 
   const links = [
-    { title: 'Books', url: 'https://www.goodreads.com/marouane_m7b', bgColor: 'bg-amber-100', textColor: 'text-amber-900', iconBg: 'bg-amber-600', icon: 'g' },
-    { title: 'Anime & Manga', url: 'https://myanimelist.net/profile/marouane_m7b', bgColor: 'bg-blue-100', textColor: 'text-blue-900', iconBg: 'bg-blue-600', icon: 'MAL' },
-    { title: 'Games', url: 'https://backloggd.com/u/marouane_m7b/games', bgColor: 'bg-gray-100', textColor: 'text-gray-900', iconBg: 'bg-black', icon: 'B' },
-    { title: 'Movies', url: 'https://boxd.it/c4xHT', bgColor: 'bg-orange-100', textColor: 'text-orange-900', iconBg: 'bg-gradient-to-br from-orange-400 to-blue-500', icon: '🎬' },
-    { title: 'TV Shows', url: 'https://www.serializd.com/user/marouane_m7b/diary', bgColor: 'bg-teal-100', textColor: 'text-teal-900', iconBg: 'bg-teal-600', icon: '/' }
+    { title: 'Books', url: 'https://www.goodreads.com/marouane_m7b', bgColor: 'bg-amber-100', textColor: 'text-amber-900', iconBg: 'bg-white', iconImg: goodreadsIcon },
+    { title: 'Anime & Manga', url: 'https://myanimelist.net/profile/marouane_m7b', bgColor: 'bg-blue-100', textColor: 'text-blue-900', iconBg: 'bg-white', iconImg: malIcon },
+    { title: 'Games', url: 'https://backloggd.com/u/marouane_m7b/games', bgColor: 'bg-gray-100', textColor: 'text-gray-900', iconBg: 'bg-white', iconImg: backloggdIcon },
+    { title: 'Movies', url: 'https://boxd.it/c4xHT', bgColor: 'bg-orange-100', textColor: 'text-orange-900', iconBg: 'bg-white', iconImg: letterboxdIcon },
+    { title: 'TV Shows', url: 'https://www.serializd.com/user/marouane_m7b/diary', bgColor: 'bg-teal-100', textColor: 'text-teal-900', iconBg: 'bg-white', iconImg: serializedIcon }
   ];
   
+  // Load attempts and lock status from localStorage on mount
+  useEffect(() => {
+    const storedAttempts = localStorage.getItem('loginAttempts');
+    const storedLockUntil = localStorage.getItem('lockUntil');
+    
+    if (storedAttempts) {
+      setAttempts(parseInt(storedAttempts));
+    }
+    
+    if (storedLockUntil) {
+      const lockUntil = parseInt(storedLockUntil);
+      const now = Date.now();
+      
+      if (lockUntil > now) {
+        setIsLocked(true);
+        setLockTimer(Math.ceil((lockUntil - now) / 1000));
+      } else {
+        // Lock expired, clear it
+        localStorage.removeItem('lockUntil');
+        localStorage.removeItem('loginAttempts');
+        setAttempts(0);
+      }
+    }
+  }, []);
+
+  // Handle lock timer countdown
   useEffect(() => {
     let interval;
     if (isLocked && lockTimer > 0) {
@@ -33,6 +67,8 @@ export default function PasswordGate() {
           if (prev <= 1) {
             setIsLocked(false);
             setAttempts(0);
+            localStorage.removeItem('lockUntil');
+            localStorage.removeItem('loginAttempts');
             return 0;
           }
           return prev - 1;
@@ -42,15 +78,7 @@ export default function PasswordGate() {
     return () => clearInterval(interval);
   }, [isLocked, lockTimer]);
 
-  const hashPassword = async (text) => {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(text.toLowerCase());
-    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-  };
-
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (isLocked) return;
 
     if (!password.trim()) {
@@ -58,16 +86,20 @@ export default function PasswordGate() {
       return;
     }
 
-    const hashedInput = await hashPassword(password);
-    const decodedHash = atob(encodedHash);
-
-    if (hashedInput === decodedHash) {
+    // Case-insensitive comparison
+    if (password.toLowerCase() === correctPassword.toLowerCase()) {
       setIsAuthenticated(true);
+      // Clear attempts on successful login
+      localStorage.removeItem('loginAttempts');
+      localStorage.removeItem('lockUntil');
     } else {
       const newAttempts = attempts + 1;
       setAttempts(newAttempts);
+      localStorage.setItem('loginAttempts', newAttempts.toString());
       
       if (newAttempts >= 3) {
+        const lockUntil = Date.now() + (30 * 1000); // 30 seconds from now
+        localStorage.setItem('lockUntil', lockUntil.toString());
         setError('Too many attempts. Please wait 30 seconds.');
         setIsLocked(true);
         setLockTimer(30);
@@ -93,7 +125,7 @@ export default function PasswordGate() {
             <div className="text-center mb-6">
               <div className="w-24 h-24 rounded-full mx-auto mb-4 overflow-hidden bg-gray-200">
                 <img 
-                  src="https://ugc.production.linktr.ee/25b69273-d22e-4ca2-a9c9-2098ad60a4f4_miamoto.jpeg" 
+                  src={musashiProfile}
                   alt="Profile"
                   className="w-full h-full object-cover"
                 />
@@ -127,8 +159,8 @@ export default function PasswordGate() {
                   rel="noopener noreferrer"
                   className={`flex items-center ${link.bgColor} rounded-2xl p-4 transition-all duration-200 hover:scale-[1.02] hover:shadow-md`}
                 >
-                  <div className={`${link.iconBg} w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold mr-4 flex-shrink-0`}>
-                    {link.icon}
+                  <div className={`${link.iconBg} w-12 h-12 rounded-xl flex items-center justify-center mr-4 flex-shrink-0 overflow-hidden`}>
+                    <img src={link.iconImg} alt={link.title} className="w-10 h-10 object-contain p-0 m-0" />
                   </div>
                   <span className={`${link.textColor} font-semibold flex-1 text-left`}>{link.title}</span>
                   <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -136,17 +168,6 @@ export default function PasswordGate() {
                   </svg>
                 </a>
               ))}
-            </div>
-
-            <div className="mt-8 text-center">
-              <a 
-                href="https://linktr.ee/marouane_m7b"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block text-sm text-gray-600 hover:text-gray-900 transition-colors"
-              >
-                Rejoignez marouane_m7b sur Linktree
-              </a>
             </div>
           </div>
         </div>
