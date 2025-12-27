@@ -40,6 +40,8 @@ const LINK_THEMES = {
   'LinkedIn': { color: 299355, emoji: '💼' }  // Linkedin Blue
 };
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const Background = ({ children }) => (
   <div className="min-h-screen w-full flex items-center justify-center p-4 bg-[#f3f4f6]">
     <div className="fixed inset-0 z-0 opacity-40 pointer-events-none">
@@ -82,7 +84,7 @@ export default function PasswordGate() {
     
     const theme = LINK_THEMES[name] || { color: 3447003, emoji: '🔗' };
     
-    callApi('/api/log', { 
+    callApi(`${API_BASE_URL}/api/log`, { 
       message: `${theme.emoji} User clicked on **${name}**`, 
       color: theme.color 
     });
@@ -92,7 +94,7 @@ export default function PasswordGate() {
 
   useEffect(() => {
     if (!hasLoggedVisit.current) {
-      callApi('/api/log', { message: "👀 **New Visitor** on the page.", color: 3447003 });
+      callApi(`${API_BASE_URL}/api/log`, { message: "👀 **New Visitor** on the page.", color: 3447003 });
       hasLoggedVisit.current = true;
     }
   }, []);
@@ -108,7 +110,7 @@ export default function PasswordGate() {
         const rawInput = userAnswers[index] || '';
 
         if (rawInput.length > 2) {
-          const result = await callApi('/api/verify', { questionId, answer: rawInput });
+          const result = await callApi(`${API_BASE_URL}/api/verify`, { questionId, answer: rawInput });
           
           if (result.success) {
             newStatus[index] = 'correct';
@@ -139,7 +141,7 @@ export default function PasswordGate() {
           }
         };
 
-        const authRes = await callApi('/api/unlock', authPayload);
+        const authRes = await callApi(`${API_BASE_URL}/api/unlock`, authPayload);
         
         if (authRes.success) {
           setTimeout(() => setIsAuthenticated(true), 300);
