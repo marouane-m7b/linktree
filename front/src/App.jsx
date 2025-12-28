@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { FaInstagram, FaGithub, FaLinkedin } from 'react-icons/fa';
-
+import confetti from 'canvas-confetti';
 
 import goodreadsIcon from './assets/goodreads.png';
 import malIcon from './assets/myanimelist.png';
@@ -75,7 +75,7 @@ export default function PasswordGate() {
       });
       return await res.json();
     } catch (e) {
-      return { success: false };
+      return { success: false, error: e.message};
     }
   };
 
@@ -144,6 +144,11 @@ export default function PasswordGate() {
         const authRes = await callApi(`${API_BASE_URL}/api/unlock`, authPayload);
         
         if (authRes.success) {
+          confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 }
+          });
           setTimeout(() => setIsAuthenticated(true), 300);
         } else {
           setShake(true);
@@ -184,11 +189,12 @@ export default function PasswordGate() {
     ];
 
     const links = [
-      { title: 'Books', url: 'https://www.goodreads.com/marouane_m7b', color: 'from-amber-50 to-amber-100', borderColor: 'border-amber-200', textAccent: 'text-amber-900', iconImg: goodreadsIcon },
-      { title: 'Anime & Manga', url: 'https://myanimelist.net/profile/marouane_m7b', color: 'from-blue-50 to-blue-100', borderColor: 'border-blue-200', textAccent: 'text-blue-900', iconImg: malIcon },
-      { title: 'Games', url: 'https://backloggd.com/u/marouane_m7b/games', color: 'from-gray-50 to-gray-100', borderColor: 'border-gray-200', textAccent: 'text-gray-900', iconImg: backloggdIcon },
+      // { title: 'Books', url: 'https://www.goodreads.com/marouane_m7b', color: 'from-amber-50 to-amber-100', borderColor: 'border-amber-200', textAccent: 'text-amber-900', iconImg: goodreadsIcon },
+      { title: 'Portfolio', url: 'https://m7b.dev', color: 'from-purple-50 to-purple-100', borderColor: 'border-purple-200', textAccent: 'text-purple-900', iconImg: musashiProfile },
       { title: 'Movies', url: 'https://boxd.it/c4xHT', color: 'from-orange-50 to-orange-100', borderColor: 'border-orange-200', textAccent: 'text-orange-900', iconImg: letterboxdIcon },
-      { title: 'TV Shows', url: 'https://www.serializd.com/user/marouane_m7b/diary', color: 'from-teal-50 to-teal-100', borderColor: 'border-teal-200', textAccent: 'text-teal-900', iconImg: serializedIcon }
+      { title: 'Anime & Manga', url: 'https://myanimelist.net/profile/marouane_m7b', color: 'from-blue-50 to-blue-100', borderColor: 'border-blue-200', textAccent: 'text-blue-900', iconImg: malIcon },
+      { title: 'TV Shows', url: 'https://www.serializd.com/user/marouane_m7b/diary', color: 'from-teal-50 to-teal-100', borderColor: 'border-teal-200', textAccent: 'text-teal-900', iconImg: serializedIcon },
+      { title: 'Games', url: 'https://backloggd.com/u/marouane_m7b/games', color: 'from-gray-50 to-gray-100', borderColor: 'border-gray-200', textAccent: 'text-gray-900', iconImg: backloggdIcon },
     ];
 
     return (
