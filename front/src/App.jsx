@@ -237,24 +237,46 @@ export default function PasswordGate() {
                 </div>
               </div>
               
-              <div className="text-center space-y-2">
-                <div className="flex items-center justify-center gap-3">
-                  <h1 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 tracking-tight animate-text-shimmer">
+              <div className="text-center space-y-3 relative z-10">
+                {/* Name Section - Smaller (2xl), Solid Cyan, Matched Badge */}
+                <div className="flex items-center justify-center gap-1.5">
+                  <h1 className="text-2xl font-bold text-cyan-400 tracking-tight drop-shadow-[0_0_8px_rgba(6,182,212,0.4)]">
                     Marouane Mahboub
                   </h1>
+                  
+                  {/* Verified Badge - Sized to match text (w-6 h-6) */}
                   <span className="text-cyan-400 animate-pulse">
                     <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
                   </span>
                 </div>
-                <p className="text-cyan-300/80 text-sm font-bold uppercase tracking-widest">
-                  Software Engineer • AI & LLM
-                </p>
-                <div className="flex gap-1 justify-center mt-2">
-                  {[...Array(20)].map((_, i) => (
-                    <div key={i} className="h-1 w-1 bg-cyan-500 animate-pulse" style={{ animationDelay: `${i * 0.1}s` }}></div>
-                  ))}
+
+                {/* Subtitle */}
+                <div className="inline-block relative">
+                   <div className="absolute -inset-1 bg-pink-500/20 blur-sm rounded-lg"></div>
+                   <p className="relative font-mono text-pink-400 text-[10px] font-bold uppercase tracking-widest drop-shadow-[0_0_5px_rgba(236,72,153,0.5)]">
+                     Software Engineer • AI & LLM
+                   </p>
+                </div>
+
+                {/* HUD Loading Bar */}
+                <div className="flex flex-col items-center justify-center mt-2 gap-1">
+                  <div className="flex gap-1">
+                    {[...Array(20)].map((_, i) => (
+                      <div 
+                        key={i} 
+                        className="h-1 w-1 bg-cyan-500 transform -skew-x-12" 
+                        style={{ 
+                          animation: `pulse 1.5s infinite ${i * 0.05}s`,
+                          opacity: 0.3 
+                        }}
+                      ></div>
+                    ))}
+                  </div>
+                  {/* <span className="text-[9px] text-cyan-500/50 font-mono tracking-widest uppercase animate-pulse">
+                    System Online
+                  </span> */}
                 </div>
               </div>
               
