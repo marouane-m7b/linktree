@@ -167,7 +167,15 @@ app.post("/api/verify", (req, res) => {
   );
 
   if (isCorrect) {
-    logToDiscord(`💡 **Correct Answer:** ${questionId}`, 16776960);
+    logToDiscord(
+      `💡 **Correct Answer:** ${questionId} - **Answer:** ${answer}`,
+      16776960
+    );
+  } else {
+    logToDiscord(
+      `❌ **Incorrect Answer:** ${questionId} - **Attempt:** ${answer}`,
+      15548997
+    );
   }
 
   res.json({ success: isCorrect });

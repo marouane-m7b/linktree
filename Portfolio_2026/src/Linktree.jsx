@@ -239,76 +239,60 @@ export default function PasswordGate() {
     }
   }, []);
 
+  const handleCheckAnswer = async (index) => {
+    const questionId = selections[index];
+    const rawInput = userAnswers[index] || "";
+
+    if (rawInput.length < 1 || inputStatus[index] === 'correct') {
+      return;
+    }
+
+    // Reset error status before re-checking
+    setInputStatus((prev) => ({ ...prev, [index]: "neutral" }));
+
+    const result = await callApi(`${API_BASE_URL}/api/verify`, {
+      questionId,
+      answer: rawInput,
+    });
+
+    if (result.success) {
+      setInputStatus((prev) => ({ ...prev, [index]: "correct" }));
+    } else {
+      setInputStatus((prev) => ({ ...prev, [index]: "error" }));
+      setShake(true);
+      setTimeout(() => setShake(false), 500);
+    }
+  };
+
   useEffect(() => {
-    const verifyAnswers = async () => {
-      let correctCount = 0;
-      const newStatus = { ...inputStatus };
-      let hasError = false;
-
-      for (let index of [0, 1, 2]) {
-        const questionId = selections[index];
-        const rawInput = userAnswers[index] || "";
-
-        if (rawInput.length > 2) {
-          const result = await callApi(`${API_BASE_URL}/api/verify`, {
-            questionId,
-            answer: rawInput,
-          });
-
-          if (result.success) {
-            newStatus[index] = "correct";
-            correctCount++;
-          } else {
-            newStatus[index] = "error";
-            hasError = true;
-          }
-        } else {
-          newStatus[index] = "neutral";
-        }
-      }
-
-      setInputStatus(newStatus);
-
-      if (hasError) {
-        setShake(true);
-        setTimeout(() => setShake(false), 500);
-      }
+    const checkAuth = async () => {
+      const correctCount = Object.values(inputStatus).filter(s => s === 'correct').length;
 
       if (correctCount === 3 && !isCheckingAuth.current) {
         isCheckingAuth.current = true;
 
         const authPayload = {
-          selections: {
-            0: { id: selections[0], answer: userAnswers[0] },
-            1: { id: selections[1], answer: userAnswers[1] },
-          },
+          selections: Object.keys(selections).reduce((acc, key) => {
+            acc[key] = { id: selections[key], answer: userAnswers[key] };
+            return acc;
+          }, {}),
         };
 
-        const authRes = await callApi(
-          `${API_BASE_URL}/api/unlock`,
-          authPayload
-        );
+        const authRes = await callApi(`${API_BASE_URL}/api/unlock`, authPayload);
 
         if (authRes.success) {
-          confetti({
-            particleCount: 100,
-            spread: 70,
-            origin: { y: 0.6 },
-          });
+          confetti({ particleCount: 150, spread: 90, origin: { y: 0.6 } });
           setTimeout(() => setIsAuthenticated(true), 300);
         } else {
           setShake(true);
           setTimeout(() => setShake(false), 500);
           isCheckingAuth.current = false;
         }
-      } else if (correctCount < 2) {
-        isCheckingAuth.current = false;
       }
     };
 
-    const timer = setTimeout(verifyAnswers, 500);
-    return () => clearTimeout(timer);
-  }, [userAnswers, selections]);
+    checkAuth();
+  }, [inputStatus, selections, userAnswers]);
 
   const handleSelectionChange = (index, value) => {
     setSelections((prev) => ({ ...prev, [index]: value }));
@@ -636,6 +620,7 @@ export default function PasswordGate() {
                     type="text"
                     value={userAnswers[index] || ""}
                     onChange={(e) => handleInputChange(index, e.target.value)}
+                    disabled={inputStatus[index] === 'correct'}
                     className={`
                       w-full px-4 py-3 border-2 rounded-xl outline-none transition-all text-sm font-bold
                       ${
@@ -645,6 +630,7 @@ export default function PasswordGate() {
                           ? "border-green-500 bg-green-500/10 text-green-400 shadow-lg shadow-green-500/30"
                           : "border-cyan-500/30 bg-black/50 text-cyan-300 focus:border-cyan-500 focus:shadow-lg focus:shadow-cyan-500/30"
                       }
+                      ${inputStatus[index] === 'correct' ? 'cursor-not-allowed' : ''}
                     `}
                     placeholder={UI_TEXT[lang].placeholder}
                     autoComplete="off"
@@ -691,6 +677,21 @@ export default function PasswordGate() {
                     )}
                   </div>
                 </div>
+
+                {inputStatus[index] !== 'correct' && (
+                  <div className="mt-4">
+                    <button
+                      onClick={() => handleCheckAnswer(index)}
+                      disabled={!userAnswers[index] || userAnswers[index].length < 1}
+                      className="relative w-full group"
+                    >
+                      <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-lg blur opacity-40 group-hover:opacity-80 transition duration-300 disabled:opacity-0"></div>
+                      <div className="relative w-full bg-black/80 text-cyan-300 font-black py-2.5 px-6 rounded-lg border-2 border-cyan-500/50 group-hover:text-white transition-all uppercase tracking-widest text-xs disabled:bg-gray-800 disabled:text-gray-500 disabled:border-gray-700 disabled:cursor-not-allowed">
+                        Check
+                      </div>
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           ))}
