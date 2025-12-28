@@ -637,7 +637,7 @@ export default function PasswordGate() {
         <div className="space-y-6">
           {[0, 1, 2].map(
             (index) =>
-              index <= activeQuestionIndex && (
+              index === activeQuestionIndex && (
                 <div key={index} className="relative group">
                   <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-xl blur opacity-20 group-hover:opacity-40 transition duration-300"></div>
                   <div className="relative bg-black/50 rounded-xl p-4 border-2 border-cyan-500/30 group-hover:border-cyan-500/60 transition-all duration-300">
@@ -786,6 +786,33 @@ export default function PasswordGate() {
                 </div>
               )
           )}
+
+          
+
+        <div className="flex justify-center gap-2 my-6">
+          {[0, 1, 2].map((step) => (
+            <div
+              key={step}
+              className="w-1/3 h-2 rounded-full bg-cyan-900/50"
+            >
+              <div
+                style={{
+                  width:
+                    step < activeQuestionIndex
+                      ? "100%"
+                      : step === activeQuestionIndex
+                      ? "50%"
+                      : "0%",
+                }}
+                className={`h-full rounded-full transition-all duration-500 ${
+                  step < activeQuestionIndex
+                    ? "bg-green-500"
+                    : "bg-cyan-500"
+                } ${step === activeQuestionIndex ? 'animate-pulse' : ''}`}
+              />
+            </div>
+          ))}
+        </div>
 
           <button
             disabled={true}
