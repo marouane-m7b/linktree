@@ -9,16 +9,15 @@ import letterboxdIcon from './assets/letterboxd.png';
 import serializedIcon from './assets/serializd.png';
 import musashiProfile from './assets/musashi.jpg';
 
-
 const QUESTIONS_DB = [
   { id: 'city_born', text: { en: "What city was I born in?", fr: "Dans quelle ville suis-je né ?", ar: "في أي مدينة ولدت؟" } },
-  { id: 'mom_name', text: { en: "What is my mom’s name?", fr: "Quel est le nom de ma mère ?", ar: "ما اسم أمي؟" } },
-  { id: 'dream_dest', text: { en: "What’s my dream travel destination?", fr: "Quelle est ma destination de rêve ?", ar: "ما هي وجهة سفري التي أحلم بها؟" } },
+  { id: 'mom_name', text: { en: "What is my mom's name?", fr: "Quel est le nom de ma mère ?", ar: "ما اسم أمي؟" } },
+  { id: 'dream_dest', text: { en: "What's my dream travel destination?", fr: "Quelle est ma destination de rêve ?", ar: "ما هي وجهة سفري التي أحلم بها؟" } },
   { id: 'current_city', text: { en: "What city do I currently live in?", fr: "Dans quelle ville j'habite ?", ar: "في أي مدينة أعيش حاليا؟" } },
-  { id: 'tv_show', text: { en: "What’s my favorite TV show?", fr: "Quelle est ma série préférée ?", ar: "ما هو برنامجي التلفزيوني المفضل؟" } },
-  { id: 'animal', text: { en: "What’s my favorite type of animal?", fr: "Quel est mon animal préféré ?", ar: "ما هو حيواني المفضل؟" } },
-  { id: 'game', text: { en: "What’s my favorite video game?", fr: "Quel est mon jeu vidéo préféré ?", ar: "ما هي لعبة الفيديو المفضلة لدي؟" } },
-  { id: 'subject', text: { en: "What’s my favorite subject in high school?", fr: "Quelle était ma matière préférée au lycée ?", ar: "ما هي مادتي المفضلة في الثانوية؟" } },
+  { id: 'tv_show', text: { en: "What's my favorite TV show?", fr: "Quelle est ma série préférée ?", ar: "ما هو برنامجي التلفزيوني المفضل؟" } },
+  { id: 'animal', text: { en: "What's my favorite type of animal?", fr: "Quel est mon animal préféré ?", ar: "ما هو حيواني المفضل؟" } },
+  { id: 'game', text: { en: "What's my favorite video game?", fr: "Quel est mon jeu vidéo préféré ?", ar: "ما هي لعبة الفيديو المفضلة لدي؟" } },
+  { id: 'subject', text: { en: "What's my favorite subject in high school?", fr: "Quelle était ma matière préférée au lycée ?", ar: "ما هي مادتي المفضلة في الثانوية؟" } },
   { id: 'anime', text: { en: "What is my favorite anime?", fr: "Quel est mon anime préféré ?", ar: "ما هو الأنمي المفضل لدي؟" } }
 ];
 
@@ -28,27 +27,46 @@ const UI_TEXT = {
   ar: { title: "فحص الأمان", sub: "اختر وأجب عن سؤالين", unlock: "فتح الملف الشخصي", placeholder: "إجابتك...", select: "اختر سؤالاً" }
 };
 
-
 const LINK_THEMES = {
-  'Books': { color: 9205843, emoji: '📚' }, // Brown
-  'Anime & Manga': { color: 3042722, emoji: '⛩️' }, // Blue
-  'Games': { color: 15158332, emoji: '🎮' }, // Red
-  'Movies': { color: 4439247, emoji: '🎬' }, // Green (Letterboxd)
-  'TV Shows': { color: 1752220, emoji: '📺' }, // Teal
-  'Instagram': { color: 13453419, emoji: '📸' }, // Pink
-  'GitHub': { color: 2303786, emoji: '💻' }, // Dark Grey
-  'LinkedIn': { color: 299355, emoji: '💼' }  // Linkedin Blue
+  'Books': { color: 9205843, emoji: '📚' },
+  'Anime & Manga': { color: 3042722, emoji: '⛩️' },
+  'Games': { color: 15158332, emoji: '🎮' },
+  'Movies': { color: 4439247, emoji: '🎬' },
+  'TV Shows': { color: 1752220, emoji: '📺' },
+  'Instagram': { color: 13453419, emoji: '📸' },
+  'GitHub': { color: 2303786, emoji: '💻' },
+  'LinkedIn': { color: 299355, emoji: '💼' }
 };
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Background = ({ children }) => (
-  <div className="min-h-screen w-full flex items-center justify-center p-4 bg-[#f3f4f6]">
-    <div className="fixed inset-0 z-0 opacity-40 pointer-events-none">
-      <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-      <div className="absolute top-0 -right-4 w-72 h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-      <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+  <div className="min-h-screen w-full flex items-center justify-center p-4 bg-black relative overflow-hidden">
+    {/* Animated grid background */}
+    <div className="fixed inset-0 z-0">
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-black to-cyan-900/20"></div>
+      <div className="absolute inset-0" style={{
+        backgroundImage: `
+          linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px)
+        `,
+        backgroundSize: '50px 50px',
+        animation: 'gridMove 20s linear infinite'
+      }}></div>
+      {/* Glowing orbs */}
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-pulse"></div>
+      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '1s' }}></div>
+      <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-pink-500 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '2s' }}></div>
     </div>
+    
+    {/* Scanline effect */}
+    <div className="fixed inset-0 z-20 pointer-events-none opacity-5">
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white to-transparent" style={{ 
+        height: '200%', 
+        animation: 'scanline 8s linear infinite' 
+      }}></div>
+    </div>
+    
     <div className="relative z-10 w-full max-w-md">
       {children}
     </div>
@@ -189,42 +207,69 @@ export default function PasswordGate() {
     ];
 
     const links = [
-      // { title: 'Books', url: 'https://www.goodreads.com/marouane_m7b', color: 'from-amber-50 to-amber-100', borderColor: 'border-amber-200', textAccent: 'text-amber-900', iconImg: goodreadsIcon },
-      { title: 'Portfolio', url: 'https://m7b.dev', color: 'from-purple-50 to-purple-100', borderColor: 'border-purple-200', textAccent: 'text-purple-900', iconImg: musashiProfile },
-      { title: 'Movies', url: 'https://boxd.it/c4xHT', color: 'from-orange-50 to-orange-100', borderColor: 'border-orange-200', textAccent: 'text-orange-900', iconImg: letterboxdIcon },
-      { title: 'Anime & Manga', url: 'https://myanimelist.net/profile/marouane_m7b', color: 'from-blue-50 to-blue-100', borderColor: 'border-blue-200', textAccent: 'text-blue-900', iconImg: malIcon },
-      { title: 'TV Shows', url: 'https://www.serializd.com/user/marouane_m7b/diary', color: 'from-teal-50 to-teal-100', borderColor: 'border-teal-200', textAccent: 'text-teal-900', iconImg: serializedIcon },
-      { title: 'Games', url: 'https://backloggd.com/u/marouane_m7b/games', color: 'from-gray-50 to-gray-100', borderColor: 'border-gray-200', textAccent: 'text-gray-900', iconImg: backloggdIcon },
+      // { title: 'Books', url: 'https://www.goodreads.com/marouane_m7b', gradient: 'from-amber-600 via-yellow-500 to-amber-600', glow: 'shadow-amber-500/50', iconImg: goodreadsIcon },
+      { title: 'Portfolio', url: 'https://m7b.dev', gradient: 'from-purple-500 via-pink-500 to-red-500', glow: 'shadow-purple-500/50', iconImg: musashiProfile },
+      { title: 'Movies', url: 'https://boxd.it/c4xHT', gradient: 'from-orange-500 via-yellow-500 to-orange-500', glow: 'shadow-orange-500/50', iconImg: letterboxdIcon },
+      { title: 'Anime & Manga', url: 'https://myanimelist.net/profile/marouane_m7b', gradient: 'from-blue-500 via-cyan-500 to-blue-500', glow: 'shadow-blue-500/50', iconImg: malIcon },
+      { title: 'TV Shows', url: 'https://www.serializd.com/user/marouane_m7b/diary', gradient: 'from-teal-500 via-green-500 to-teal-500', glow: 'shadow-teal-500/50', iconImg: serializedIcon },
+      { title: 'Games', url: 'https://backloggd.com/u/marouane_m7b/games', gradient: 'from-red-500 via-pink-500 to-purple-500', glow: 'shadow-red-500/50', iconImg: backloggdIcon },
     ];
 
     return (
       <Background>
-        <div className="w-full bg-white/80 backdrop-blur-xl rounded-[2rem] shadow-2xl overflow-hidden border border-white/20 animate-fade-in">
-          <div className="p-8">
+        <div className="w-full bg-black/80 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden border-2 border-cyan-500/30 animate-fade-in relative">
+          {/* Glowing border animation */}
+          <div className="absolute inset-0 rounded-3xl animate-border-glow pointer-events-none"></div>
+          
+          <div className="p-8 relative">
             <div className="flex flex-col items-center mb-8">
-              <div className="relative group mb-4">
-                <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full blur opacity-30 group-hover:opacity-60 transition duration-1000 group-hover:duration-200"></div>
-                <div className="relative w-32 h-32">
-                   <img src={musashiProfile} alt="Profile" className="w-full h-full object-cover rounded-full border-4 border-white shadow-lg" />
+              <div className="relative group mb-6">
+                {/* Rotating rings */}
+                <div className="absolute -inset-4 animate-spin-slow">
+                  <div className="h-full w-full rounded-full border-2 border-cyan-500/30 border-t-cyan-500"></div>
                 </div>
-              </div>
-              <div className="text-center space-y-1">
-                <div className="flex items-center justify-center gap-2">
-                  <h1 className="text-2xl font-bold text-gray-800 tracking-tight">Marouane Mahboub</h1>
-                  <span className="text-blue-500"><svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg></span>
+                <div className="absolute -inset-6 animate-spin-slow-reverse">
+                  <div className="h-full w-full rounded-full border-2 border-purple-500/30 border-r-purple-500"></div>
                 </div>
-                <p className="text-gray-500 text-sm font-medium">Software Engineer, Web Developer • AI & LLM</p>
+                
+                <div className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-cyan-500 shadow-lg shadow-cyan-500/50">
+                  <img src={musashiProfile} alt="Profile" className="w-full h-full object-cover" />
+                </div>
               </div>
               
-              <div className="flex gap-4 mt-5">
+              <div className="text-center space-y-2">
+                <div className="flex items-center justify-center gap-3">
+                  <h1 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 tracking-tight animate-text-shimmer">
+                    Marouane Mahboub
+                  </h1>
+                  <span className="text-cyan-400 animate-pulse">
+                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                  </span>
+                </div>
+                <p className="text-cyan-300/80 text-sm font-bold uppercase tracking-widest">
+                  Software Engineer • AI & LLM
+                </p>
+                <div className="flex gap-1 justify-center mt-2">
+                  {[...Array(20)].map((_, i) => (
+                    <div key={i} className="h-1 w-1 bg-cyan-500 animate-pulse" style={{ animationDelay: `${i * 0.1}s` }}></div>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="flex gap-6 mt-6">
                 {socialLinks.map((social, index) => (
                   <a 
                     key={index} 
                     href={social.url} 
                     onClick={(e) => handleLinkClick(e, social.name, social.url)}
-                    className="text-gray-400 hover:text-gray-800 hover:scale-110 transition-all duration-300 cursor-pointer"
+                    className="relative group cursor-pointer"
                   >
-                    <social.icon className="w-6 h-6" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full blur opacity-0 group-hover:opacity-75 transition-all duration-300"></div>
+                    <div className="relative text-cyan-400 hover:text-white transition-all duration-300 transform hover:scale-125 hover:rotate-12">
+                      <social.icon className="w-7 h-7" />
+                    </div>
                   </a>
                 ))}
               </div>
@@ -236,14 +281,24 @@ export default function PasswordGate() {
                   key={index} 
                   href={link.url} 
                   onClick={(e) => handleLinkClick(e, link.title, link.url)}
-                  className={`group flex items-center p-3 rounded-2xl bg-gradient-to-r ${link.color} border ${link.borderColor} hover:shadow-lg hover:-translate-y-1 transition-all duration-300 ease-out cursor-pointer`}
+                  className="group relative block cursor-pointer"
                 >
-                  <div className="w-12 h-12 bg-white rounded-xl shadow-sm mr-4 flex-shrink-0 group-hover:scale-105 transition-transform duration-300 overflow-hidden">
-                    <img src={link.iconImg} alt={link.title} className="w-full h-full object-cover" />
-                  </div>
-                  <span className={`${link.textAccent} font-bold text-lg flex-1`}>{link.title}</span>
-                  <div className="w-8 h-8 rounded-full bg-white/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <svg className={`w-4 h-4 ${link.textAccent}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+                  <div className={`absolute -inset-0.5 bg-gradient-to-r ${link.gradient} rounded-2xl blur opacity-40 group-hover:opacity-100 transition duration-300 ${link.glow}`}></div>
+                  <div className="relative flex items-center p-4 rounded-2xl bg-black border-2 border-cyan-500/30 group-hover:border-cyan-400 transition-all duration-300 overflow-hidden">
+                    {/* Animated background shimmer */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
+                    
+                    <div className={`relative w-12 h-12 bg-white rounded-xl mr-4 flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-12 transition-all duration-300 ${link.glow} shadow-lg overflow-hidden`}>
+                      <img src={link.iconImg} alt={link.title} className="w-full h-full object-cover" />
+                    </div>
+                    <span className="relative text-cyan-300 group-hover:text-white font-black text-lg flex-1 tracking-wide transition-colors duration-300">
+                      {link.title}
+                    </span>
+                    <div className="relative w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-purple-500 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-1">
+                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
                   </div>
                 </a>
               ))}
@@ -257,61 +312,96 @@ export default function PasswordGate() {
   return (
     <Background>
       <div 
-        className={`bg-white/90 backdrop-blur-lg rounded-2xl shadow-xl p-6 w-full border border-white/50 transition-transform ${shake ? 'animate-shake' : ''}`} 
+        className={`relative bg-black/90 backdrop-blur-xl rounded-2xl shadow-2xl p-6 w-full border-2 border-cyan-500/50 transition-transform ${shake ? 'animate-shake' : ''}`} 
         dir={lang === 'ar' ? 'rtl' : 'ltr'}
       >
-        <div className="flex justify-end gap-2 mb-4">
-          <button onClick={() => setLang('en')} className={`px-2 py-1 rounded text-xs font-bold ${lang === 'en' ? 'bg-indigo-100 text-indigo-700' : 'text-gray-400 hover:bg-gray-100'}`}>🇺🇸 EN</button>
-          <button onClick={() => setLang('fr')} className={`px-2 py-1 rounded text-xs font-bold ${lang === 'fr' ? 'bg-indigo-100 text-indigo-700' : 'text-gray-400 hover:bg-gray-100'}`}>🇫🇷 FR</button>
-          <button onClick={() => setLang('ar')} className={`px-2 py-1 rounded text-xs font-bold ${lang === 'ar' ? 'bg-indigo-100 text-indigo-700' : 'text-gray-400 hover:bg-gray-100'}`}>🇲🇦 AR</button>
+        {/* Corner decorations */}
+        <div className="absolute top-0 left-0 w-20 h-20 border-l-2 border-t-2 border-cyan-500/50 rounded-tl-2xl"></div>
+        <div className="absolute top-0 right-0 w-20 h-20 border-r-2 border-t-2 border-purple-500/50 rounded-tr-2xl"></div>
+        <div className="absolute bottom-0 left-0 w-20 h-20 border-l-2 border-b-2 border-purple-500/50 rounded-bl-2xl"></div>
+        <div className="absolute bottom-0 right-0 w-20 h-20 border-r-2 border-b-2 border-cyan-500/50 rounded-br-2xl"></div>
+
+        <div className="flex justify-end gap-2 mb-6">
+          <button onClick={() => setLang('en')} className={`px-3 py-1.5 rounded-lg text-xs font-black border-2 transition-all duration-300 ${lang === 'en' ? 'bg-gradient-to-r from-cyan-500 to-purple-500 text-white border-transparent shadow-lg shadow-cyan-500/50' : 'text-cyan-400 border-cyan-500/30 hover:border-cyan-500'}`}>
+            🇺🇸 EN
+          </button>
+          <button onClick={() => setLang('fr')} className={`px-3 py-1.5 rounded-lg text-xs font-black border-2 transition-all duration-300 ${lang === 'fr' ? 'bg-gradient-to-r from-cyan-500 to-purple-500 text-white border-transparent shadow-lg shadow-purple-500/50' : 'text-cyan-400 border-cyan-500/30 hover:border-cyan-500'}`}>
+            🇫🇷 FR
+          </button>
+          <button onClick={() => setLang('ar')} className={`px-3 py-1.5 rounded-lg text-xs font-black border-2 transition-all duration-300 ${lang === 'ar' ? 'bg-gradient-to-r from-cyan-500 to-purple-500 text-white border-transparent shadow-lg shadow-pink-500/50' : 'text-cyan-400 border-cyan-500/30 hover:border-cyan-500'}`}>
+            🇲🇦 AR
+          </button>
         </div>
 
-        <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl rotate-3 mb-3 shadow-lg shadow-purple-500/30">
-            <svg className="w-7 h-7 text-white -rotate-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-cyan-500 via-purple-500 to-pink-500 rounded-2xl mb-4 shadow-lg shadow-cyan-500/50 relative animate-pulse-glow">
+            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500 to-purple-500 rounded-2xl blur-md opacity-50"></div>
+            <svg className="w-8 h-8 text-white relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
           </div>
-          <h1 className="text-xl font-bold text-gray-800">{UI_TEXT[lang].title}</h1>
-          <p className="text-gray-500 text-xs mt-1">{UI_TEXT[lang].sub}</p>
+          <h1 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 mb-2 tracking-wider">
+            {UI_TEXT[lang].title}
+          </h1>
+          <p className="text-cyan-300/70 text-sm font-bold uppercase tracking-widest">{UI_TEXT[lang].sub}</p>
         </div>
 
         <div className="space-y-6">
           {[0, 1].map((index) => (
-            <div key={index} className="relative group bg-gray-50 rounded-xl p-3 border border-gray-200 hover:border-purple-200 transition-colors">
-              <div className="mb-2">
-                <label className="block text-[10px] uppercase font-bold text-gray-400 mb-1 tracking-wider">
-                  {lang === 'ar' ? `السؤال ${index + 1}` : `Question ${index + 1}`}
-                </label>
-                <select
-                  value={selections[index]}
-                  onChange={(e) => handleSelectionChange(index, e.target.value)}
-                  className="w-full bg-transparent text-xs font-semibold text-gray-700 outline-none border-none p-0 cursor-pointer"
-                >
-                  {getAvailableQuestions(index).map((q) => (
-                    <option key={q.id} value={q.id}>
-                      {q.text[lang]}
-                    </option>
-                  ))}
-                </select>
-              </div>
+            <div key={index} className="relative group">
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-xl blur opacity-20 group-hover:opacity-40 transition duration-300"></div>
+              <div className="relative bg-black/50 rounded-xl p-4 border-2 border-cyan-500/30 group-hover:border-cyan-500/60 transition-all duration-300">
+                <div className="mb-3">
+                  <label className="block text-[10px] uppercase font-black text-cyan-400 mb-2 tracking-widest flex items-center gap-2">
+                    <span className="w-6 h-6 rounded bg-gradient-to-r from-cyan-500 to-purple-500 flex items-center justify-center text-white text-xs">
+                      {index + 1}
+                    </span>
+                    {lang === 'ar' ? `السؤال ${index + 1}` : `Question ${index + 1}`}
+                  </label>
+                  <select
+                    value={selections[index]}
+                    onChange={(e) => handleSelectionChange(index, e.target.value)}
+                    className="w-full bg-black/50 text-sm font-bold text-cyan-300 outline-none border-2 border-cyan-500/30 rounded-lg p-2 cursor-pointer hover:border-cyan-500 transition-all duration-300"
+                  >
+                    {getAvailableQuestions(index).map((q) => (
+                      <option key={q.id} value={q.id} className="bg-black">
+                        {q.text[lang]}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-              <div className="relative">
-                <input
-                  type="text"
-                  value={userAnswers[index] || ''}
-                  onChange={(e) => handleInputChange(index, e.target.value)}
-                  className={`
-                    w-full px-4 py-3 border rounded-xl outline-none transition-all text-sm
-                    ${inputStatus[index] === 'error' ? 'border-red-300 bg-red-50 focus:ring-red-200' : 
-                      inputStatus[index] === 'correct' ? 'border-green-300 bg-green-50 text-green-700' : 
-                      'border-gray-200 bg-white focus:ring-4 focus:ring-purple-100 focus:border-purple-500'}
-                  `}
-                  placeholder={UI_TEXT[lang].placeholder}
-                  autoComplete="off"
-                />
-                
-                <div className={`absolute ${lang === 'ar' ? 'left-3' : 'right-3'} top-3`}>
-                   {inputStatus[index] === 'correct' && <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>}
-                   {inputStatus[index] === 'error' && <svg className="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>}
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={userAnswers[index] || ''}
+                    onChange={(e) => handleInputChange(index, e.target.value)}
+                    className={`
+                      w-full px-4 py-3 border-2 rounded-xl outline-none transition-all text-sm font-bold
+                      ${inputStatus[index] === 'error' ? 'border-red-500 bg-red-500/10 text-red-400 shadow-lg shadow-red-500/30' : 
+                        inputStatus[index] === 'correct' ? 'border-green-500 bg-green-500/10 text-green-400 shadow-lg shadow-green-500/30' : 
+                        'border-cyan-500/30 bg-black/50 text-cyan-300 focus:border-cyan-500 focus:shadow-lg focus:shadow-cyan-500/30'}
+                    `}
+                    placeholder={UI_TEXT[lang].placeholder}
+                    autoComplete="off"
+                  />
+                  
+                  <div className={`absolute ${lang === 'ar' ? 'left-3' : 'right-3'} top-3`}>
+                     {inputStatus[index] === 'correct' && (
+                       <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center animate-bounce">
+                         <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                         </svg>
+                       </div>
+                     )}
+                     {inputStatus[index] === 'error' && (
+                       <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center animate-pulse">
+                         <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
+                         </svg>
+                       </div>
+                     )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -319,28 +409,76 @@ export default function PasswordGate() {
 
           <button
             disabled={true}
-            className="w-full mt-4 bg-gradient-to-r from-gray-300 to-gray-400 text-white font-bold py-3 px-6 rounded-xl cursor-not-allowed opacity-50"
+            className="relative w-full mt-6 group cursor-not-allowed"
           >
-            {UI_TEXT[lang].unlock} (Auto)
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-gray-600 to-gray-700 rounded-xl blur opacity-50"></div>
+            <div className="relative bg-gradient-to-r from-gray-700 to-gray-800 text-gray-400 font-black py-4 px-6 rounded-xl border-2 border-gray-600 uppercase tracking-wider">
+              {UI_TEXT[lang].unlock} (Auto)
+            </div>
           </button>
         </div>
       </div>
       
       <style>{`
         @keyframes fadeIn {
-          from { opacity: 0; transform: scale(0.95); }
-          to { opacity: 1; transform: scale(1); }
+          from { opacity: 0; transform: scale(0.9) translateY(20px); }
+          to { opacity: 1; transform: scale(1) translateY(0); }
         }
         .animate-fade-in {
-          animation: fadeIn 0.5s ease-out forwards;
+          animation: fadeIn 0.6s ease-out forwards;
         }
         @keyframes shake {
-          0%, 100% { transform: translateX(0); }
-          25% { transform: translateX(-5px); }
-          75% { transform: translateX(5px); }
+          0%, 100% { transform: translateX(0) rotate(0deg); }
+          25% { transform: translateX(-10px) rotate(-2deg); }
+          75% { transform: translateX(10px) rotate(2deg); }
         }
         .animate-shake {
           animation: shake 0.4s ease-in-out;
+        }
+        @keyframes gridMove {
+          0% { transform: translateY(0); }
+          100% { transform: translateY(50px); }
+        }
+        @keyframes scanline {
+          0% { transform: translateY(-100%); }
+          100% { transform: translateY(100%); }
+        }
+        @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        @keyframes spin-slow-reverse {
+          from { transform: rotate(360deg); }
+          to { transform: rotate(0deg); }
+        }
+        .animate-spin-slow {
+          animation: spin-slow 8s linear infinite;
+        }
+        .animate-spin-slow-reverse {
+          animation: spin-slow-reverse 12s linear infinite;
+        }
+        @keyframes border-glow {
+          0%, 100% { box-shadow: 0 0 20px rgba(6, 182, 212, 0.3); }
+          50% { box-shadow: 0 0 40px rgba(168, 85, 247, 0.5); }
+        }
+        .animate-border-glow {
+          animation: border-glow 3s ease-in-out infinite;
+        }
+        @keyframes pulse-glow {
+          0%, 100% { box-shadow: 0 0 20px rgba(6, 182, 212, 0.5); }
+          50% { box-shadow: 0 0 40px rgba(168, 85, 247, 0.8); }
+        }
+        .animate-pulse-glow {
+          animation: pulse-glow 2s ease-in-out infinite;
+        }
+        @keyframes text-shimmer {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        .animate-text-shimmer {
+          background-size: 200% 200%;
+          animation: text-shimmer 4s ease-in-out infinite;
         }
       `}</style>
     </Background>
