@@ -200,6 +200,8 @@ export default function PasswordGate() {
   const [userAnswers, setUserAnswers] = useState({ 0: '', 1: '', 2: '' });
   const [inputStatus, setInputStatus] = useState({ 0: 'neutral', 1: 'neutral', 2: 'neutral' });
   const [shake, setShake] = useState(false);
+  const [loadingIndex, setLoadingIndex] = useState(null);
+  const [activeQuestionIndex, setActiveQuestionIndex] = useState(0);
 
   const hasLoggedVisit = useRef(false);
   const isCheckingAuth = useRef(false);
@@ -259,24 +261,32 @@ export default function PasswordGate() {
     const questionId = selections[index];
     const rawInput = userAnswers[index] || "";
 
-    if (rawInput.length < 1 || inputStatus[index] === 'correct') {
+    if (rawInput.length < 1 || inputStatus[index] === 'correct' || loadingIndex !== null) {
       return;
     }
 
+    setLoadingIndex(index);
     // Reset error status before re-checking
     setInputStatus((prev) => ({ ...prev, [index]: "neutral" }));
 
-    const result = await callApi(`${API_BASE_URL}/api/verify`, {
-      questionId,
-      answer: rawInput,
-    });
+    try {
+      const result = await callApi(`${API_BASE_URL}/api/verify`, {
+        questionId,
+        answer: rawInput,
+      });
 
-    if (result.success) {
-      setInputStatus((prev) => ({ ...prev, [index]: "correct" }));
-    } else {
-      setInputStatus((prev) => ({ ...prev, [index]: "error" }));
-      setShake(true);
-      setTimeout(() => setShake(false), 500);
+      if (result.success) {
+        setInputStatus((prev) => ({ ...prev, [index]: "correct" }));
+        if (activeQuestionIndex < 2) {
+          setActiveQuestionIndex(activeQuestionIndex + 1);
+        }
+      } else {
+        setInputStatus((prev) => ({ ...prev, [index]: "error" }));
+        setShake(true);
+        setTimeout(() => setShake(false), 500);
+      }
+    } finally {
+      setLoadingIndex(null);
     }
   };
 
@@ -625,41 +635,52 @@ export default function PasswordGate() {
         </div>
 
         <div className="space-y-6">
-          {[0, 1, 2].map((index) => (
-            <div key={index} className="relative group">
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-xl blur opacity-20 group-hover:opacity-40 transition duration-300"></div>
-              <div className="relative bg-black/50 rounded-xl p-4 border-2 border-cyan-500/30 group-hover:border-cyan-500/60 transition-all duration-300">
-                <div className="mb-3">
-                  <label className="block text-[10px] uppercase font-black text-cyan-400 mb-2 tracking-widest flex items-center gap-2">
-                    <span className="w-6 h-6 rounded bg-gradient-to-r from-cyan-500 to-purple-500 flex items-center justify-center text-white text-xs">
-                      {index + 1}
-                    </span>
-                    {lang === "ar"
-                      ? `السؤال ${index + 1}`
-                      : `Question ${index + 1}`}
-                  </label>
-                  <select
-                    value={selections[index]}
-                    onChange={(e) =>
-                      handleSelectionChange(index, e.target.value)
-                    }
-                    className="w-full bg-black/50 text-sm font-bold text-cyan-300 outline-none border-2 border-cyan-500/30 rounded-lg p-2 cursor-pointer hover:border-cyan-500 transition-all duration-300"
-                  >
-                    {getAvailableQuestions(index).map((q) => (
-                      <option key={q.id} value={q.id} className="bg-black">
-                        {q.text[lang]}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+          {[0, 1, 2].map(
+            (index) =>
+              index <= activeQuestionIndex && (
+                <div key={index} className="relative group">
+                  <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-xl blur opacity-20 group-hover:opacity-40 transition duration-300"></div>
+                  <div className="relative bg-black/50 rounded-xl p-4 border-2 border-cyan-500/30 group-hover:border-cyan-500/60 transition-all duration-300">
+                    <div className="mb-3">
+                      <label className="block text-[10px] uppercase font-black text-cyan-400 mb-2 tracking-widest flex items-center gap-2">
+                        <span className="w-6 h-6 rounded bg-gradient-to-r from-cyan-500 to-purple-500 flex items-center justify-center text-white text-xs">
+                          {index + 1}
+                        </span>
+                        {lang === "ar"
+                          ? `السؤال ${index + 1}`
+                          : `Question ${index + 1}`}
+                      </label>
+                      <select
+                        value={selections[index]}
+                        onChange={(e) =>
+                          handleSelectionChange(index, e.target.value)
+                        }
+                        disabled={
+                          loadingIndex !== null ||
+                          inputStatus[index] === "correct"
+                        }
+                        className="w-full bg-black/50 text-sm font-bold text-cyan-300 outline-none border-2 border-cyan-500/30 rounded-lg p-2 cursor-pointer hover:border-cyan-500 transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        {getAvailableQuestions(index).map((q) => (
+                          <option key={q.id} value={q.id} className="bg-black">
+                            {q.text[lang]}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
 
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={userAnswers[index] || ""}
-                    onChange={(e) => handleInputChange(index, e.target.value)}
-                    disabled={inputStatus[index] === 'correct'}
-                    className={`
+                    <div className="relative">
+                      <input
+                        type="text"
+                        value={userAnswers[index] || ""}
+                        onChange={(e) =>
+                          handleInputChange(index, e.target.value)
+                        }
+                        disabled={
+                          inputStatus[index] === "correct" ||
+                          loadingIndex !== null
+                        }
+                        className={`
                       w-full px-4 py-3 border-2 rounded-xl outline-none transition-all text-sm font-bold
                       ${
                         inputStatus[index] === "error"
@@ -668,71 +689,103 @@ export default function PasswordGate() {
                           ? "border-green-500 bg-green-500/10 text-green-400 shadow-lg shadow-green-500/30"
                           : "border-cyan-500/30 bg-black/50 text-cyan-300 focus:border-cyan-500 focus:shadow-lg focus:shadow-cyan-500/30"
                       }
-                      ${inputStatus[index] === 'correct' ? 'cursor-not-allowed' : ''}
+                      ${
+                        inputStatus[index] === "correct" || loadingIndex !== null
+                          ? "cursor-not-allowed"
+                          : ""
+                      }
                     `}
-                    placeholder={UI_TEXT[lang].placeholder}
-                    autoComplete="off"
-                  />
+                        placeholder={UI_TEXT[lang].placeholder}
+                        autoComplete="off"
+                      />
 
-                  <div
-                    className={`absolute ${
-                      lang === "ar" ? "left-3" : "right-3"
-                    } top-3`}
-                  >
-                    {inputStatus[index] === "correct" && (
-                      <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center animate-bounce">
-                        <svg
-                          className="w-4 h-4 text-white"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={3}
-                            d="M5 13l4 4L19 7"
-                          />
-                        </svg>
+                      <div
+                        className={`absolute ${
+                          lang === "ar" ? "left-3" : "right-3"
+                        } top-3`}
+                      >
+                        {inputStatus[index] === "correct" && (
+                          <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center animate-bounce">
+                            <svg
+                              className="w-4 h-4 text-white"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={3}
+                                d="M5 13l4 4L19 7"
+                              />
+                            </svg>
+                          </div>
+                        )}
+                        {inputStatus[index] === "error" && (
+                          <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center animate-pulse">
+                            <svg
+                              className="w-4 h-4 text-white"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={3}
+                                d="M6 18L18 6M6 6l12 12"
+                              />
+                            </svg>
+                          </div>
+                        )}
                       </div>
-                    )}
-                    {inputStatus[index] === "error" && (
-                      <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center animate-pulse">
-                        <svg
-                          className="w-4 h-4 text-white"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
+                    </div>
+
+                    {inputStatus[index] !== "correct" && (
+                      <div className="mt-4">
+                        <button
+                          onClick={() => handleCheckAnswer(index)}
+                          disabled={
+                            !userAnswers[index] ||
+                            userAnswers[index].length < 1 ||
+                            loadingIndex !== null
+                          }
+                          className="relative w-full group"
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={3}
-                            d="M6 18L18 6M6 6l12 12"
-                          />
-                        </svg>
+                          <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-lg blur opacity-40 group-hover:opacity-80 transition duration-300 disabled:opacity-0"></div>
+                          <div className="relative w-full bg-black/80 text-cyan-300 font-black py-2.5 px-6 rounded-lg border-2 border-cyan-500/50 group-hover:text-white transition-all uppercase tracking-widest text-xs disabled:bg-gray-800 disabled:text-gray-500 disabled:border-gray-700 disabled:cursor-not-allowed h-10 flex items-center justify-center">
+                            {loadingIndex === index ? (
+                              <svg
+                                className="animate-spin h-5 w-5 text-white"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                              >
+                                <circle
+                                  className="opacity-25"
+                                  cx="12"
+                                  cy="12"
+                                  r="10"
+                                  stroke="currentColor"
+                                  strokeWidth="4"
+                                ></circle>
+                                <path
+                                  className="opacity-75"
+                                  fill="currentColor"
+                                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                ></path>
+                              </svg>
+                            ) : (
+                              "Check"
+                            )}
+                          </div>
+                        </button>
                       </div>
                     )}
                   </div>
                 </div>
-
-                {inputStatus[index] !== 'correct' && (
-                  <div className="mt-4">
-                    <button
-                      onClick={() => handleCheckAnswer(index)}
-                      disabled={!userAnswers[index] || userAnswers[index].length < 1}
-                      className="relative w-full group"
-                    >
-                      <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-lg blur opacity-40 group-hover:opacity-80 transition duration-300 disabled:opacity-0"></div>
-                      <div className="relative w-full bg-black/80 text-cyan-300 font-black py-2.5 px-6 rounded-lg border-2 border-cyan-500/50 group-hover:text-white transition-all uppercase tracking-widest text-xs disabled:bg-gray-800 disabled:text-gray-500 disabled:border-gray-700 disabled:cursor-not-allowed">
-                        Check
-                      </div>
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
+              )
+          )}
 
           <button
             disabled={true}
