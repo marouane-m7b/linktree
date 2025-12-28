@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { FaInstagram, FaGithub, FaLinkedin } from "react-icons/fa";
 import confetti from "canvas-confetti";
+import { Link } from "react-router-dom";
 
 import goodreadsIcon from "./assets/goodreads.png";
 import malIcon from "./assets/myanimelist.png";
@@ -217,6 +218,9 @@ export default function PasswordGate() {
   };
 
   const handleLinkClick = (e, name, url) => {
+    if (url.startsWith("/")) {
+      return;
+    }
     e.preventDefault();
 
     const theme = LINK_THEMES[name] || { color: 3447003, emoji: "🔗" };
@@ -341,7 +345,7 @@ export default function PasswordGate() {
       // { title: 'Books', url: 'https://www.goodreads.com/marouane_m7b', gradient: 'from-amber-600 via-yellow-500 to-amber-600', glow: 'shadow-amber-500/50', iconImg: goodreadsIcon },
       {
         title: "Portfolio",
-        url: "https://m7b.dev",
+        url: "/",
         gradient: "from-purple-500 via-pink-500 to-red-500",
         glow: "shadow-purple-500/50",
         iconImg: musashiProfile,
@@ -471,50 +475,71 @@ export default function PasswordGate() {
             </div>
 
             <div className="space-y-4">
-              {links.map((link, index) => (
-                <a
-                  key={index}
-                  href={link.url}
-                  onClick={(e) => handleLinkClick(e, link.title, link.url)}
-                  className="group relative block cursor-pointer"
-                >
-                  <div
-                    className={`absolute -inset-0.5 bg-gradient-to-r ${link.gradient} rounded-2xl blur opacity-40 group-hover:opacity-100 transition duration-300 ${link.glow}`}
-                  ></div>
-                  <div className="relative flex items-center p-4 rounded-2xl bg-black border-2 border-cyan-500/30 group-hover:border-cyan-400 transition-all duration-300 overflow-hidden">
-                    {/* Animated background shimmer */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
-
+              {links.map((link, index) => {
+                const isInternal = link.url.startsWith("/");
+                const linkContent = (
+                  <>
                     <div
-                      className={`relative w-12 h-12 bg-white rounded-xl mr-4 flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-12 transition-all duration-300 ${link.glow} shadow-lg overflow-hidden`}
-                    >
-                      <img
-                        src={link.iconImg}
-                        alt={link.title}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <span className="relative text-cyan-300 group-hover:text-white font-black text-lg flex-1 tracking-wide transition-colors duration-300">
-                      {link.title}
-                    </span>
-                    <div className="relative w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-purple-500 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-1">
-                      <svg
-                        className="w-4 h-4 text-white"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
+                      className={`absolute -inset-0.5 bg-gradient-to-r ${link.gradient} rounded-2xl blur opacity-40 group-hover:opacity-100 transition duration-300 ${link.glow}`}
+                    ></div>
+                    <div className="relative flex items-center p-4 rounded-2xl bg-black border-2 border-cyan-500/30 group-hover:border-cyan-400 transition-all duration-300 overflow-hidden">
+                      {/* Animated background shimmer */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
+
+                      <div
+                        className={`relative w-12 h-12 bg-white rounded-xl mr-4 flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-12 transition-all duration-300 ${link.glow} shadow-lg overflow-hidden`}
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={3}
-                          d="M9 5l7 7-7 7"
+                        <img
+                          src={link.iconImg}
+                          alt={link.title}
+                          className="w-full h-full object-cover"
                         />
-                      </svg>
+                      </div>
+                      <span className="relative text-cyan-300 group-hover:text-white font-black text-lg flex-1 tracking-wide transition-colors duration-300">
+                        {link.title}
+                      </span>
+                      <div className="relative w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-purple-500 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-1">
+                        <svg
+                          className="w-4 h-4 text-white"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={3}
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
+                      </div>
                     </div>
-                  </div>
-                </a>
-              ))}
+                  </>
+                );
+
+                if (isInternal) {
+                  return (
+                    <Link
+                      key={index}
+                      to={link.url}
+                      className="group relative block cursor-pointer"
+                    >
+                      {linkContent}
+                    </Link>
+                  );
+                }
+
+                return (
+                  <a
+                    key={index}
+                    href={link.url}
+                    onClick={(e) => handleLinkClick(e, link.title, link.url)}
+                    className="group relative block cursor-pointer"
+                  >
+                    {linkContent}
+                  </a>
+                );
+              })}
             </div>
           </div>
         </div>
