@@ -241,6 +241,18 @@ export default function PasswordGate() {
       });
       hasLoggedVisit.current = true;
     }
+    const token = localStorage.getItem("friend_token");
+    if (token) {
+      callApi(`${API_BASE_URL}/api/verify-token`, { token }).then((result) => {
+        if (result.success) {
+          setIsAuthenticated(true);
+          callApi(`${API_BASE_URL}/api/log`, {
+            message: "🎉 **Friend Entered!** (via token)",
+            color: 5763719, // Green color for success
+          });
+        }
+      });
+    }
   }, []);
 
   const handleCheckAnswer = async (index) => {
@@ -285,6 +297,7 @@ export default function PasswordGate() {
         const authRes = await callApi(`${API_BASE_URL}/api/unlock`, authPayload);
 
         if (authRes.success) {
+          localStorage.setItem("friend_token", authRes.token);
           confetti({ particleCount: 150, spread: 90, origin: { y: 0.6 } });
           setTimeout(() => setIsAuthenticated(true), 300);
         } else {

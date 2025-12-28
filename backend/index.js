@@ -8,6 +8,7 @@ app.use(cors());
 app.use(express.json());
 
 const DISCORD_WEBHOOK = process.env.DISCORD_WEBHOOK_URL;
+const a_very_long_and_very_secure_token = process.env.SECURE_TOKEN;
 
 const normalize = (str) => {
   if (!str) return "";
@@ -157,6 +158,15 @@ app.get("/", (req, res) => {
   res.send("You're in, thanks ✅");
 });
 
+app.post("/api/verify-token", (req, res) => {
+  const { token } = req.body;
+  if (token === a_very_long_and_very_secure_token) {
+    res.json({ success: true });
+  } else {
+    res.json({ success: false });
+  }
+});
+
 app.post("/api/verify", (req, res) => {
   const { questionId, answer } = req.body;
 
@@ -198,7 +208,7 @@ app.post("/api/unlock", (req, res) => {
 
   if (allCorrect) {
     logToDiscord(`🔓 **ACCESS GRANTED**\nUser unlocked the profile.`, 5763719);
-    return res.json({ success: true });
+    return res.json({ success: true, token: a_very_long_and_very_secure_token });
   } else {
     logToDiscord(
       `⚠️ **Failed Attempt**\nUser tried:\n${summary.join("\n")}`,
