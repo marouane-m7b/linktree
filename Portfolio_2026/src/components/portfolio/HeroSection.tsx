@@ -1,11 +1,14 @@
 import { motion } from "framer-motion";
 import { FaGithub, FaLinkedin, FaInstagram, FaEnvelope } from "react-icons/fa";
+import { SiLinktree } from "react-icons/si";
 import { HiDownload } from "react-icons/hi";
+import { Link } from "react-router-dom";
 
 const roles = ["Full Stack Developer", "Mobile Developer", "Web Developer", "AI & LLM Engineer"];
 
 const socialLinks = [
   { icon: FaGithub, href: "https://github.com/marouane-m7b", label: "GitHub" },
+  { icon: SiLinktree, href: "/linktree", label: "Linktree" },
   { icon: FaLinkedin, href: "https://www.linkedin.com/in/m7b/", label: "LinkedIn" },
   { icon: FaInstagram, href: "https://instagram.com/marwane_m7b", label: "Instagram" },
   { icon: FaEnvelope, href: "mailto:marouane@m7b.dev", label: "Email" },
@@ -104,14 +107,6 @@ const HeroSection = () => {
                 Let's Talk
               </motion.a>
               <motion.a
-                href="/linktree"
-                className="cyber-button-fill flex items-center gap-2"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Linktree
-              </motion.a>
-              <motion.a
                 href="#work"
                 className="cyber-button flex items-center gap-2"
                 whileHover={{ scale: 1.05 }}
@@ -129,20 +124,33 @@ const HeroSection = () => {
               transition={{ delay: 0.7 }}
               className="flex gap-6 justify-center lg:justify-start"
             >
-              {socialLinks.map((social, index) => (
-                <motion.a
-                  key={index}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="relative group"
-                  whileHover={{ scale: 1.2, rotate: 10 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary rounded-full blur opacity-0 group-hover:opacity-75 transition-all duration-300"></div>
-                  <social.icon className="relative w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors" />
-                </motion.a>
-              ))}
+              {socialLinks.map((social, index) =>
+                social.href.startsWith("/") ? (
+                  <Link key={index} to={social.href}>
+                    <motion.div
+                      className="relative group"
+                      whileHover={{ scale: 1.2, rotate: 10 }}
+                      whileTap={{ scale: 0.9 }}
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary rounded-full blur opacity-0 group-hover:opacity-75 transition-all duration-300"></div>
+                      <social.icon className="relative w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors" />
+                    </motion.div>
+                  </Link>
+                ) : (
+                  <motion.a
+                    key={index}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="relative group"
+                    whileHover={{ scale: 1.2, rotate: 10 }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary rounded-full blur opacity-0 group-hover:opacity-75 transition-all duration-300"></div>
+                    <social.icon className="relative w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors" />
+                  </motion.a>
+                )
+              )}
             </motion.div>
           </motion.div>
 
