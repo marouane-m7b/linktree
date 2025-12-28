@@ -1,32 +1,10 @@
 const express = require('express');
+const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
 
-// --- START OF CORS FIX (No external libraries needed) ---
-app.use((req, res, next) => {
-  // Allow any origin
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  
-  // Allow specific methods
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-  
-  // Allow headers
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, authorization');
-  
-  // Allow credentials
-  res.setHeader('Access-Control-Allow-Credentials', true);
-
-  // Pass to next layer of middleware
-  next();
-});
-
-// Handle "Preflight" requests (Browser checking if it's safe)
-app.options('*', (req, res) => {
-  res.sendStatus(200);
-});
-// --- END OF CORS FIX ---
-
+app.use(cors());
 app.use(express.json());
 
 const DISCORD_WEBHOOK = process.env.DISCORD_WEBHOOK_URL;
@@ -52,33 +30,25 @@ const VALID_ANSWERS = {
   anime: ["hunter x hunter", "hxh", "هنتر"]
 };
 
-
 const logToDiscord = async (message, color = 3447003) => {
   if (!DISCORD_WEBHOOK) return;
   try {
-    // Note: If you are on Node 16 or lower, fetch might fail. 
-    // If it crashes on fetch, let me know, we can use 'https' module instead.
-    if (typeof fetch !== 'undefined') {
-        await fetch(DISCORD_WEBHOOK, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            embeds: [{
-              description: message,
-              color: color,
-              timestamp: new Date().toISOString(),
-              footer: { text: "Security System" }
-            }]
-          })
-        });
-    } else {
-        console.log("Fetch not available, skipping log");
-    }
+    await fetch(DISCORD_WEBHOOK, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        embeds: [{
+          description: message,
+          color: color,
+          timestamp: new Date().toISOString(),
+          footer: { text: "Security System" }
+        }]
+      })
+    });
   } catch (e) {
     console.error("Webhook Error", e);
   }
 };
-
 
 app.get('/', (req, res) => {
   res.send("You're in, thanks ✅");
@@ -92,21 +62,17 @@ app.post('/api/verify', (req, res) => {
   const isCorrect = VALID_ANSWERS[questionId].some(correct => normalize(correct) === normalize(answer));
   
   if (isCorrect) {
-    logToDiscord(`💡 **Correct Answer:** ${questionId}`, 16776960); 
+    logToDiscord(`💡 **Correct Answer:** ${questionId}`, 16776960);
   }
 
   res.json({ success: isCorrect });
 });
-
 
 app.post('/api/unlock', (req, res) => {
   const { selections } = req.body; 
 
   let allCorrect = true;
   let summary = [];
-
-  // Guard clause if selections is missing
-  if (!selections) return res.json({ success: false });
 
   Object.values(selections).forEach(item => {
     const validOptions = VALID_ANSWERS[item.id];
@@ -116,14 +82,13 @@ app.post('/api/unlock', (req, res) => {
   });
 
   if (allCorrect) {
-    logToDiscord(`🔓 **ACCESS GRANTED**\nUser unlocked the profile.`, 5763719); 
+    logToDiscord(`🔓 **ACCESS GRANTED**\nUser unlocked the profile.`, 5763719);
     return res.json({ success: true });
   } else {
     logToDiscord(`⚠️ **Failed Attempt**\nUser tried:\n${summary.join('\n')}`, 15548997);
     return res.json({ success: false });
   }
 });
-
 
 app.post('/api/log', (req, res) => {
   const { message, color } = req.body;
@@ -133,8 +98,10 @@ app.post('/api/log', (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 
+if (process.env.NODE_ENV !== 'production') {
   app.listen(PORT, () => {
     console.log(`✅ Backend running on http://localhost:${PORT}`);
   });
+}
 
 module.exports = app;
