@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { FaGithub, FaLinkedin, FaInstagram, FaEnvelope } from "react-icons/fa";
-import { SiLinktree } from "react-icons/si";
 import { HiDownload } from "react-icons/hi";
 
 const roles = ["Full Stack Developer", "Mobile Developer", "Web Developer", "AI & LLM Engineer"];
@@ -10,7 +9,6 @@ const socialLinks = [
   { icon: FaLinkedin, href: "https://www.linkedin.com/in/m7b/", label: "LinkedIn" },
   { icon: FaInstagram, href: "https://instagram.com/marwane_m7b", label: "Instagram" },
   { icon: FaEnvelope, href: "mailto:marouane@m7b.dev", label: "Email" },
-  { icon: SiLinktree, href: "https://linktr.ee/marouane.m7b", label: "Linktree" },
 ];
 
 const HeroSection = () => {
@@ -106,7 +104,7 @@ const HeroSection = () => {
                 Let's Talk
               </motion.a>
               <motion.a
-                href="https://linktr.ee/marouane.m7b"
+                href="/linktree"
                 className="cyber-button-fill flex items-center gap-2"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
