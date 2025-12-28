@@ -4,10 +4,26 @@ require('dotenv').config();
 
 const app = express();
 
-app.use(cors());
+// 1. Configure CORS options
+const corsOptions = {
+  origin: "*", // Allow all origins
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  preflightContinue: false,
+  optionsSuccessStatus: 204
+};
+
+// 2. Apply CORS middleware globally
+app.use(cors(corsOptions));
+
+// 3. Handle Preflight (OPTIONS) requests explicitly for complex requests
+app.options('*', cors(corsOptions));
+
 app.use(express.json());
 
 const DISCORD_WEBHOOK = process.env.DISCORD_WEBHOOK_URL;
+
+// ... [Rest of your code remains exactly the same] ...
+// (normalize function, VALID_ANSWERS, logToDiscord, routes)
 
 const normalize = (str) => {
   if (!str) return "";
@@ -30,7 +46,6 @@ const VALID_ANSWERS = {
   anime: ["hunter x hunter", "hxh", "هنتر"]
 };
 
-
 const logToDiscord = async (message, color = 3447003) => {
   if (!DISCORD_WEBHOOK) return;
   try {
@@ -51,7 +66,6 @@ const logToDiscord = async (message, color = 3447003) => {
   }
 };
 
-
 app.get('/', (req, res) => {
   res.send("You're in, thanks ✅");
 });
@@ -64,13 +78,11 @@ app.post('/api/verify', (req, res) => {
   const isCorrect = VALID_ANSWERS[questionId].some(correct => normalize(correct) === normalize(answer));
   
   if (isCorrect) {
-
-    logToDiscord(`💡 **Correct Answer:** ${questionId}`, 16776960); // Yellow
+    logToDiscord(`💡 **Correct Answer:** ${questionId}`, 16776960); 
   }
 
   res.json({ success: isCorrect });
 });
-
 
 app.post('/api/unlock', (req, res) => {
   const { selections } = req.body; 
@@ -86,14 +98,13 @@ app.post('/api/unlock', (req, res) => {
   });
 
   if (allCorrect) {
-    logToDiscord(`🔓 **ACCESS GRANTED**\nUser unlocked the profile.`, 5763719); // Green
+    logToDiscord(`🔓 **ACCESS GRANTED**\nUser unlocked the profile.`, 5763719); 
     return res.json({ success: true });
   } else {
-    logToDiscord(`⚠️ **Failed Attempt**\nUser tried:\n${summary.join('\n')}`, 15548997); // Red
+    logToDiscord(`⚠️ **Failed Attempt**\nUser tried:\n${summary.join('\n')}`, 15548997); 
     return res.json({ success: false });
   }
 });
-
 
 app.post('/api/log', (req, res) => {
   const { message, color } = req.body;
@@ -103,12 +114,10 @@ app.post('/api/log', (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 
-// Only listen locally, Vercel manages the port in production
 if (process.env.NODE_ENV !== 'production') {
   app.listen(PORT, () => {
     console.log(`✅ Backend running on http://localhost:${PORT}`);
   });
 }
 
-// REQUIRED: Export the app
 module.exports = app;
