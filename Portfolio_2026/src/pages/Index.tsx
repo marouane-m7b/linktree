@@ -6,7 +6,7 @@ import SkillsSection from "@/components/portfolio/SkillsSection";
 import WorkSection from "@/components/portfolio/WorkSection";
 import ExperienceSection from "@/components/portfolio/ExperienceSection";
 import AwardsSection from "@/components/portfolio/AwardsSection";
-import CertificationsSection from "@/components/portfolio/CertificationsSection";
+import CertificationsSection from "./CertificationsSection";
 import ContactSection from "@/components/portfolio/ContactSection";
 import Footer from "@/components/portfolio/Footer";
 
