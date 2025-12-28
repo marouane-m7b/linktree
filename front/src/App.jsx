@@ -56,7 +56,7 @@ const Background = ({ children }) => (
 );
 
 export default function PasswordGate() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [lang, setLang] = useState('en'); 
   const [selections, setSelections] = useState({ 0: 'city_born', 1: 'mom_name' });
   const [userAnswers, setUserAnswers] = useState({ 0: '', 1: '' });
