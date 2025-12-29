@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { HiMenu, HiX } from "react-icons/hi";
+import ThemeToggle from "./ThemeToggle";
 
 const navItems = [
   { name: "Home", href: "#home" },
@@ -97,8 +98,9 @@ const Navbar = () => {
               ))}
             </div>
 
-            {/* CTA Button */}
-            <div className="hidden md:block">
+            {/* Theme Toggle & CTA Button */}
+            <div className="hidden md:flex items-center gap-4">
+              <ThemeToggle />
               <motion.a
                 href="#contact"
                 onClick={(e) => {

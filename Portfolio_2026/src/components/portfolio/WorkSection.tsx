@@ -10,12 +10,14 @@ const categories = [
   { id: "fullstack", label: "Full Stack" },
 ];
 
+const PLACEHOLDER_IMAGE = "https://www.sliderrevolution.com/wp-content/uploads/2024/09/what-is-a-hero-section.jpg";
+
 const projects = [
   {
     title: "OFPPT Absence Manager",
     description:
       "Tracks attendance, manages absences, schedules meetings, and sends real-time notifications for students.",
-    image: "/placeholder.svg",
+    image: PLACEHOLDER_IMAGE,
     tags: ["React Js", "Laravel", "Material UI", "MySQL"],
     category: ["react", "laravel", "fullstack"],
     github: "#",
@@ -26,7 +28,7 @@ const projects = [
     title: "ZM Store",
     description:
       "Connects buyers and sellers with validated accounts, offering curated, connection-based shopping experiences.",
-    image: "/placeholder.svg",
+    image: PLACEHOLDER_IMAGE,
     tags: ["React Js", "Laravel", "MySQL", "Git"],
     category: ["react", "laravel", "fullstack"],
     github: "#",
@@ -37,7 +39,7 @@ const projects = [
     title: "OFPPT Establishments Cards Manager",
     description:
       "A web app for digitizing the management of OFPPT institution cards with secure admin control.",
-    image: "/placeholder.svg",
+    image: PLACEHOLDER_IMAGE,
     tags: ["Spring Boot", "React Js", "MySQL", "Spring Security"],
     category: ["react", "fullstack"],
     github: "#",
@@ -48,7 +50,7 @@ const projects = [
     title: "Movies Reviews System",
     description:
       "Users can browse, rate, and review movies. Admins manage content and activity in a secure system.",
-    image: "/placeholder.svg",
+    image: PLACEHOLDER_IMAGE,
     tags: ["Jakarta EE", "JavaScript", "MySQL", "JDBC"],
     category: ["fullstack"],
     github: "#",
@@ -59,7 +61,7 @@ const projects = [
     title: "Baccalaureate GPA Calculator",
     description:
       "A simple yet powerful app to calculate your Baccalaureate grades instantly for students in Morocco.",
-    image: "/placeholder.svg",
+    image: PLACEHOLDER_IMAGE,
     tags: ["HTML", "CSS", "JavaScript", "Mobile"],
     category: ["mobile"],
     github: "#",
@@ -70,7 +72,7 @@ const projects = [
     title: "سياقتي - Driving Learning Platform",
     description:
       "A website for learning driving: forum, exams, explanations, and interaction for safe driving in Morocco.",
-    image: "/placeholder.svg",
+    image: PLACEHOLDER_IMAGE,
     tags: ["JavaScript", "PHP", "HTML", "CSS"],
     category: ["fullstack"],
     github: "#",
@@ -174,28 +176,20 @@ const WorkSection = () => {
 
                 {/* Image */}
                 <div className="relative h-48 overflow-hidden">
+                  <img 
+                    src={project.image} 
+                    alt={project.title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
                   <div
-                    className={`absolute inset-0 bg-gradient-to-br ${
+                    className={`absolute inset-0 bg-gradient-to-t ${
                       project.color === "primary"
-                        ? "from-primary/30 via-primary/10 to-transparent"
+                        ? "from-background via-background/50 to-transparent"
                         : project.color === "secondary"
-                        ? "from-secondary/30 via-secondary/10 to-transparent"
-                        : "from-accent/30 via-accent/10 to-transparent"
+                        ? "from-background via-background/50 to-transparent"
+                        : "from-background via-background/50 to-transparent"
                     }`}
                   ></div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span
-                      className={`font-orbitron text-4xl font-bold ${
-                        project.color === "primary"
-                          ? "text-primary/50"
-                          : project.color === "secondary"
-                          ? "text-secondary/50"
-                          : "text-accent/50"
-                      }`}
-                    >
-                      {project.title.charAt(0)}
-                    </span>
-                  </div>
 
                   {/* Overlay on hover */}
                   <div className="absolute inset-0 bg-background/80 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-all duration-300">
