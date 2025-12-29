@@ -16,6 +16,7 @@ export default {
       fontFamily: {
         orbitron: ["Orbitron", "monospace"],
         rajdhani: ["Rajdhani", "sans-serif"],
+        cairo: ["Cairo", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",

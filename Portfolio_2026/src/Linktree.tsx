@@ -1,7 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { FaInstagram, FaGithub, FaLinkedin } from "react-icons/fa";
+import { Sun, Moon } from "lucide-react";
 import confetti from "canvas-confetti";
 import { Link } from "react-router-dom";
+
+import { useTheme } from "@/hooks/use-theme";
 
 import goodreadsIcon from "./assets/goodreads.png";
 import malIcon from "./assets/myanimelist.png";
@@ -10,7 +13,6 @@ import letterboxdIcon from "./assets/letterboxd.png";
 import serializedIcon from "./assets/serializd.png";
 import musashiProfile from "./assets/musashi.jpg";
 import friendsImage from "./assets/friends.avif";
-
 const QUESTIONS_DB = [
   {
     id: "city_born",
@@ -151,10 +153,10 @@ const LINK_THEMES = {
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Background = ({ children }) => (
-  <div className="min-h-screen w-full flex items-center justify-center p-4 bg-black relative overflow-hidden">
+  <div className="min-h-screen w-full flex items-center justify-center p-4 bg-background relative overflow-hidden">
     {/* Animated grid background */}
     <div className="fixed inset-0 z-0">
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-black to-cyan-900/20"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-background to-cyan-900/20 dark:from-purple-900/20 dark:via-black dark:to-cyan-900/20"></div>
       <div
         className="absolute inset-0"
         style={{
@@ -179,7 +181,7 @@ const Background = ({ children }) => (
     </div>
 
     {/* Scanline effect */}
-    <div className="fixed inset-0 z-20 pointer-events-none opacity-5">
+    <div className="fixed inset-0 z-20 pointer-events-none opacity-5 dark:opacity-5">
       <div
         className="absolute inset-0 bg-gradient-to-b from-transparent via-white to-transparent"
         style={{
@@ -192,13 +194,35 @@ const Background = ({ children }) => (
     <div className="relative z-10 w-full max-w-md">{children}</div>
   </div>
 );
+const ThemeToggle = ({ lang }) => {
+  const { theme, setTheme } = useTheme();
 
+  return (
+    <button
+      onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+      className={`absolute top-4 ${
+        lang === "ar" ? "right-4" : "left-4"
+      } z-20 p-2 rounded-full bg-black/20 dark:bg-white/20 text-white backdrop-blur-sm`}
+    >
+      {theme === "light" ? (
+        <Moon className="h-5 w-5 text-cyber-purple" />
+      ) : (
+        <Sun className="h-5 w-5 text-cyber-cyan" />
+      )}
+    </button>
+  );
+};
 export default function PasswordGate() {
+  const { theme, setTheme } = useTheme();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [lang, setLang] = useState("en");
   const [selections, setSelections] = useState({ 0: null, 1: null, 2: null });
-  const [userAnswers, setUserAnswers] = useState({ 0: '', 1: '', 2: '' });
-  const [inputStatus, setInputStatus] = useState({ 0: 'neutral', 1: 'neutral', 2: 'neutral' });
+  const [userAnswers, setUserAnswers] = useState({ 0: "", 1: "", 2: "" });
+  const [inputStatus, setInputStatus] = useState({
+    0: "neutral",
+    1: "neutral",
+    2: "neutral",
+  });
   const [shake, setShake] = useState(false);
   const [loadingIndex, setLoadingIndex] = useState(null);
   const [activeQuestionIndex, setActiveQuestionIndex] = useState(0);
@@ -261,7 +285,11 @@ export default function PasswordGate() {
     const questionId = selections[index];
     const rawInput = userAnswers[index] || "";
 
-    if (rawInput.length < 1 || inputStatus[index] === 'correct' || loadingIndex !== null) {
+    if (
+      rawInput.length < 1 ||
+      inputStatus[index] === "correct" ||
+      loadingIndex !== null
+    ) {
       return;
     }
 
@@ -292,7 +320,9 @@ export default function PasswordGate() {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const correctCount = Object.values(inputStatus).filter(s => s === 'correct').length;
+      const correctCount = Object.values(inputStatus).filter(
+        (s) => s === "correct"
+      ).length;
 
       if (correctCount === 3 && !isCheckingAuth.current) {
         isCheckingAuth.current = true;
@@ -304,7 +334,10 @@ export default function PasswordGate() {
           }, {}),
         };
 
-        const authRes = await callApi(`${API_BASE_URL}/api/unlock`, authPayload);
+        const authRes = await callApi(
+          `${API_BASE_URL}/api/unlock`,
+          authPayload
+        );
 
         if (authRes.success) {
           localStorage.setItem("friend_token", authRes.token);
@@ -334,14 +367,15 @@ export default function PasswordGate() {
   const getAvailableQuestions = (currentIndex) => {
     // Get all selected question IDs except for the current one
     const otherSelectedIds = Object.keys(selections)
-      .filter(key => parseInt(key) !== currentIndex)
-      .map(key => selections[key]);
+      .filter((key) => parseInt(key) !== currentIndex)
+      .map((key) => selections[key]);
 
     return QUESTIONS_DB.filter(
       // The question is available if it's not in the list of other selected IDs...
-      (q) => !otherSelectedIds.includes(q.id) || 
-      // ... or if it IS the currently selected question for this dropdown
-      q.id === selections[currentIndex]
+      (q) =>
+        !otherSelectedIds.includes(q.id) ||
+        // ... or if it IS the currently selected question for this dropdown
+        q.id === selections[currentIndex]
     );
   };
 
@@ -369,8 +403,8 @@ export default function PasswordGate() {
       {
         title: "Portfolio",
         url: "/",
-        gradient: "from-purple-500 via-pink-500 to-red-500",
-        glow: "shadow-purple-500/50",
+        gradient: "from-cyber-purple via-cyber-pink to-red-500",
+        glow: "shadow-cyber-purple/50",
         iconImg: musashiProfile,
       },
       {
@@ -383,8 +417,8 @@ export default function PasswordGate() {
       {
         title: "Anime & Manga",
         url: "https://myanimelist.net/profile/marouane_m7b",
-        gradient: "from-blue-500 via-cyan-500 to-blue-500",
-        glow: "shadow-blue-500/50",
+        gradient: "from-cyber-blue via-cyber-cyan to-cyber-blue",
+        glow: "shadow-cyber-blue/50",
         iconImg: malIcon,
       },
       {
@@ -397,7 +431,7 @@ export default function PasswordGate() {
       {
         title: "Games",
         url: "https://backloggd.com/u/marouane_m7b/games",
-        gradient: "from-red-500 via-pink-500 to-purple-500",
+        gradient: "from-red-500 via-cyber-pink to-cyber-purple",
         glow: "shadow-red-500/50",
         iconImg: backloggdIcon,
       },
@@ -405,7 +439,12 @@ export default function PasswordGate() {
 
     return (
       <Background>
-        <div className="w-full bg-black/80 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden border-2 border-cyan-500/30 animate-fade-in relative">
+        <div
+          className={`w-full bg-card/80 dark:bg-black/80 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden border-2 border-primary/30 animate-fade-in relative ${
+            lang === "ar" ? "font-cairo" : ""
+          }`}
+        >
+          <ThemeToggle lang={lang} />
           {/* Glowing border animation */}
           <div className="absolute inset-0 rounded-3xl animate-border-glow pointer-events-none"></div>
 
@@ -414,13 +453,13 @@ export default function PasswordGate() {
               <div className="relative group mb-6">
                 {/* Rotating rings */}
                 <div className="absolute -inset-4 animate-spin-slow">
-                  <div className="h-full w-full rounded-full border-2 border-cyan-500/30 border-t-cyan-500"></div>
+                  <div className="h-full w-full rounded-full border-2 border-primary/30 border-t-primary"></div>
                 </div>
                 <div className="absolute -inset-6 animate-spin-slow-reverse">
-                  <div className="h-full w-full rounded-full border-2 border-purple-500/30 border-r-purple-500"></div>
+                  <div className="h-full w-full rounded-full border-2 border-secondary/30 border-r-secondary"></div>
                 </div>
 
-                <div className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-cyan-500 shadow-lg shadow-cyan-500/50">
+                <div className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-primary shadow-lg shadow-primary/50">
                   <img
                     src={musashiProfile}
                     alt="Profile"
@@ -432,12 +471,12 @@ export default function PasswordGate() {
               <div className="text-center space-y-3 relative z-10">
                 {/* Name Section - Smaller (2xl), Solid Cyan, Matched Badge */}
                 <div className="flex items-center justify-center gap-1.5">
-                  <h1 className="text-2xl font-bold text-cyan-400 tracking-tight drop-shadow-[0_0_8px_rgba(6,182,212,0.4)]">
+                  <h1 className="text-2xl font-bold text-primary tracking-tight drop-shadow-[0_0_8px_hsl(var(--primary)/0.4)]">
                     Marouane Mahboub
                   </h1>
 
                   {/* Verified Badge - Sized to match text (w-6 h-6) */}
-                  <span className="text-cyan-400 animate-pulse">
+                  <span className="text-primary animate-pulse">
                     <svg
                       className="w-6 h-6"
                       fill="currentColor"
@@ -454,8 +493,8 @@ export default function PasswordGate() {
 
                 {/* Subtitle */}
                 <div className="inline-block relative">
-                  <div className="absolute -inset-1 bg-pink-500/20 blur-sm rounded-lg"></div>
-                  <p className="relative font-mono text-pink-400 text-[10px] font-bold uppercase tracking-widest drop-shadow-[0_0_5px_rgba(236,72,153,0.5)]">
+                  <div className="absolute -inset-1 bg-accent/20 blur-sm rounded-lg"></div>
+                  <p className="relative font-mono text-accent text-[10px] font-bold uppercase tracking-widest drop-shadow-[0_0_5px_hsl(var(--accent)/0.5)]">
                     Software Engineer • AI & LLM
                   </p>
                 </div>
@@ -466,7 +505,7 @@ export default function PasswordGate() {
                     {[...Array(20)].map((_, i) => (
                       <div
                         key={i}
-                        className="h-1 w-1 bg-cyan-500 transform -skew-x-12"
+                        className="h-1 w-1 bg-primary transform -skew-x-12"
                         style={{
                           animation: `pulse 1.5s infinite ${i * 0.05}s`,
                           opacity: 0.3,
@@ -488,8 +527,8 @@ export default function PasswordGate() {
                     onClick={(e) => handleLinkClick(e, social.name, social.url)}
                     className="relative group cursor-pointer"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full blur opacity-0 group-hover:opacity-75 transition-all duration-300"></div>
-                    <div className="relative text-cyan-400 hover:text-white transition-all duration-300 transform hover:scale-125 hover:rotate-12">
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary rounded-full blur opacity-0 group-hover:opacity-75 transition-all duration-300"></div>
+                    <div className="relative text-primary hover:text-white transition-all duration-300 transform hover:scale-125 hover:rotate-12">
                       <social.icon className="w-7 h-7" />
                     </div>
                   </a>
@@ -505,12 +544,12 @@ export default function PasswordGate() {
                     <div
                       className={`absolute -inset-0.5 bg-gradient-to-r ${link.gradient} rounded-2xl blur opacity-40 group-hover:opacity-100 transition duration-300 ${link.glow}`}
                     ></div>
-                    <div className="relative flex items-center p-4 rounded-2xl bg-black border-2 border-cyan-500/30 group-hover:border-cyan-400 transition-all duration-300 overflow-hidden">
+                    <div className="relative flex items-center p-4 rounded-2xl bg-card dark:bg-black border-2 border-primary/30 group-hover:border-primary transition-all duration-300 overflow-hidden">
                       {/* Animated background shimmer */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
 
                       <div
-                        className={`relative w-12 h-12 bg-white rounded-xl mr-4 flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-12 transition-all duration-300 ${link.glow} shadow-lg overflow-hidden`}
+                        className={`relative w-12 h-12 bg-background rounded-xl mr-4 flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-12 transition-all duration-300 ${link.glow} shadow-lg overflow-hidden`}
                       >
                         <img
                           src={link.iconImg}
@@ -518,12 +557,12 @@ export default function PasswordGate() {
                           className="w-full h-full object-cover"
                         />
                       </div>
-                      <span className="relative text-cyan-300 group-hover:text-white font-black text-lg flex-1 tracking-wide transition-colors duration-300">
+                      <span className="relative text-foreground/80 group-hover:text-foreground font-black text-lg flex-1 tracking-wide transition-colors duration-300">
                         {link.title}
                       </span>
-                      <div className="relative w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-purple-500 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-1">
+                      <div className="relative w-8 h-8 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-1">
                         <svg
-                          className="w-4 h-4 text-white"
+                          className="w-4 h-4 text-background"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -573,24 +612,25 @@ export default function PasswordGate() {
   return (
     <Background>
       <div
-        className={`relative bg-black/90 backdrop-blur-xl rounded-2xl shadow-2xl p-6 w-full border-2 border-cyan-500/50 transition-transform ${
+        className={`relative bg-card/90 dark:bg-black/90 backdrop-blur-xl rounded-2xl shadow-2xl p-6 w-full border-2 border-primary/50 transition-transform ${
           shake ? "animate-shake" : ""
-        }`}
+        } ${lang === "ar" ? "font-cairo" : ""}`}
         dir={lang === "ar" ? "rtl" : "ltr"}
       >
+        <ThemeToggle lang={lang} />
         {/* Corner decorations */}
-        <div className="absolute top-0 left-0 w-20 h-20 border-l-2 border-t-2 border-cyan-500/50 rounded-tl-2xl"></div>
-        <div className="absolute top-0 right-0 w-20 h-20 border-r-2 border-t-2 border-purple-500/50 rounded-tr-2xl"></div>
-        <div className="absolute bottom-0 left-0 w-20 h-20 border-l-2 border-b-2 border-purple-500/50 rounded-bl-2xl"></div>
-        <div className="absolute bottom-0 right-0 w-20 h-20 border-r-2 border-b-2 border-cyan-500/50 rounded-br-2xl"></div>
+        <div className="absolute top-0 left-0 w-20 h-20 border-l-2 border-t-2 border-primary/50 rounded-tl-2xl"></div>
+        <div className="absolute top-0 right-0 w-20 h-20 border-r-2 border-t-2 border-secondary/50 rounded-tr-2xl"></div>
+        <div className="absolute bottom-0 left-0 w-20 h-20 border-l-2 border-b-2 border-secondary/50 rounded-bl-2xl"></div>
+        <div className="absolute bottom-0 right-0 w-20 h-20 border-r-2 border-b-2 border-primary/50 rounded-br-2xl"></div>
 
         <div className="relative z-10 flex justify-end gap-2 mb-6">
           <button
             onClick={() => setLang("en")}
             className={`px-3 py-1.5 rounded-lg text-xs font-black border-2 transition-all duration-300 ${
               lang === "en"
-                ? "bg-gradient-to-r from-cyan-500 to-purple-500 text-white border-transparent shadow-lg shadow-cyan-500/50 font-bold"
-                : "text-cyan-400 border-cyan-500/30 hover:border-cyan-500"
+                ? "bg-gradient-to-r from-primary to-secondary text-primary-foreground border-transparent shadow-lg shadow-primary/50 font-bold"
+                : "text-primary border-primary/30 hover:border-primary"
             }`}
           >
             🇺🇸 EN
@@ -599,8 +639,8 @@ export default function PasswordGate() {
             onClick={() => setLang("fr")}
             className={`px-3 py-1.5 rounded-lg text-xs font-black border-2 transition-all duration-300 ${
               lang === "fr"
-                ? "bg-gradient-to-r from-cyan-500 to-purple-500 text-white border-transparent shadow-lg shadow-purple-500/50 font-bold"
-                : "text-cyan-400 border-cyan-500/30 hover:border-cyan-500"
+                ? "bg-gradient-to-r from-primary to-secondary text-primary-foreground border-transparent shadow-lg shadow-secondary/50 font-bold"
+                : "text-primary border-primary/30 hover:border-primary"
             }`}
           >
             🇫🇷 FR
@@ -609,8 +649,8 @@ export default function PasswordGate() {
             onClick={() => setLang("ar")}
             className={`px-3 py-1.5 rounded-lg text-xs font-black border-2 transition-all duration-300 ${
               lang === "ar"
-                ? "bg-gradient-to-r from-cyan-500 to-purple-500 text-white border-transparent shadow-lg shadow-pink-500/50 font-bold"
-                : "text-cyan-400 border-cyan-500/30 hover:border-cyan-500"
+                ? "bg-gradient-to-r from-primary to-secondary text-primary-foreground border-transparent shadow-lg shadow-accent/50 font-bold"
+                : "text-primary border-primary/30 hover:border-primary"
             }`}
           >
             🇲🇦 AR
@@ -618,18 +658,18 @@ export default function PasswordGate() {
         </div>
 
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-28 h-28 bg-gradient-to-br from-cyan-500 via-purple-500 to-pink-500 rounded-2xl mb-4 shadow-lg shadow-cyan-500/50 relative animate-pulse-glow">
-            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500 to-purple-500 rounded-2xl blur-md opacity-50"></div>
+          <div className="inline-flex items-center justify-center w-28 h-28 bg-gradient-to-br from-primary via-secondary to-accent rounded-2xl mb-4 shadow-lg shadow-primary/50 relative animate-pulse-glow">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary to-secondary rounded-2xl blur-md opacity-50"></div>
             <img
               src={friendsImage}
               alt="Profile"
               className="w-full h-full object-cover rounded-2xl relative z-10"
             />
           </div>
-          <h1 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 mb-2 tracking-wider">
+          <h1 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-accent mb-2 tracking-wider">
             {UI_TEXT[lang].title}
           </h1>
-          <p className="text-cyan-300/70 text-sm font-bold uppercase tracking-widest">
+          <p className="text-muted-foreground text-sm font-bold uppercase tracking-widest">
             {UI_TEXT[lang].sub}
           </p>
         </div>
@@ -639,11 +679,11 @@ export default function PasswordGate() {
             (index) =>
               index === activeQuestionIndex && (
                 <div key={index} className="relative group">
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-xl blur opacity-20 group-hover:opacity-40 transition duration-300"></div>
-                  <div className="relative bg-black/50 rounded-xl p-4 border-2 border-cyan-500/30 group-hover:border-cyan-500/60 transition-all duration-300">
+                  <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-secondary rounded-xl blur opacity-20 group-hover:opacity-40 transition duration-300"></div>
+                  <div className="relative bg-card/50 dark:bg-black/50 rounded-xl p-4 border-2 border-primary/30 group-hover:border-primary/60 transition-all duration-300">
                     <div className="mb-3">
-                      <label className="block text-[10px] uppercase font-black text-cyan-400 mb-2 tracking-widest flex items-center gap-2">
-                        <span className="w-6 h-6 rounded bg-gradient-to-r from-cyan-500 to-purple-500 flex items-center justify-center text-white text-xs">
+                      <label className="block text-[10px] uppercase font-black text-primary mb-2 tracking-widest flex items-center gap-2">
+                        <span className="w-6 h-6 rounded bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-primary-foreground text-xs">
                           {index + 1}
                         </span>
                         {lang === "ar"
@@ -659,13 +699,17 @@ export default function PasswordGate() {
                           loadingIndex !== null ||
                           inputStatus[index] === "correct"
                         }
-                        className="w-full bg-black/50 text-sm font-bold text-cyan-300 outline-none border-2 border-cyan-500/30 rounded-lg p-2 cursor-pointer hover:border-cyan-500 transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="w-full bg-card/50 dark:bg-black/50 text-sm font-bold text-foreground outline-none border-2 border-primary/30 rounded-lg p-2 cursor-pointer hover:border-primary transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-50"
                       >
                         <option value="" disabled>
                           {UI_TEXT[lang].select}
                         </option>
                         {getAvailableQuestions(index).map((q) => (
-                          <option key={q.id} value={q.id} className="bg-black">
+                          <option
+                            key={q.id}
+                            value={q.id}
+                            className="bg-card dark:bg-black"
+                          >
                             {q.text[lang]}
                           </option>
                         ))}
@@ -692,10 +736,11 @@ export default function PasswordGate() {
                           ? "border-red-500 bg-red-500/10 text-red-400 shadow-lg shadow-red-500/30"
                           : inputStatus[index] === "correct"
                           ? "border-green-500 bg-green-500/10 text-green-400 shadow-lg shadow-green-500/30"
-                          : "border-cyan-500/30 bg-black/50 text-cyan-300 focus:border-cyan-500 focus:shadow-lg focus:shadow-cyan-500/30"
+                          : "border-primary/30 bg-card/50 dark:bg-black/50 text-foreground focus:border-primary focus:shadow-lg focus:shadow-primary/30"
                       }
                       ${
-                        inputStatus[index] === "correct" || loadingIndex !== null
+                        inputStatus[index] === "correct" ||
+                        loadingIndex !== null
                           ? "cursor-not-allowed"
                           : ""
                       }
@@ -757,8 +802,8 @@ export default function PasswordGate() {
                               }
                               className="relative w-full group"
                             >
-                              <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-lg blur opacity-40 group-hover:opacity-80 transition duration-300 disabled:opacity-0"></div>
-                              <div className="relative w-full bg-black/80 text-cyan-300 font-black py-2.5 px-6 rounded-lg border-2 border-cyan-500/50 group-hover:text-white transition-all uppercase tracking-widest text-xs disabled:bg-gray-800 disabled:text-gray-500 disabled:border-gray-700 disabled:cursor-not-allowed h-10 flex items-center justify-center">
+                              <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-secondary rounded-lg blur opacity-40 group-hover:opacity-80 transition duration-300 disabled:opacity-0"></div>
+                              <div className="relative w-full bg-card/80 dark:bg-black/80 text-foreground font-black py-2.5 px-6 rounded-lg border-2 border-primary/50 group-hover:text-background transition-all uppercase tracking-widest text-xs disabled:bg-gray-800 disabled:text-gray-500 disabled:border-gray-700 disabled:cursor-not-allowed h-10 flex items-center justify-center">
                                 {loadingIndex === index ? (
                                   <svg
                                     className="animate-spin h-5 w-5 text-white"
@@ -794,32 +839,30 @@ export default function PasswordGate() {
               )
           )}
 
-          
-
-        <div className="flex justify-center gap-2 my-6">
-          {[0, 1, 2].map((step) => (
-            <div
-              key={step}
-              className="w-1/3 h-2 rounded-full bg-cyan-900/50"
-            >
+          <div className="flex justify-center gap-2 my-6">
+            {[0, 1, 2].map((step) => (
               <div
-                style={{
-                  width:
+                key={step}
+                className="w-1/3 h-2 rounded-full bg-cyan-900/50"
+              >
+                <div
+                  style={{
+                    width:
+                      step < activeQuestionIndex
+                        ? "100%"
+                        : step === activeQuestionIndex
+                        ? "50%"
+                        : "0%",
+                  }}
+                  className={`h-full rounded-full transition-all duration-500 ${
                     step < activeQuestionIndex
-                      ? "100%"
-                      : step === activeQuestionIndex
-                      ? "50%"
-                      : "0%",
-                }}
-                className={`h-full rounded-full transition-all duration-500 ${
-                  step < activeQuestionIndex
-                    ? "bg-green-500"
-                    : "bg-cyan-500"
-                } ${step === activeQuestionIndex ? 'animate-pulse' : ''}`}
-              />
-            </div>
-          ))}
-        </div>
+                      ? "bg-green-500"
+                      : "bg-primary"
+                  } ${step === activeQuestionIndex ? "animate-pulse" : ""}`}
+                />
+              </div>
+            ))}
+          </div>
 
           <button
             disabled={true}
@@ -872,15 +915,15 @@ export default function PasswordGate() {
           animation: spin-slow-reverse 12s linear infinite;
         }
         @keyframes border-glow {
-          0%, 100% { box-shadow: 0 0 20px rgba(6, 182, 212, 0.3); }
-          50% { box-shadow: 0 0 40px rgba(168, 85, 247, 0.5); }
+          0%, 100% { box-shadow: 0 0 20px hsl(var(--primary) / 0.3); }
+          50% { box-shadow: 0 0 40px hsl(var(--secondary) / 0.5); }
         }
         .animate-border-glow {
           animation: border-glow 3s ease-in-out infinite;
         }
         @keyframes pulse-glow {
-          0%, 100% { box-shadow: 0 0 20px rgba(6, 182, 212, 0.5); }
-          50% { box-shadow: 0 0 40px rgba(168, 85, 247, 0.8); }
+          0%, 100% { box-shadow: 0 0 20px hsl(var(--primary) / 0.5); }
+          50% { box-shadow: 0 0 40px hsl(var(--secondary) / 0.8); }
         }
         .animate-pulse-glow {
           animation: pulse-glow 2s ease-in-out infinite;
