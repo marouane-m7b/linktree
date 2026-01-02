@@ -197,6 +197,13 @@ export const UI_TRANSLATIONS = {
         },
       ],
     },
+    certifications: {
+      title: "Credentials",
+      subtitle: "Licenses & Certifications",
+      description: "Professional certifications and courses from leading organizations",
+      showCredential: "Show credential",
+      award: "Award",
+    },
     contact: {
       getInTouch: "Get In Touch",
       letsWorkTogether: "Let's Work Together",
@@ -417,6 +424,13 @@ export const UI_TRANSLATIONS = {
         },
       ],
     },
+    certifications: {
+      title: "Accréditations",
+      subtitle: "Licences & Certifications",
+      description: "Certifications professionnelles et cours d'organisations de premier plan",
+      showCredential: "Afficher le justificatif",
+      award: "Prix",
+    },
     contact: {
       getInTouch: "Contactez-moi",
       letsWorkTogether: "Travaillons Ensemble",
@@ -636,6 +650,13 @@ export const UI_TRANSLATIONS = {
           description: "المشاركة في نسخة هاكاثون للكبار 2024 كمطور Full Stack، بالتعاون مع اثنين من زملائي. تطوير منصة ويب للتعليم المستمر في React.js و Laravel. تم تصنيفي في المرتبة الثامنة من بين 38 فريقًا (148 مشاركًا) بفضل جودة الكود والأداء الفني.",
         },
       ],
+    },
+    certifications: {
+      title: "وثائق الاعتماد",
+      subtitle: "الرخص والشهادات",
+      description: "الشهادات والدورات المهنية من المنظمات الرائدة",
+      showCredential: "عرض الاعتماد",
+      award: "جائزة",
     },
     contact: {
       getInTouch: "تواصل معي",

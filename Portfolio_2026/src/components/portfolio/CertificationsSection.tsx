@@ -1,6 +1,8 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import { FaCertificate, FaExternalLinkAlt, FaTimes } from "react-icons/fa";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { UI_TRANSLATIONS } from "@/lib/translations";
 
 const defaultCertImage = "https://marketplace.canva.com/EAF5ZVffmZw/1/0/1600w/canva-modern-vintage-certificate-of-achievement-yMEujoaa8Hs.jpg";
 
@@ -74,6 +76,8 @@ const CertificationsSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [selectedCert, setSelectedCert] = useState<typeof certifications[0] | null>(null);
+  const { lang } = useLanguage();
+  const translations = UI_TRANSLATIONS[lang];
 
   return (
     <section id="certifications" className="py-20 relative" ref={ref}>
@@ -86,11 +90,11 @@ const CertificationsSection = () => {
           className="text-center mb-16"
         >
           <span className="font-orbitron text-sm uppercase tracking-widest text-muted-foreground mb-4 block">
-            Credentials
+            {translations.certifications.title}
           </span>
-          <h2 className="section-title">Licenses & Certifications</h2>
+          <h2 className="section-title">{translations.certifications.subtitle}</h2>
           <p className="section-subtitle max-w-2xl mx-auto">
-            Professional certifications and courses from leading organizations
+            {translations.certifications.description}
           </p>
         </motion.div>
 
@@ -124,7 +128,7 @@ const CertificationsSection = () => {
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-3">
-                    <span className="font-orbitron text-xs text-primary">Click to view</span>
+                    <span className="font-orbitron text-xs text-primary">{translations.awards.view}</span>
                   </div>
                 </button>
 
@@ -181,7 +185,7 @@ const CertificationsSection = () => {
                       rel="noopener noreferrer"
                       className="mt-4 inline-flex items-center gap-2 font-orbitron text-xs text-primary hover:text-secondary transition-colors"
                     >
-                      Show credential
+                      {translations.certifications.showCredential}
                       <FaExternalLinkAlt className="w-3 h-3" />
                     </a>
                   )}
