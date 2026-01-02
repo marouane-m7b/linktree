@@ -12,6 +12,11 @@ import MetaIcon from "../../assets/meta.jpg";
 import VanderbiltIcon from "../../assets/vanderbilt.png";
 import WorldSkillsIcon from "../../assets/worldskills.jpg";
 
+import GitCert from "../../assets/Certifications/Git And Github Google.jpg";
+import IbmCert from "../../assets/Certifications/IBM Scrum Master.jpg";
+import MetaCert from "../../assets/Certifications/Meta Front-End Developer.jpg";
+import PromptCert from "../../assets/Certifications/Prompt Engineering.jpg";
+
 const defaultCertImage = "https://marketplace.canva.com/EAF5ZVffmZw/1/0/1600w/canva-modern-vintage-certificate-of-achievement-yMEujoaa8Hs.jpg";
 
 const certifications = [
@@ -42,7 +47,7 @@ const certifications = [
     credentialId: "ABZET6SO2939",
     credentialUrl: "#",
     skills: ["Scrum", "Agile"],
-    image: defaultCertImage,
+    image: IbmCert,
     iconImage: IbmIcon,
   },
   {
@@ -52,7 +57,7 @@ const certifications = [
     credentialId: "CSMWSHPQRZ6Q",
     credentialUrl: "#",
     skills: ["React.js", "JavaScript"],
-    image: defaultCertImage,
+    image: MetaCert,
     iconImage: MetaIcon,
   },
   {
@@ -62,7 +67,7 @@ const certifications = [
     credentialId: "TEWNDN998JGR",
     credentialUrl: "#",
     skills: ["Git", "Collaborative Problem Solving"],
-    image: defaultCertImage,
+    image: GitCert,
     iconImage: GoogleIcon,
   },
   {
@@ -72,7 +77,7 @@ const certifications = [
     credentialId: "JLHFNSIMFQ1G",
     credentialUrl: "#",
     skills: ["Prompt Engineering", "AI"],
-    image: defaultCertImage,
+    image: PromptCert,
     iconImage: VanderbiltIcon,
   },
 ];
