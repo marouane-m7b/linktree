@@ -20,9 +20,9 @@ const Footer = () => {
             className="flex items-center gap-2 group"
             whileHover={{ scale: 1.05 }}
           >
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary via-secondary to-accent flex items-center justify-center shadow-lg shadow-primary/30">
+            {/* <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary via-secondary to-accent flex items-center justify-center shadow-lg shadow-primary/30">
               <span className="font-orbitron font-bold text-background text-lg">M</span>
-            </div>
+            </div> */}
             <span className="font-orbitron font-bold text-xl text-primary group-hover:text-glow-cyan transition-all">
               M7B
             </span>
@@ -48,8 +48,7 @@ const Footer = () => {
 
           {/* Copyright */}
           <p className="font-rajdhani text-muted-foreground text-sm flex items-center gap-2">
-            © {currentYear} Marouane Mahboub. Made with{" "}
-            <FaHeart className="text-accent w-4 h-4 animate-pulse" /> All rights
+            © {currentYear} Marouane Mahboub. All rights
             reserved.
           </p>
         </div>

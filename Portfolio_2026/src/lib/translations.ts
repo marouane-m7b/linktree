@@ -226,6 +226,7 @@ export const UI_TRANSLATIONS = {
       sending: "Sending...",
       sendMessage: "Send Message",
       toastSuccess: "Message sent successfully! I'll get back to you soon.",
+      toastError: "An error occurred. Please try again later.",
     },
     // Add other sections here
   },
@@ -456,6 +457,7 @@ export const UI_TRANSLATIONS = {
       sending: "Envoi en cours...",
       sendMessage: "Envoyer le Message",
       toastSuccess: "Message envoyé avec succès ! Je vous répondrai bientôt.",
+      toastError: "Une erreur est survenue. Veuillez réessayer plus tard.",
     },
     // Add other sections here
   },
@@ -686,6 +688,7 @@ export const UI_TRANSLATIONS = {
       sending: "جارٍ الإرسال...",
       sendMessage: "إرسال الرسالة",
       toastSuccess: "تم إرسال الرسالة بنجاح! سأعود إليك قريبًا.",
+      toastError: "حدث خطأ. يرجى المحاولة مرة أخرى في وقت لاحق.",
     },
     // Add other sections here
   },

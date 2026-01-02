@@ -202,7 +202,7 @@ const CertificationsSection = () => {
                       href={cert.credentialUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-4 inline-flex items-center gap-2 font-orbitron text-xs text-primary hover:text-secondary transition-colors"
+                      className="mt-4 inline-flex items-center gap-2 font-orbitron text-xs text-primary hover:text-secondary transition-colors z-10"
                     >
                       {translations.certifications.showCredential}
                       <FaExternalLinkAlt className="w-3 h-3" />

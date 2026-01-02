@@ -23,6 +23,8 @@ const contactInfo = [
   },
 ];
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const ContactSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
@@ -39,12 +41,35 @@ const ContactSection = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    const message = `
+      **New Contact Form Submission**
+      **Name:** ${formData.name}
+      **Email:** ${formData.email}
+      **Message:**
+      ${formData.message}
+    `;
 
-    toast.success(translations.contact.toastSuccess);
-    setFormData({ name: "", email: "", message: "" });
-    setIsSubmitting(false);
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/log`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message, color: 5763719 }), // Green color
+      });
+
+      if (response.ok) {
+        toast.success(translations.contact.toastSuccess);
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        toast.error(translations.contact.toastError);
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast.error(translations.contact.toastError);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (
