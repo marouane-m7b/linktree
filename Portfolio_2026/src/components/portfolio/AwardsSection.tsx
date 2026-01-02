@@ -4,30 +4,38 @@ import { FaTimes } from "react-icons/fa";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { UI_TRANSLATIONS } from "@/lib/translations";
 
+// import WorldSkillsIcon from "../../assets/worldskills.jpg";
+// import OfpptIcon from "../../assets/ofppt.png";
+// import IntellicoIcon from "../../assets/intellico.jpg";
+
 const initialAwards = [
   {
     icon: "🥇",
     date: "Jul 2025",
     images: [],
     color: "from-yellow-400 to-amber-500",
+    // iconImage: WorldSkillsIcon,
   },
   {
     icon: "🥈",
     date: "Jan 2025",
     images: [],
     color: "from-gray-300 to-gray-400",
+    // iconImage: WorldSkillsIcon,
   },
   {
     icon: "🎓",
     date: "Jun 2024",
     images: [],
     color: "from-primary to-secondary",
+    // iconImage: OfpptIcon,
   },
   {
     icon: "🏆",
     date: "May 2024",
     images: [],
     color: "from-accent to-secondary",
+    // iconImage: IntellicoIcon,
   },
 ];
 
@@ -87,8 +95,10 @@ const AwardsSection = () => {
                   <div className="flex-shrink-0">
                     <div
                       className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${award.color} flex items-center justify-center text-3xl shadow-lg`}
+                      // className={`w-16 h-16 rounded-xl flex items-center justify-center shrink-0 ${award.color}`}
                     >
                       {award.icon}
+                      {/* <img src={award.iconImage} alt={award.title} className="w-full h-full object-cover rounded-md" /> */}
                     </div>
                   </div>
 
