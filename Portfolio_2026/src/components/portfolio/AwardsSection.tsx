@@ -1,49 +1,31 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { FaTrophy, FaMedal, FaGraduationCap, FaCode, FaTimes } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { UI_TRANSLATIONS } from "@/lib/translations";
 
-const awards = [
+const initialAwards = [
   {
     icon: "🥇",
-    title: "1ère Place Nationale – WorldSkills Maroc (Web Technologies)",
-    issuer: "WorldSkills Morocco",
     date: "Jul 2025",
-    association: "WorldSkills International",
-    description:
-      "Classé 1er au niveau national en Web Technologies lors de la sélection nationale au CMC Tamesna, parmi 20 concurrents représentant leurs régions. Sélectionné parmi les 4 meilleurs candidats pour représenter le Maroc dans le programme de préparation à WorldSkills Shanghai 2026. Formation intensive en Front-End et Back-End selon les standards internationaux WorldSkills.",
     images: [],
     color: "from-yellow-400 to-amber-500",
   },
   {
     icon: "🥈",
-    title: "2ème au niveau régional – WorldSkills Morocco (Web Technologies)",
-    issuer: "WorldSkills Morocco",
     date: "Jan 2025",
-    association: "WorldSkills International",
-    description:
-      "Classé dans le Top 2 lors de la sélection régionale Casablanca-Settat en Web Technologies, organisée par l'Institut Spécialisé de Gestion et d'Informatique (ISGI). Sélectionné pour participer à la phase nationale WorldSkills Morocco 2026.",
     images: [],
     color: "from-gray-300 to-gray-400",
   },
   {
     icon: "🎓",
-    title: "Diplôme avec mention d'excellence – ISTA Sidi Moumen",
-    issuer: "OFPPT",
     date: "Jun 2024",
-    association: "Institut Spécialisé de Technologie Appliquée Sidi Moumen",
-    description:
-      "Diplômé avec une moyenne de 19,02/20, parmi les toutes meilleures notes au Maroc, si ce n'est la meilleure. Formé en Développement Digital avec une maîtrise des technologies modernes telles que React, Laravel, Node.js, Python, SQL, et bien d'autres.",
     images: [],
     color: "from-primary to-secondary",
   },
   {
     icon: "🏆",
-    title: "Top 8 – Hackathon Edition 2024 (Intellico Consulting)",
-    issuer: "Intellico Consulting",
     date: "May 2024",
-    association: "Intellico Consulting",
-    description:
-      "Participation au Hackathon Senior Edition 2024 en tant que Développeur Full Stack, en collaboration avec deux coéquipiers. Développement d'une plateforme web de formation continue en React.js et Laravel. Classé 8e sur 38 équipes (148 participants) grâce à la qualité du code et à la performance technique.",
     images: [],
     color: "from-accent to-secondary",
   },
@@ -52,7 +34,17 @@ const awards = [
 const AwardsSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { lang } = useLanguage();
+  const translations = UI_TRANSLATIONS[lang];
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  const awards = initialAwards.map((award, index) => ({
+    ...award,
+    title: translations.awards.awards[index].title,
+    issuer: translations.awards.awards[index].issuer,
+    association: translations.awards.awards[index].association,
+    description: translations.awards.awards[index].description,
+  }));
 
   return (
     <section id="awards" className="py-20 relative" ref={ref}>
@@ -65,11 +57,11 @@ const AwardsSection = () => {
           className="text-center mb-16"
         >
           <span className="font-orbitron text-sm uppercase tracking-widest text-muted-foreground mb-4 block">
-            Recognition
+            {translations.awards.title}
           </span>
-          <h2 className="section-title">Honors & Awards</h2>
+          <h2 className="section-title">{translations.awards.subtitle}</h2>
           <p className="section-subtitle max-w-2xl mx-auto">
-            Achievements and recognitions in competitions and academics
+            {translations.awards.description}
           </p>
         </motion.div>
 
@@ -143,7 +135,7 @@ const AwardsSection = () => {
                               className="w-20 h-20 object-cover group-hover/img:scale-110 transition-transform duration-300"
                             />
                             <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                              <span className="text-xs font-orbitron text-primary-foreground">View</span>
+                              <span className="text-xs font-orbitron text-primary-foreground">{translations.awards.view}</span>
                             </div>
                           </button>
                         ))}
@@ -168,13 +160,13 @@ const AwardsSection = () => {
         >
           <button
             onClick={() => setSelectedImage(null)}
-            className="absolute top-6 right-6 w-12 h-12 rounded-full bg-muted/50 flex items-center justify-center text-foreground hover:bg-muted transition-colors"
+            className="absolute top-6 end-6 w-12 h-12 rounded-full bg-muted/50 flex items-center justify-center text-foreground hover:bg-muted transition-colors"
           >
             <FaTimes className="w-5 h-5" />
           </button>
           <img
             src={selectedImage}
-            alt="Award"
+            alt={translations.awards.award}
             className="max-w-full max-h-[90vh] rounded-xl border-2 border-primary/50 shadow-2xl"
           />
         </motion.div>

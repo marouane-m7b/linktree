@@ -2,23 +2,22 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaPaperPlane } from "react-icons/fa";
 import { toast } from "sonner";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { UI_TRANSLATIONS } from "@/lib/translations";
 
 const contactInfo = [
   {
     icon: FaEnvelope,
-    label: "Email",
     value: "marouane@m7b.dev",
     href: "mailto:marouane@m7b.dev",
   },
   {
     icon: FaPhone,
-    label: "Phone",
     value: "+212 706 452 165",
     href: "tel:+212706452165",
   },
   {
     icon: FaMapMarkerAlt,
-    label: "Location",
     value: "Morocco",
     href: "#",
   },
@@ -27,6 +26,8 @@ const contactInfo = [
 const ContactSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { lang } = useLanguage();
+  const translations = UI_TRANSLATIONS[lang];
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -41,7 +42,7 @@ const ContactSection = () => {
     // Simulate form submission
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
-    toast.success("Message sent successfully! I'll get back to you soon.");
+    toast.success(translations.contact.toastSuccess);
     setFormData({ name: "", email: "", message: "" });
     setIsSubmitting(false);
   };
@@ -55,6 +56,12 @@ const ContactSection = () => {
     }));
   };
 
+  const contactLabels = {
+    email: translations.contact.email,
+    phone: translations.contact.phone,
+    location: translations.contact.location,
+  };
+
   return (
     <section id="contact" className="py-20 relative" ref={ref}>
       <div className="container mx-auto px-6">
@@ -66,11 +73,11 @@ const ContactSection = () => {
           className="text-center mb-16"
         >
           <span className="font-orbitron text-sm uppercase tracking-widest text-muted-foreground mb-4 block">
-            Get In Touch
+            {translations.contact.getInTouch}
           </span>
-          <h2 className="section-title">Let's Work Together</h2>
+          <h2 className="section-title">{translations.contact.letsWorkTogether}</h2>
           <p className="section-subtitle max-w-2xl mx-auto">
-            Have a project in mind? Let's create something amazing together
+            {translations.contact.description}
           </p>
         </motion.div>
 
@@ -82,11 +89,10 @@ const ContactSection = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <h3 className="font-orbitron text-2xl font-bold text-card-foreground mb-6">
-              Take a coffee & chat with me
+              {translations.contact.chat}
             </h3>
             <p className="font-rajdhani text-muted-foreground mb-8">
-              I'm always open to discussing new projects, creative ideas, or
-              opportunities to be part of your visions. Feel free to reach out!
+              {translations.contact.chatDescription}
             </p>
 
             <div className="space-y-6">
@@ -104,7 +110,7 @@ const ContactSection = () => {
                   </div>
                   <div>
                     <div className="font-orbitron text-xs text-muted-foreground uppercase tracking-wider">
-                      {info.label}
+                      {contactLabels[info.value.toLowerCase()]}
                     </div>
                     <div className="font-rajdhani text-lg text-card-foreground group-hover:text-primary transition-colors">
                       {info.value}
@@ -126,7 +132,7 @@ const ContactSection = () => {
                 <div className="text-center">
                   <FaMapMarkerAlt className="w-8 h-8 text-primary mx-auto mb-2" />
                   <span className="font-orbitron text-sm text-muted-foreground">
-                    Based in Morocco 🇲🇦
+                    {translations.contact.basedIn}
                   </span>
                 </div>
               </div>
@@ -143,7 +149,7 @@ const ContactSection = () => {
               {/* Name */}
               <div>
                 <label className="block font-orbitron text-xs uppercase tracking-wider text-muted-foreground mb-2">
-                  Your Name
+                  {translations.contact.yourName}
                 </label>
                 <input
                   type="text"
@@ -152,14 +158,14 @@ const ContactSection = () => {
                   onChange={handleChange}
                   required
                   className="w-full px-4 py-3 rounded-xl bg-card/50 border-2 border-primary/30 text-card-foreground font-rajdhani placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:shadow-lg focus:shadow-primary/20 transition-all"
-                  placeholder="John Doe"
+                  placeholder={translations.contact.placeholderName}
                 />
               </div>
 
               {/* Email */}
               <div>
                 <label className="block font-orbitron text-xs uppercase tracking-wider text-muted-foreground mb-2">
-                  Your Email
+                  {translations.contact.yourEmail}
                 </label>
                 <input
                   type="email"
@@ -168,14 +174,14 @@ const ContactSection = () => {
                   onChange={handleChange}
                   required
                   className="w-full px-4 py-3 rounded-xl bg-card/50 border-2 border-primary/30 text-card-foreground font-rajdhani placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:shadow-lg focus:shadow-primary/20 transition-all"
-                  placeholder="john@example.com"
+                  placeholder={translations.contact.placeholderEmail}
                 />
               </div>
 
               {/* Message */}
               <div>
                 <label className="block font-orbitron text-xs uppercase tracking-wider text-muted-foreground mb-2">
-                  Your Message
+                  {translations.contact.yourMessage}
                 </label>
                 <textarea
                   name="message"
@@ -184,7 +190,7 @@ const ContactSection = () => {
                   required
                   rows={5}
                   className="w-full px-4 py-3 rounded-xl bg-card/50 border-2 border-primary/30 text-card-foreground font-rajdhani placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:shadow-lg focus:shadow-primary/20 transition-all resize-none"
-                  placeholder="Tell me about your project..."
+                  placeholder={translations.contact.placeholderMessage}
                 />
               </div>
 
@@ -199,12 +205,12 @@ const ContactSection = () => {
                 {isSubmitting ? (
                   <>
                     <div className="w-5 h-5 border-2 border-background border-t-transparent rounded-full animate-spin"></div>
-                    Sending...
+                    {translations.contact.sending}
                   </>
                 ) : (
                   <>
                     <FaPaperPlane />
-                    Send Message
+                    {translations.contact.sendMessage}
                   </>
                 )}
               </motion.button>

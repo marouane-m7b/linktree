@@ -22,17 +22,17 @@ const CyberBackground = ({ children }: CyberBackgroundProps) => {
         ></div>
         
         {/* Glowing orbs */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-secondary rounded-full mix-blend-screen filter blur-3xl opacity-15 animate-pulse"></div>
+        <div className="absolute top-1/4 start-1/4 w-96 h-96 bg-secondary rounded-full mix-blend-screen filter blur-3xl opacity-15 animate-pulse"></div>
         <div
-          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-primary rounded-full mix-blend-screen filter blur-3xl opacity-15 animate-pulse"
+          className="absolute bottom-1/4 end-1/4 w-96 h-96 bg-primary rounded-full mix-blend-screen filter blur-3xl opacity-15 animate-pulse"
           style={{ animationDelay: "1s" }}
         ></div>
         <div
-          className="absolute top-1/2 left-1/2 w-64 h-64 bg-accent rounded-full mix-blend-screen filter blur-3xl opacity-15 animate-pulse"
+          className="absolute top-1/2 start-1/2 w-64 h-64 bg-accent rounded-full mix-blend-screen filter blur-3xl opacity-15 animate-pulse"
           style={{ animationDelay: "2s" }}
         ></div>
         <div
-          className="absolute top-3/4 left-1/3 w-48 h-48 bg-primary rounded-full mix-blend-screen filter blur-3xl opacity-10 animate-pulse"
+          className="absolute top-3/4 start-1/3 w-48 h-48 bg-primary rounded-full mix-blend-screen filter blur-3xl opacity-10 animate-pulse"
           style={{ animationDelay: "3s" }}
         ></div>
       </div>

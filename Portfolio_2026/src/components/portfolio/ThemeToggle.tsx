@@ -2,7 +2,11 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { HiSun, HiMoon } from "react-icons/hi";
 
-const ThemeToggle = () => {
+interface ThemeToggleProps {
+  lang: string;
+}
+
+const ThemeToggle = ({ lang }: ThemeToggleProps) => {
   const [isDark, setIsDark] = useState(true);
 
   useEffect(() => {
@@ -33,8 +37,9 @@ const ThemeToggle = () => {
       onClick={toggleTheme}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
-      className="relative w-10 h-10 rounded-full bg-card border-2 border-primary/30 hover:border-primary flex items-center justify-center text-primary transition-all duration-300"
+      className={`relative w-10 h-10 rounded-full bg-card border-2 border-primary/30 hover:border-primary flex items-center justify-center text-primary transition-all duration-300 ms-2`}
       aria-label="Toggle theme"
+      dir={lang === "ar" ? "rtl" : "ltr"}
     >
       <motion.div
         initial={false}

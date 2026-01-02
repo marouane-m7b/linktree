@@ -3,20 +3,37 @@ import { FaGithub, FaLinkedin, FaInstagram, FaEnvelope } from "react-icons/fa";
 import { SiLinktree } from "react-icons/si";
 import { HiDownload } from "react-icons/hi";
 import { Link } from "react-router-dom";
-
-const roles = ["Full Stack Developer", "Mobile Developer", "Web Developer", "AI & LLM Engineer"];
+import { useLanguage } from "@/contexts/LanguageContext";
+import { UI_TRANSLATIONS } from "@/lib/translations";
+import musashi from "@/assets/musashi.jpg";
 
 const socialLinks = [
   { icon: FaGithub, href: "https://github.com/marouane-m7b", label: "GitHub" },
   { icon: SiLinktree, href: "/linktree", label: "Linktree" },
-  { icon: FaLinkedin, href: "https://www.linkedin.com/in/m7b/", label: "LinkedIn" },
-  { icon: FaInstagram, href: "https://instagram.com/marwane_m7b", label: "Instagram" },
+  {
+    icon: FaLinkedin,
+    href: "https://www.linkedin.com/in/m7b/",
+    label: "LinkedIn",
+  },
+  {
+    icon: FaInstagram,
+    href: "https://instagram.com/marwane_m7b",
+    label: "Instagram",
+  },
   { icon: FaEnvelope, href: "mailto:marouane@m7b.dev", label: "Email" },
 ];
 
 const HeroSection = () => {
+  const { lang } = useLanguage();
+  const translations = UI_TRANSLATIONS[lang];
+  const { hero } = translations;
+  const [firstName, lastName] = hero.name.split(" ");
+
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center relative py-20">
+    <section
+      id="home"
+      className="min-h-screen flex items-center justify-center relative py-20"
+    >
       <div className="container mx-auto px-6">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
           {/* Left Content */}
@@ -34,19 +51,21 @@ const HeroSection = () => {
               className="flex items-center gap-3 justify-center lg:justify-start mb-6"
             >
               <span className="text-4xl">👋</span>
-              <span className="font-rajdhani text-xl text-muted-foreground">Hello, I am</span>
+              <span className="font-rajdhani text-xl text-muted-foreground">
+                {hero.greeting}
+              </span>
             </motion.div>
 
-            {/* Name */}
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="font-orbitron text-5xl md:text-7xl font-bold mb-4"
+              // Use 'text-start' so it aligns Left in English and Right in Arabic automatically
+              className="font-orbitron text-5xl md:text-7xl font-bold mb-4 text-start"
             >
-              <span className="text-primary text-glow-cyan">Marouane</span>
+              <span className="text-primary text-glow-cyan">{firstName}</span>
               <br />
-              <span className="cyber-text">Mahboub</span>
+              <span className="cyber-text">{lastName}</span>
             </motion.h1>
 
             {/* Animated Roles */}
@@ -66,7 +85,7 @@ const HeroSection = () => {
                 }}
                 className="space-y-0"
               >
-                {roles.map((role, index) => (
+                {hero.roles.map((role, index) => (
                   <div
                     key={index}
                     className="h-12 flex items-center justify-center lg:justify-start"
@@ -86,9 +105,7 @@ const HeroSection = () => {
               transition={{ delay: 0.5 }}
               className="font-rajdhani text-lg text-muted-foreground max-w-xl mb-8 mx-auto lg:mx-0"
             >
-              Turning ideas into reality through the art of programming. I craft
-              comprehensive end-to-end solutions with expertise in both front-end
-              and back-end technologies.
+              {hero.description}
             </motion.p>
 
             {/* CTA Buttons */}
@@ -104,7 +121,7 @@ const HeroSection = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Let's Talk
+                {hero.talkButton}
               </motion.a>
               <motion.a
                 href="#work"
@@ -113,7 +130,7 @@ const HeroSection = () => {
                 whileTap={{ scale: 0.95 }}
               >
                 <HiDownload />
-                View Work
+                {hero.viewWorkButton}
               </motion.a>
             </motion.div>
 
@@ -176,26 +193,32 @@ const HeroSection = () => {
               {/* Profile Image Container */}
               <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-primary shadow-2xl shadow-primary/30 animate-pulse-glow">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-secondary/20"></div>
-                <div className="w-full h-full bg-gradient-to-br from-primary via-secondary to-accent flex items-center justify-center">
-                  <span className="font-orbitron text-6xl md:text-8xl font-bold text-background">M</span>
-                </div>
+                <img
+                  src={musashi}
+                  alt="Marouane Mahboub"
+                  className="w-full h-full object-cover"
+                />
               </div>
 
               {/* Floating badges */}
               <motion.div
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 3, repeat: Infinity }}
-                className="absolute -right-4 top-10 bg-card/90 backdrop-blur-sm border border-primary/30 rounded-xl px-4 py-2 shadow-lg"
+                className="absolute -end-4 top-10 bg-card/90 backdrop-blur-sm border border-primary/30 rounded-xl px-4 py-2 shadow-lg"
               >
-                <span className="font-orbitron text-sm text-primary">5+ Years</span>
+                <span className="font-orbitron text-sm text-primary">
+                  5+ {hero.yearsExperience}
+                </span>
               </motion.div>
 
               <motion.div
                 animate={{ y: [0, 10, 0] }}
                 transition={{ duration: 3, repeat: Infinity, delay: 1 }}
-                className="absolute -left-4 bottom-10 bg-card/90 backdrop-blur-sm border border-secondary/30 rounded-xl px-4 py-2 shadow-lg"
+                className="absolute -start-4 bottom-10 bg-card/90 backdrop-blur-sm border border-secondary/30 rounded-xl px-4 py-2 shadow-lg"
               >
-                <span className="font-orbitron text-sm text-secondary">50+ Projects</span>
+                <span className="font-orbitron text-sm text-secondary">
+                  50+ {hero.projectsCompleted}
+                </span>
               </motion.div>
             </div>
           </motion.div>

@@ -2,32 +2,40 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { HiMenu, HiX } from "react-icons/hi";
 import ThemeToggle from "./ThemeToggle";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { UI_TRANSLATIONS } from "@/lib/translations";
 
-const navItems = [
-  { name: "Home", href: "#home" },
-  { name: "About", href: "#about" },
-  { name: "Skills", href: "#skills" },
-  { name: "Work", href: "#work" },
-  { name: "Experience", href: "#experience" },
-  { name: "Contact", href: "#contact" },
+const navLinks = [
+  { key: "home", href: "#home" },
+  { key: "about", href: "#about" },
+  { key: "skills", href: "#skills" },
+  { key: "work", href: "#work" },
+  { key: "experience", href: "#experience" },
+  { key: "contact", href: "#contact" },
 ];
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const { lang, setLang } = useLanguage();
+  const translations = UI_TRANSLATIONS[lang];
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
 
       // Determine active section
-      const sections = navItems.map((item) => item.href.slice(1));
+      const sections = navLinks.map((item) => item.href.slice(1));
       for (const section of sections.reverse()) {
         const element = document.getElementById(section);
         if (element) {
           const rect = element.getBoundingClientRect();
-          if (rect.top <= 150) {
+          if (rect.top <= 150 && rect.bottom > 150) { // Check if section top is within view and not fully passed
+            setActiveSection(section);
+            break;
+          } else if (window.scrollY + window.innerHeight >= document.body.scrollHeight && section === sections[sections.length - 1]) {
+            // If scrolled to bottom, highlight the last section
             setActiveSection(section);
             break;
           }
@@ -58,6 +66,7 @@ const Navbar = () => {
             ? "bg-background/80 backdrop-blur-xl border-b border-primary/20"
             : "bg-transparent"
         }`}
+        dir={lang === "ar" ? "rtl" : "ltr"}
       >
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
@@ -71,9 +80,6 @@ const Navbar = () => {
               className="flex items-center gap-2 group"
               whileHover={{ scale: 1.05 }}
             >
-              {/* <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary via-secondary to-accent flex items-center justify-center shadow-lg shadow-primary/30">
-                <span className="font-orbitron font-bold text-background text-lg">M</span>
-              </div> */}
               <span className="font-orbitron font-bold text-xl text-primary group-hover:text-glow-cyan transition-all">
                 M7B
               </span>
@@ -81,9 +87,9 @@ const Navbar = () => {
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-8">
-              {navItems.map((item) => (
+              {navLinks.map((item) => (
                 <a
-                  key={item.name}
+                  key={item.key}
                   href={item.href}
                   onClick={(e) => {
                     e.preventDefault();
@@ -93,14 +99,40 @@ const Navbar = () => {
                     activeSection === item.href.slice(1) ? "text-primary active" : ""
                   }`}
                 >
-                  {item.name}
+                  {translations.navbar[item.key as keyof typeof translations.navbar]}
                 </a>
               ))}
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setLang("en")}
+                  className={`px-2 py-1 rounded-md text-xs font-bold ${
+                    lang === "en" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-primary"
+                  }`}
+                >
+                  EN
+                </button>
+                <button
+                  onClick={() => setLang("fr")}
+                  className={`px-2 py-1 rounded-md text-xs font-bold ${
+                    lang === "fr" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-primary"
+                  }`}
+                >
+                  FR
+                </button>
+                <button
+                  onClick={() => setLang("ar")}
+                  className={`px-2 py-1 rounded-md text-xs font-bold ${
+                    lang === "ar" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-primary"
+                  }`}
+                >
+                  AR
+                </button>
+              </div>
             </div>
 
             {/* Theme Toggle & CTA Button */}
             <div className="hidden md:flex items-center gap-4">
-              <ThemeToggle />
+              <ThemeToggle lang={lang} />
               <motion.a
                 href="#contact"
                 onClick={(e) => {
@@ -111,17 +143,20 @@ const Navbar = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Hire Me
+                {translations.navbar.hireMe}
               </motion.a>
             </div>
 
             {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden text-primary p-2"
-            >
-              {isMobileMenuOpen ? <HiX size={28} /> : <HiMenu size={28} />}
-            </button>
+            <div className="flex items-center md:hidden">
+              <ThemeToggle lang={lang} />
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="text-primary p-2 ms-2"
+              >
+                {isMobileMenuOpen ? <HiX size={28} /> : <HiMenu size={28} />}
+              </button>
+            </div>
           </div>
         </div>
       </motion.nav>
@@ -130,17 +165,18 @@ const Navbar = () => {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, x: "100%" }}
+            initial={{ opacity: 0, x: lang === "ar" ? "-100%" : "100%" }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: "100%" }}
+            exit={{ opacity: 0, x: lang === "ar" ? "-100%" : "100%" }}
             transition={{ duration: 0.3 }}
             className="fixed inset-0 z-40 md:hidden"
+            dir={lang === "ar" ? "rtl" : "ltr"}
           >
             <div className="absolute inset-0 bg-background/95 backdrop-blur-xl">
               <div className="flex flex-col items-center justify-center h-full gap-8">
-                {navItems.map((item, index) => (
+                {navLinks.map((item, index) => (
                   <motion.a
-                    key={item.name}
+                    key={item.key}
                     href={item.href}
                     onClick={(e) => {
                       e.preventDefault();
@@ -155,9 +191,41 @@ const Navbar = () => {
                         : "text-muted-foreground hover:text-primary"
                     } transition-colors`}
                   >
-                    {item.name}
+                    {translations.navbar[item.key as keyof typeof translations.navbar]}
                   </motion.a>
                 ))}
+                <div className="flex items-center gap-2 mt-4">
+                  <button
+                    onClick={() => setLang("en")}
+                    className={`px-3 py-1.5 rounded-lg text-sm font-bold border-2 transition-all duration-300 ${
+                      lang === "en"
+                        ? "bg-gradient-to-r from-primary to-secondary text-primary-foreground border-transparent shadow-lg shadow-primary/50"
+                        : "text-primary border-primary/30 hover:border-primary"
+                    }`}
+                  >
+                    EN
+                  </button>
+                  <button
+                    onClick={() => setLang("fr")}
+                    className={`px-3 py-1.5 rounded-lg text-sm font-bold border-2 transition-all duration-300 ${
+                      lang === "fr"
+                        ? "bg-gradient-to-r from-primary to-secondary text-primary-foreground border-transparent shadow-lg shadow-secondary/50"
+                        : "text-primary border-primary/30 hover:border-primary"
+                    }`}
+                  >
+                    FR
+                  </button>
+                  <button
+                    onClick={() => setLang("ar")}
+                    className={`px-3 py-1.5 rounded-lg text-sm font-bold border-2 transition-all duration-300 ${
+                      lang === "ar"
+                        ? "bg-gradient-to-r from-primary to-secondary text-primary-foreground border-transparent shadow-lg shadow-accent/50"
+                        : "text-primary border-primary/30 hover:border-primary"
+                    }`}
+                  >
+                    AR
+                  </button>
+                </div>
                 <motion.a
                   href="#contact"
                   onClick={(e) => {
@@ -169,7 +237,7 @@ const Navbar = () => {
                   transition={{ delay: 0.6 }}
                   className="cyber-button-fill mt-4"
                 >
-                  Hire Me
+                  {translations.navbar.hireMe}
                 </motion.a>
               </div>
             </div>

@@ -2,41 +2,48 @@ import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
 import { FaCode, FaMobile, FaServer, FaDesktop } from "react-icons/fa";
-
-const services = [
-  {
-    icon: FaDesktop,
-    title: "Full Stack Developer",
-    description:
-      "I craft comprehensive end-to-end solutions with my expertise in both front-end and back-end technologies for efficient and versatile applications.",
-    color: "primary",
-  },
-  {
-    icon: FaCode,
-    title: "Frontend Developer",
-    description:
-      "I create inspiring user interfaces using modern technologies and frameworks to provide interactive and engaging experiences.",
-    color: "secondary",
-  },
-  {
-    icon: FaMobile,
-    title: "Mobile Developer",
-    description:
-      "I build innovative mobile applications for iOS and Android systems, focusing on performance and user-friendliness.",
-    color: "accent",
-  },
-  {
-    icon: FaServer,
-    title: "Backend Developer",
-    description:
-      "I design robust database and server systems for seamless integration and enhanced performance of applications.",
-    color: "primary",
-  },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
+import { UI_TRANSLATIONS } from "@/lib/translations";
 
 const AboutSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { lang } = useLanguage();
+  const translations = UI_TRANSLATIONS[lang];
+
+  const services = [
+    {
+      icon: FaDesktop,
+      title: translations.about.services.fullStackTitle,
+      description: translations.about.services.fullStackDescription,
+      color: "primary",
+    },
+    {
+      icon: FaCode,
+      title: translations.about.services.frontendTitle,
+      description: translations.about.services.frontendDescription,
+      color: "secondary",
+    },
+    {
+      icon: FaMobile,
+      title: translations.about.services.mobileTitle,
+      description: translations.about.services.mobileDescription,
+      color: "accent",
+    },
+    {
+      icon: FaServer,
+      title: translations.about.services.backendTitle,
+      description: translations.about.services.backendDescription,
+      color: "primary",
+    },
+  ];
+
+  const stats = [
+    { value: "5+", label: translations.about.stats.experience },
+    { value: "50+", label: translations.about.stats.projects },
+    { value: "30+", label: translations.about.stats.clients },
+    { value: "10+", label: translations.about.stats.technologies },
+  ];
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -64,11 +71,11 @@ const AboutSection = () => {
           className="text-center mb-16"
         >
           <span className="font-orbitron text-sm uppercase tracking-widest text-muted-foreground mb-4 block">
-            About Me
+            {translations.about.title}
           </span>
-          <h2 className="section-title">What I Do</h2>
+          <h2 className="section-title">{translations.about.subtitle}</h2>
           <p className="section-subtitle max-w-2xl mx-auto">
-            Turning ideas into reality through the art of programming
+            {translations.about.description}
           </p>
         </motion.div>
 
@@ -124,8 +131,8 @@ const AboutSection = () => {
                 </div>
 
                 {/* Corner decorations */}
-                <div className="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-primary/20 rounded-tr-2xl transition-all group-hover:border-primary/50"></div>
-                <div className="absolute bottom-0 left-0 w-16 h-16 border-b-2 border-l-2 border-primary/20 rounded-bl-2xl transition-all group-hover:border-primary/50"></div>
+                <div className="absolute top-0 end-0 w-16 h-16 border-t-2 border-e-2 border-primary/20 rounded-ts-2xl transition-all group-hover:border-primary/50"></div>
+                <div className="absolute bottom-0 start-0 w-16 h-16 border-b-2 border-s-2 border-primary/20 rounded-be-2xl transition-all group-hover:border-primary/50"></div>
               </div>
             </motion.div>
           ))}
@@ -138,12 +145,7 @@ const AboutSection = () => {
           transition={{ duration: 0.6, delay: 0.8 }}
           className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6"
         >
-          {[
-            { value: "5+", label: "Years Experience" },
-            { value: "50+", label: "Projects Completed" },
-            { value: "30+", label: "Happy Clients" },
-            { value: "10+", label: "Technologies" },
-          ].map((stat, index) => (
+          {stats.map((stat, index) => (
             <div
               key={index}
               className="text-center p-6 rounded-xl bg-card/50 border border-primary/20 hover:border-primary/50 transition-all"

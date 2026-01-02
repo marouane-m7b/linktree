@@ -1,22 +1,14 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
-
-const categories = [
-  { id: "all", label: "All" },
-  { id: "react", label: "React" },
-  { id: "laravel", label: "Laravel" },
-  { id: "mobile", label: "Mobile" },
-  { id: "fullstack", label: "Full Stack" },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
+import { UI_TRANSLATIONS } from "@/lib/translations";
 
 const PLACEHOLDER_IMAGE = "https://www.sliderrevolution.com/wp-content/uploads/2024/09/what-is-a-hero-section.jpg";
 
-const projects = [
+const initialProjects = [
   {
-    title: "OFPPT Absence Manager",
-    description:
-      "Tracks attendance, manages absences, schedules meetings, and sends real-time notifications for students.",
+    originalTitle: "OFPPT Absence Manager",
     image: PLACEHOLDER_IMAGE,
     tags: ["React Js", "Laravel", "Material UI", "MySQL"],
     category: ["react", "laravel", "fullstack"],
@@ -25,9 +17,7 @@ const projects = [
     color: "primary",
   },
   {
-    title: "ZM Store",
-    description:
-      "Connects buyers and sellers with validated accounts, offering curated, connection-based shopping experiences.",
+    originalTitle: "ZM Store",
     image: PLACEHOLDER_IMAGE,
     tags: ["React Js", "Laravel", "MySQL", "Git"],
     category: ["react", "laravel", "fullstack"],
@@ -36,9 +26,7 @@ const projects = [
     color: "secondary",
   },
   {
-    title: "OFPPT Establishments Cards Manager",
-    description:
-      "A web app for digitizing the management of OFPPT institution cards with secure admin control.",
+    originalTitle: "OFPPT Establishments Cards Manager",
     image: PLACEHOLDER_IMAGE,
     tags: ["Spring Boot", "React Js", "MySQL", "Spring Security"],
     category: ["react", "fullstack"],
@@ -47,9 +35,7 @@ const projects = [
     color: "accent",
   },
   {
-    title: "Movies Reviews System",
-    description:
-      "Users can browse, rate, and review movies. Admins manage content and activity in a secure system.",
+    originalTitle: "Movies Reviews System",
     image: PLACEHOLDER_IMAGE,
     tags: ["Jakarta EE", "JavaScript", "MySQL", "JDBC"],
     category: ["fullstack"],
@@ -58,9 +44,7 @@ const projects = [
     color: "primary",
   },
   {
-    title: "Baccalaureate GPA Calculator",
-    description:
-      "A simple yet powerful app to calculate your Baccalaureate grades instantly for students in Morocco.",
+    originalTitle: "Baccalaureate GPA Calculator",
     image: PLACEHOLDER_IMAGE,
     tags: ["HTML", "CSS", "JavaScript", "Mobile"],
     category: ["mobile"],
@@ -69,9 +53,7 @@ const projects = [
     color: "secondary",
   },
   {
-    title: "سياقتي - Driving Learning Platform",
-    description:
-      "A website for learning driving: forum, exams, explanations, and interaction for safe driving in Morocco.",
+    originalTitle: "سياقتي - Driving Learning Platform",
     image: PLACEHOLDER_IMAGE,
     tags: ["JavaScript", "PHP", "HTML", "CSS"],
     category: ["fullstack"],
@@ -84,7 +66,23 @@ const projects = [
 const WorkSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { lang } = useLanguage();
+  const translations = UI_TRANSLATIONS[lang];
   const [activeCategory, setActiveCategory] = useState("all");
+
+  const categories = [
+    { id: "all", label: translations.work.categories.all },
+    { id: "react", label: translations.work.categories.react },
+    { id: "laravel", label: translations.work.categories.laravel },
+    { id: "mobile", label: translations.work.categories.mobile },
+    { id: "fullstack", label: translations.work.categories.fullstack },
+  ];
+
+  const projects = initialProjects.map((project, index) => ({
+    ...project,
+    title: translations.work.projects[index].title,
+    description: translations.work.projects[index].description,
+  }));
 
   const filteredProjects =
     activeCategory === "all"
@@ -102,11 +100,11 @@ const WorkSection = () => {
           className="text-center mb-12"
         >
           <span className="font-orbitron text-sm uppercase tracking-widest text-muted-foreground mb-4 block">
-            My Portfolio
+            {translations.work.title}
           </span>
-          <h2 className="section-title">Creative Work</h2>
+          <h2 className="section-title">{translations.work.subtitle}</h2>
           <p className="section-subtitle max-w-2xl mx-auto">
-            A selection of my recent projects and creative endeavors
+            {translations.work.description}
           </p>
         </motion.div>
 
@@ -118,8 +116,7 @@ const WorkSection = () => {
           className="max-w-2xl mx-auto mb-8 p-4 rounded-xl bg-card/50 border border-primary/20 text-center"
         >
           <p className="font-rajdhani text-muted-foreground text-sm">
-            <span className="text-primary">Important Notice:</span> If the GitHub code
-            or website preview is unavailable, the client requested privacy.
+            <span className="text-primary">{translations.work.importantNotice}</span> {translations.work.notice}
           </p>
         </motion.div>
 
@@ -154,7 +151,7 @@ const WorkSection = () => {
         >
           {filteredProjects.map((project, index) => (
             <motion.div
-              key={project.title}
+              key={project.originalTitle} // Use originalTitle for key as title is now dynamic
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 30 }}
@@ -176,8 +173,8 @@ const WorkSection = () => {
 
                 {/* Image */}
                 <div className="relative h-48 overflow-hidden">
-                  <img 
-                    src={project.image} 
+                  <img
+                    src={project.image}
                     alt={project.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />

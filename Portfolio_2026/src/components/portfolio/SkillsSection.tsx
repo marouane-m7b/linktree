@@ -26,14 +26,8 @@ import {
   SiSpring,
   SiFigma,
 } from "react-icons/si";
-
-const categories = [
-  { id: "all", label: "All" },
-  { id: "frontend", label: "Frontend" },
-  { id: "backend", label: "Backend" },
-  { id: "mobile", label: "Mobile" },
-  { id: "tools", label: "Tools" },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
+import { UI_TRANSLATIONS } from "@/lib/translations";
 
 const skills = [
   { name: "React", icon: SiReact, category: "frontend", color: "#61DAFB" },
@@ -66,7 +60,23 @@ const skills = [
 const SkillsSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { lang } = useLanguage();
+  const translations = UI_TRANSLATIONS[lang];
   const [activeCategory, setActiveCategory] = useState("all");
+
+  const categories = [
+    { id: "all", label: translations.skills.categories.all },
+    { id: "frontend", label: translations.skills.categories.frontend },
+    { id: "backend", label: translations.skills.categories.backend },
+    { id: "mobile", label: translations.skills.categories.mobile },
+    { id: "tools", label: translations.skills.categories.tools },
+  ];
+
+  const languageSkills = [
+    { lang: "Arabic", flag: "🇲🇦", level: translations.skills.languageLevels.native },
+    { lang: "French", flag: "🇫🇷", level: translations.skills.languageLevels.fluent },
+    { lang: "English", flag: "🇺🇸", level: translations.skills.languageLevels.fluent },
+  ];
 
   const filteredSkills =
     activeCategory === "all"
@@ -84,11 +94,11 @@ const SkillsSection = () => {
           className="text-center mb-12"
         >
           <span className="font-orbitron text-sm uppercase tracking-widest text-muted-foreground mb-4 block">
-            My Expertise
+            {translations.skills.title}
           </span>
-          <h2 className="section-title">Skills & Technologies</h2>
+          <h2 className="section-title">{translations.skills.subtitle}</h2>
           <p className="section-subtitle max-w-2xl mx-auto">
-            Technologies I work with to bring ideas to life
+            {translations.skills.description}
           </p>
         </motion.div>
 
@@ -158,14 +168,10 @@ const SkillsSection = () => {
           className="mt-16"
         >
           <h3 className="font-orbitron text-xl text-center text-card-foreground mb-8">
-            Languages I Speak
+            {translations.skills.languagesTitle}
           </h3>
           <div className="flex flex-wrap justify-center gap-4">
-            {[
-              { lang: "Arabic", flag: "🇲🇦", level: "Native" },
-              { lang: "French", flag: "🇫🇷", level: "Fluent" },
-              { lang: "English", flag: "🇺🇸", level: "Fluent" },
-            ].map((item, index) => (
+            {languageSkills.map((item, index) => (
               <div
                 key={index}
                 className="flex items-center gap-3 px-6 py-3 rounded-xl bg-card border border-primary/20 hover:border-primary/50 transition-all"

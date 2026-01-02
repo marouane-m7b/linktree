@@ -203,7 +203,7 @@ const CertificationsSection = () => {
         >
           <button
             onClick={() => setSelectedCert(null)}
-            className="absolute top-6 right-6 w-12 h-12 rounded-full bg-muted/50 flex items-center justify-center text-foreground hover:bg-muted transition-colors"
+            className="absolute top-6 end-6 w-12 h-12 rounded-full bg-muted/50 flex items-center justify-center text-foreground hover:bg-muted transition-colors"
           >
             <FaTimes className="w-5 h-5" />
           </button>
