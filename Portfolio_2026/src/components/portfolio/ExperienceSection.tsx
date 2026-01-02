@@ -18,9 +18,9 @@ const initialExperiences = [
   // --- Education (Future/Current) ---
   {
     type: "education",
-    originalTitle: "Master's Degree, Distributed Systems & AI (SDIA)",
+    originalTitle: "Master's Degree, Distributed Systems & AI",
     originalCompany: "ENSET Mohammedia",
-    period: "Nov 2025 - Jun 2027",
+    period: "Nov 2025 - Present",
     originalDescription:
       "Advanced studies in Distributed Systems and Artificial Intelligence.",
     platforms: [],
@@ -180,7 +180,7 @@ const ExperienceSection = () => {
               initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
               animate={isInView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.6, delay: index * 0.2 }}
-              className={`relative flex items-start gap-8 mb-12 ${
+              className={`relative flex items-center gap-8 mb-12 ${
                 index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
               }`}
             >
@@ -204,7 +204,7 @@ const ExperienceSection = () => {
                     {/* Header */}
                     <div className="flex items-start gap-4 mb-4">
                       <div
-                        className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${
+                        className={`w-16 h-16 rounded-xl flex items-center justify-center shrink-0 ${
                           exp.type === "work"
                             ? "bg-primary/20 text-primary"
                             : "bg-secondary/20 text-secondary"
@@ -220,9 +220,6 @@ const ExperienceSection = () => {
                           {exp.company}
                         </p>
                       </div>
-                      <span className="font-orbitron text-xs text-primary bg-primary/10 px-3 py-2 rounded-xl text-center whitespace-pre-line leading-tight shrink-0">
-                        {exp.period.replace(" - ", "\n")}
-                      </span>
                     </div>
 
                     {/* Description */}
@@ -247,8 +244,12 @@ const ExperienceSection = () => {
                 </div>
               </div>
 
-              {/* Empty space for alignment */}
-              <div className="hidden md:block flex-1"></div>
+              {/* Date on the other side */}
+              <div className={`hidden md:flex flex-1 items-center ${index % 2 === 0 ? 'justify-start ps-12' : 'justify-end pe-12'}`}>
+                <span className="font-orbitron text-sm text-muted-foreground whitespace-pre-line text-center">
+                  {exp.period}
+                </span>
+              </div>
             </motion.div>
           ))}
         </div>

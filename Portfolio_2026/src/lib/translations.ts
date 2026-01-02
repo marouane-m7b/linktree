@@ -106,14 +106,14 @@ export const UI_TRANSLATIONS = {
       description: "A timeline of my professional journey and academic achievements",
       experiences: [
         {
-          title: "Master's Degree, Distributed Systems & AI (SDIA)",
+          title: "Master's Degree, Distributed Systems & AI",
           company: "ENSET Mohammedia",
           description: "Advanced studies in Distributed Systems and Artificial Intelligence.",
         },
         {
-          title: "Competitor – WorldSkills Morocco (Web Technologies)",
+          title: "WorldSkills Morocco (Web Technologies)",
           company: "WorldSkills International",
-          description: "Intensive national preparation program for WorldSkills Shanghai 2026. Focus on advanced back-end development, database optimization, and international standards using React.js and Laravel.",
+          description: "Secured 1st Place National in Web Technologies. Selected for the elite WorldSkills Shanghai 2026 team, mastering high-performance front-end and back-end development under strict time constraints.",
         },
         {
           title: "Professional License, Computer Science & Applied Math",
@@ -336,14 +336,14 @@ export const UI_TRANSLATIONS = {
       description: "Une chronologie de mon parcours professionnel et de mes réalisations académiques",
       experiences: [
         {
-          title: "Master, Systèmes Distribués & IA (SDIA)",
+          title: "Master, Systèmes Distribués & IA",
           company: "ENSET Mohammedia",
           description: "Études avancées en Systèmes Distribués et Intelligence Artificielle.",
         },
         {
-          title: "Compétiteur – WorldSkills Maroc (Technologies Web)",
+          title: "WorldSkills Maroc (Technologies Web)",
           company: "WorldSkills International",
-          description: "Programme intensif de préparation nationale pour WorldSkills Shanghai 2026. Accent sur le développement back-end avancé, l'optimisation des bases de données et les normes internationales utilisant React.js et Laravel.",
+          description: "Classé 1er au niveau national en technologies Web. Sélectionné pour l'équipe d'élite WorldSkills Shanghai 2026, avec une maîtrise du développement Front-End et Back-End de haute performance sous des contraintes de temps strictes.",
         },
         {
           title: "Licence Professionnelle, Informatique & Mathématiques Appliquées",
@@ -566,14 +566,14 @@ export const UI_TRANSLATIONS = {
       description: "نظرة عامة على رحلتي المهنية والإنجازات الأكاديمية",
       experiences: [
         {
-          title: "درجة الماجستير، الأنظمة الموزعة والذكاء الاصطناعي (SDIA)",
+          title: "درجة الماجستير، الأنظمة الموزعة والذكاء الاصطناعي",
           company: "ENSET المحمدية",
           description: "دراسات عليا في الأنظمة الموزعة والذكاء الاصطناعي.",
         },
         {
-          title: "متسابق – WorldSkills المغرب (تقنيات الويب)",
+          title: "WorldSkills المغرب (تقنيات الويب)",
           company: "WorldSkills الدولية",
-          description: "برنامج إعداد وطني مكثف لـ WorldSkills شنغهاي 2026. التركيز على تطوير الواجهة الخلفية المتقدمة، وتحسين قواعد البيانات، والمعايير الدولية باستخدام React.js و Laravel.",
+          description: "إحراز المركز الأول وطنيًا في تقنيات الويب. تم الاختيار ضمن فريق النخبة لـ WorldSkills شنغهاي 2026، مع إتقان تطوير الواجهات الأمامية والخلفية (Front-End & Back-End) عالي الأداء تحت قيود زمنية صارمة.",
         },
         {
           title: "إجازة مهنية، علوم الكمبيوتر والرياضيات التطبيقية",
