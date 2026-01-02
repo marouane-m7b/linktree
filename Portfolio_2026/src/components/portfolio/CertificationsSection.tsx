@@ -4,6 +4,9 @@ import { FaCertificate, FaExternalLinkAlt, FaTimes } from "react-icons/fa";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { UI_TRANSLATIONS } from "@/lib/translations";
 
+import EnsetIcon from "../../assets/enset.jpg";
+import OfpptIcon from "../../assets/ofppt.png";
+
 const defaultCertImage = "https://marketplace.canva.com/EAF5ZVffmZw/1/0/1600w/canva-modern-vintage-certificate-of-achievement-yMEujoaa8Hs.jpg";
 
 const certifications = [
@@ -15,6 +18,7 @@ const certifications = [
     credentialUrl: "",
     skills: ["Web Technologies", "Full Stack Development"],
     image: defaultCertImage,
+    iconImage: EnsetIcon,
   },
   {
     title: "Introduction to Modern AI",
@@ -24,6 +28,7 @@ const certifications = [
     credentialUrl: "",
     skills: ["Artificial Intelligence", "Machine Learning"],
     image: defaultCertImage,
+    iconImage: OfpptIcon,
   },
   {
     title: "IBM IT Scrum Master Specialization",
@@ -33,6 +38,7 @@ const certifications = [
     credentialUrl: "#",
     skills: ["Scrum", "Agile"],
     image: defaultCertImage,
+    iconImage: EnsetIcon,
   },
   {
     title: "Meta Front-End Developer Professional Certificate",
@@ -42,6 +48,7 @@ const certifications = [
     credentialUrl: "#",
     skills: ["React.js", "JavaScript"],
     image: defaultCertImage,
+    iconImage: OfpptIcon,
   },
   {
     title: "Introduction to Git and GitHub",
@@ -51,6 +58,7 @@ const certifications = [
     credentialUrl: "#",
     skills: ["Git", "Collaborative Problem Solving"],
     image: defaultCertImage,
+    iconImage: EnsetIcon,
   },
   {
     title: "Prompt Engineering for Educators Specialization",
@@ -60,6 +68,7 @@ const certifications = [
     credentialUrl: "#",
     skills: ["Prompt Engineering", "AI"],
     image: defaultCertImage,
+    iconImage: OfpptIcon,
   },
 ];
 
@@ -137,11 +146,11 @@ const CertificationsSection = () => {
                   {/* Issuer Badge */}
                   <div className="flex items-center gap-2 mb-3">
                     <div
-                      className={`w-8 h-8 rounded-lg bg-gradient-to-br ${
+                      className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${
                         issuerColors[cert.issuer] || "from-primary to-secondary"
-                      } flex items-center justify-center`}
+                      }`}
                     >
-                      <FaCertificate className="w-4 h-4 text-white" />
+                      <img src={cert.iconImage} alt={cert.issuer} className="w-full h-full object-cover rounded-md" />
                     </div>
                     <span className="font-rajdhani text-sm font-semibold text-secondary">
                       {cert.issuer}
