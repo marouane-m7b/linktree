@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { FaInstagram, FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaInstagram, FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa";
 import { Sun, Moon } from "lucide-react";
 import confetti from "canvas-confetti";
 import { Link } from "react-router-dom";
@@ -11,6 +11,7 @@ import malIcon from "./assets/myanimelist.png";
 import backloggdIcon from "./assets/backloggd.png";
 import letterboxdIcon from "./assets/letterboxd.png";
 import serializedIcon from "./assets/serializd.png";
+import youtubeIcon from "./assets/youtube.png";
 import musashiProfile from "./assets/musashi.jpg";
 import friendsImage from "./assets/friends.avif";
 const QUESTIONS_DB = [
@@ -396,6 +397,11 @@ export default function PasswordGate() {
         url: "https://www.linkedin.com/in/m7b/",
         icon: FaLinkedin,
       },
+      {
+        name: "Email",
+        url: "mailto:marouane.ma7boub@gmail.com",
+        icon: FaEnvelope,
+      },
     ];
 
     const links = [
@@ -434,6 +440,13 @@ export default function PasswordGate() {
         gradient: "from-red-500 via-cyber-pink to-cyber-purple",
         glow: "shadow-red-500/50",
         iconImg: backloggdIcon,
+      },
+      {
+        title: "Projects",
+        url: "https://www.youtube.com/playlist?list=PLvBHBS59bn0gttTZbAL00N7Zq8Hk36JQL",
+        gradient: "from-red-600 via-red-500 to-red-600",
+        glow: "shadow-red-500/50",
+        iconImg: youtubeIcon,
       },
     ];
 
