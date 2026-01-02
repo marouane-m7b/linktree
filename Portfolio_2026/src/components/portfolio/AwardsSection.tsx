@@ -3,10 +3,17 @@ import { useRef, useState } from "react";
 import { FaTimes } from "react-icons/fa";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { UI_TRANSLATIONS } from "@/lib/translations";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
-// import WorldSkillsIcon from "../../assets/worldskills.jpg";
-// import OfpptIcon from "../../assets/ofppt.png";
-// import IntellicoIcon from "../../assets/intellico.jpg";
+import WorldSkillsIcon from "../../assets/worldskills.jpg";
+import OfpptIcon from "../../assets/ofppt.png";
+import IntellicoIcon from "../../assets/intellico.jpg";
 
 const initialAwards = [
   {
@@ -14,28 +21,28 @@ const initialAwards = [
     date: "Jul 2025",
     images: [],
     color: "from-yellow-400 to-amber-500",
-    // iconImage: WorldSkillsIcon,
+    iconImage: WorldSkillsIcon,
   },
   {
     icon: "🥈",
     date: "Jan 2025",
     images: [],
     color: "from-gray-300 to-gray-400",
-    // iconImage: WorldSkillsIcon,
+    iconImage: WorldSkillsIcon,
   },
   {
     icon: "🎓",
     date: "Jun 2024",
     images: [],
     color: "from-primary to-secondary",
-    // iconImage: OfpptIcon,
+    iconImage: OfpptIcon,
   },
   {
     icon: "🏆",
     date: "May 2024",
     images: [],
     color: "from-accent to-secondary",
-    // iconImage: IntellicoIcon,
+    iconImage: IntellicoIcon,
   },
 ];
 
@@ -73,90 +80,99 @@ const AwardsSection = () => {
           </p>
         </motion.div>
 
-        {/* Awards Grid */}
-        <div className="grid gap-8 max-w-5xl mx-auto">
-          {awards.map((award, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: index * 0.15 }}
-              className="group relative"
-            >
-              {/* Glow */}
-              <div
-                className={`absolute -inset-0.5 bg-gradient-to-r ${award.color} rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500`}
-              ></div>
+        {/* Awards Slider */}
+        <Carousel
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+          className="w-full max-w-5xl mx-auto"
+        >
+          <CarouselContent>
+            {awards.map((award, index) => (
+              <CarouselItem key={index}>
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.6, delay: index * 0.15 }}
+                  className="group relative"
+                >
+                  {/* Glow */}
+                  <div
+                    className={`absolute -inset-0.5 bg-gradient-to-r ${award.color} rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500`}
+                  ></div>
 
-              {/* Card */}
-              <div className="relative cyber-card p-6 md:p-8">
-                <div className="flex flex-col md:flex-row gap-6">
-                  {/* Icon */}
-                  <div className="flex-shrink-0">
-                    <div
-                      className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${award.color} flex items-center justify-center text-3xl shadow-lg`}
-                      // className={`w-16 h-16 rounded-xl flex items-center justify-center shrink-0 ${award.color}`}
-                    >
-                      {award.icon}
-                      {/* <img src={award.iconImage} alt={award.title} className="w-full h-full object-cover rounded-md" /> */}
-                    </div>
-                  </div>
-
-                  {/* Content */}
-                  <div className="flex-1">
-                    {/* Header */}
-                    <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2 mb-3">
-                      <h3 className="font-orbitron text-lg font-bold text-card-foreground">
-                        {award.title}
-                      </h3>
-                      <span className="font-orbitron text-xs text-primary bg-primary/10 px-3 py-1 rounded-full whitespace-nowrap self-start">
-                        {award.date}
-                      </span>
-                    </div>
-
-                    {/* Issuer & Association */}
-                    <div className="flex flex-wrap items-center gap-2 mb-4">
-                      <span className="font-rajdhani text-sm font-semibold text-secondary">
-                        {award.issuer}
-                      </span>
-                      <span className="text-muted-foreground">•</span>
-                      <span className="font-rajdhani text-sm text-muted-foreground">
-                        {award.association}
-                      </span>
-                    </div>
-
-                    {/* Description */}
-                    <p className="font-rajdhani text-muted-foreground leading-relaxed">
-                      {award.description}
-                    </p>
-
-                    {/* Images */}
-                    {award.images.length > 0 && (
-                      <div className="flex flex-wrap gap-3 mt-4">
-                        {award.images.map((img, imgIndex) => (
-                          <button
-                            key={imgIndex}
-                            onClick={() => setSelectedImage(img)}
-                            className="relative group/img overflow-hidden rounded-lg border-2 border-primary/30 hover:border-primary transition-all duration-300"
-                          >
-                            <img
-                              src={img}
-                              alt={`${award.title} - Image ${imgIndex + 1}`}
-                              className="w-20 h-20 object-cover group-hover/img:scale-110 transition-transform duration-300"
-                            />
-                            <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                              <span className="text-xs font-orbitron text-primary-foreground">{translations.awards.view}</span>
-                            </div>
-                          </button>
-                        ))}
+                  {/* Card */}
+                  <div className="relative cyber-card p-6 md:p-8">
+                    <div className="flex flex-col md:flex-row gap-6">
+                      {/* Icon */}
+                      <div className="flex-shrink-0">
+                        <div
+                          className={`w-16 h-16 rounded-xl flex items-center justify-center shrink-0 ${award.color}`}
+                        >
+                          <img src={award.iconImage} alt={award.title} className="w-full h-full object-cover rounded-md" />
+                        </div>
                       </div>
-                    )}
+
+                      {/* Content */}
+                      <div className="flex-1">
+                        {/* Header */}
+                        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2 mb-3">
+                          <h3 className="font-orbitron text-lg font-bold text-card-foreground">
+                            {award.title}
+                          </h3>
+                          <span className="font-orbitron text-xs text-primary bg-primary/10 px-3 py-1 rounded-full whitespace-nowrap self-start">
+                            {award.date}
+                          </span>
+                        </div>
+
+                        {/* Issuer & Association */}
+                        <div className="flex flex-wrap items-center gap-2 mb-4">
+                          <span className="font-rajdhani text-sm font-semibold text-secondary">
+                            {award.issuer}
+                          </span>
+                          <span className="text-muted-foreground">•</span>
+                          <span className="font-rajdhani text-sm text-muted-foreground">
+                            {award.association}
+                          </span>
+                        </div>
+
+                        {/* Description */}
+                        <p className="font-rajdhani text-muted-foreground leading-relaxed">
+                          {award.description}
+                        </p>
+
+                        {/* Images */}
+                        {award.images.length > 0 && (
+                          <div className="flex flex-wrap gap-3 mt-4">
+                            {award.images.map((img, imgIndex) => (
+                              <button
+                                key={imgIndex}
+                                onClick={() => setSelectedImage(img)}
+                                className="relative group/img overflow-hidden rounded-lg border-2 border-primary/30 hover:border-primary transition-all duration-300"
+                              >
+                                <img
+                                  src={img}
+                                  alt={`${award.title} - Image ${imgIndex + 1}`}
+                                  className="w-20 h-20 object-cover group-hover/img:scale-110 transition-transform duration-300"
+                                />
+                                <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                  <span className="text-xs font-orbitron text-primary-foreground">{translations.awards.view}</span>
+                                </div>
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+                </motion.div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
       </div>
 
       {/* Image Modal */}

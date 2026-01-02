@@ -16,6 +16,13 @@ import IbmCert from "../../assets/Certifications/IBM Scrum Master.jpg";
 import MetaCert from "../../assets/Certifications/Meta Front-End Developer.jpg";
 import PromptCert from "../../assets/Certifications/Prompt Engineering.jpg";
 import EnsetAiCert from "../../assets/Certifications/Enset AI.jpg";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 const certifications = [
   {
@@ -105,102 +112,113 @@ const CertificationsSection = () => {
           </p>
         </motion.div>
 
-        {/* Certifications Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          {certifications.map((cert, index) => 
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group relative"
-            >
-              {/* Glow */}
-              <div
-                className={`absolute -inset-0.5 bg-gradient-to-r ${
-                  issuerColors[cert.issuer] || "from-primary to-secondary"
-                } rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500`}
-              ></div>
-
-              {/* Card */}
-              <div className="relative cyber-card p-6 h-full flex flex-col">
-                {/* Certificate Image */}
-                <button
-                  onClick={() => setSelectedCert(cert)}
-                  className="relative w-full h-60 mb-4 rounded-xl overflow-hidden border-2 border-primary/20 group-hover:border-primary/40 transition-all duration-300"
+        {/* Certifications Slider */}
+        <Carousel
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+          className="w-full max-w-6xl mx-auto"
+        >
+          <CarouselContent>
+            {certifications.map((cert, index) => (
+              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="group relative"
                 >
-                  <img
-                    src={cert.image}
-                    alt={cert.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-3">
-                    <span className="font-orbitron text-xs text-primary">{translations.awards.view}</span>
-                  </div>
-                </button>
+                  {/* Glow */}
+                  <div
+                    className={`absolute -inset-0.5 bg-gradient-to-r ${
+                      issuerColors[cert.issuer] || "from-primary to-secondary"
+                    } rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500`}
+                  ></div>
 
-                {/* Content */}
-                <div className="flex-1 flex flex-col">
-                  {/* Issuer Badge */}
-                  <div className="flex items-center gap-2 mb-3">
-                    <div
-                      className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${
-                        issuerColors[cert.issuer] || "from-primary to-secondary"
-                      }`}
+                  {/* Card */}
+                  <div className="relative cyber-card p-6 h-full flex flex-col">
+                    {/* Certificate Image */}
+                    <button
+                      onClick={() => setSelectedCert(cert)}
+                      className="relative w-full h-60 mb-4 rounded-xl overflow-hidden border-2 border-primary/20 group-hover:border-primary/40 transition-all duration-300"
                     >
-                      <img src={cert.iconImage} alt={cert.issuer} className="w-full h-full object-cover rounded-md" />
+                      <img
+                        src={cert.image}
+                        alt={cert.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-3">
+                        <span className="font-orbitron text-xs text-primary">{translations.awards.view}</span>
+                      </div>
+                    </button>
+
+                    {/* Content */}
+                    <div className="flex-1 flex flex-col">
+                      {/* Issuer Badge */}
+                      <div className="flex items-center gap-2 mb-3">
+                        <div
+                          className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${
+                            issuerColors[cert.issuer] || "from-primary to-secondary"
+                          }`}
+                        >
+                          <img src={cert.iconImage} alt={cert.issuer} className="w-full h-full object-cover rounded-md" />
+                        </div>
+                        <span className="font-rajdhani text-sm font-semibold text-secondary">
+                          {cert.issuer}
+                        </span>
+                      </div>
+
+                      {/* Title */}
+                      <h3 className="font-orbitron text-sm font-bold text-card-foreground mb-2 line-clamp-2">
+                        {cert.title}
+                      </h3>
+
+                      {/* Date & Credential */}
+                      <div className="space-y-1 mb-4">
+                        <p className="font-rajdhani text-xs text-muted-foreground">
+                          Issued {cert.date}
+                        </p>
+                        {cert.credentialId && (
+                          <p className="font-mono text-xs text-muted-foreground truncate">
+                            ID: {cert.credentialId}
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Skills */}
+                      <div className="flex flex-wrap gap-2 mt-auto">
+                        {cert.skills.map((skill, skillIndex) => (
+                          <span
+                            key={skillIndex}
+                            className="px-2 py-1 rounded-full text-xs font-orbitron bg-muted/50 text-primary border border-primary/20"
+                          >
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* Show Credential Link */}
+                      {cert.credentialUrl && (
+                        <a
+                          href={cert.credentialUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="mt-4 inline-flex items-center gap-2 font-orbitron text-xs text-primary hover:text-secondary transition-colors z-10"
+                        >
+                          {translations.certifications.showCredential}
+                          <FaExternalLinkAlt className="w-3 h-3" />
+                        </a>
+                      )}
                     </div>
-                    <span className="font-rajdhani text-sm font-semibold text-secondary">
-                      {cert.issuer}
-                    </span>
                   </div>
-
-                  {/* Title */}
-                  <h3 className="font-orbitron text-sm font-bold text-card-foreground mb-2 line-clamp-2">
-                    {cert.title}
-                  </h3>
-
-                  {/* Date & Credential */}
-                  <div className="space-y-1 mb-4">
-                    <p className="font-rajdhani text-xs text-muted-foreground">
-                      Issued {cert.date}
-                    </p>
-                    {cert.credentialId && (
-                      <p className="font-mono text-xs text-muted-foreground truncate">
-                        ID: {cert.credentialId}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Skills */}
-                  <div className="flex flex-wrap gap-2 mt-auto">
-                    {cert.skills.map((skill, skillIndex) => (
-                      <span
-                        key={skillIndex}
-                        className="px-2 py-1 rounded-full text-xs font-orbitron bg-muted/50 text-primary border border-primary/20"
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Show Credential Link */}
-                  {cert.credentialUrl && (
-                    <a
-                      href={cert.credentialUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-4 inline-flex items-center gap-2 font-orbitron text-xs text-primary hover:text-secondary transition-colors z-10"
-                    >
-                      {translations.certifications.showCredential}
-                      <FaExternalLinkAlt className="w-3 h-3" />
-                    </a>
-                  )}
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </div>
+                </motion.div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
       </div>
 
       {/* Certificate Modal */}
