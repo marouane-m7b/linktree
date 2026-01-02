@@ -50,6 +50,7 @@ export const UI_TRANSLATIONS = {
         backend: "Backend",
         mobile: "Mobile",
         tools: "Tools",
+        methodologies: "Methodologies",
       },
       languagesTitle: "Languages I Speak",
       languageLevels: {
@@ -279,6 +280,7 @@ export const UI_TRANSLATIONS = {
         backend: "Backend",
         mobile: "Mobile",
         tools: "Outils",
+        methodologies: "Méthodologies",
       },
       languagesTitle: "Langues que je Parle",
       languageLevels: {
@@ -508,6 +510,7 @@ export const UI_TRANSLATIONS = {
         backend: "الواجهة الخلفية",
         mobile: "الجوال",
         tools: "أدوات",
+        methodologies: "المنهجيات",
       },
       languagesTitle: "اللغات التي أتحدثها",
       languageLevels: {
