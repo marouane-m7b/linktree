@@ -8,8 +8,8 @@ import { UI_TRANSLATIONS } from "@/lib/translations";
 const contactInfo = [
   {
     icon: FaEnvelope,
-    value: "marouane@m7b.dev",
-    href: "mailto:marouane@m7b.dev",
+    value: "marouane.ma7boub@gmail.com",
+    href: "mailto:marouane.ma7boub@gmail.com",
   },
   {
     icon: FaPhone,

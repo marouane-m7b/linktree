@@ -20,7 +20,7 @@ const socialLinks = [
     href: "https://instagram.com/marwane_m7b",
     label: "Instagram",
   },
-  { icon: FaEnvelope, href: "mailto:marouane@m7b.dev", label: "Email" },
+  { icon: FaEnvelope, href: "mailto:marouane.ma7boub@gmail.com", label: "Email" },
 ];
 
 const HeroSection = () => {
@@ -60,7 +60,6 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              // Use 'text-start' so it aligns Left in English and Right in Arabic automatically
               className="font-orbitron text-5xl md:text-7xl font-bold mb-4 text-start"
             >
               <span className="text-primary text-glow-cyan">{firstName}</span>
@@ -103,7 +102,7 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="font-rajdhani text-lg text-muted-foreground max-w-xl mb-8 mx-auto lg:mx-0"
+              className="font-rajdhani text-lg text-muted-foreground max-w-xl mb-8 mx-auto lg:mx-0 text-start"
             >
               {hero.description}
             </motion.p>
@@ -207,7 +206,7 @@ const HeroSection = () => {
                 className="absolute -end-4 top-10 bg-card/90 backdrop-blur-sm border border-primary/30 rounded-xl px-4 py-2 shadow-lg"
               >
                 <span className="font-orbitron text-sm text-primary">
-                  5+ {hero.yearsExperience}
+                  3+ {hero.yearsExperience}
                 </span>
               </motion.div>
 
@@ -217,7 +216,7 @@ const HeroSection = () => {
                 className="absolute -start-4 bottom-10 bg-card/90 backdrop-blur-sm border border-secondary/30 rounded-xl px-4 py-2 shadow-lg"
               >
                 <span className="font-orbitron text-sm text-secondary">
-                  50+ {hero.projectsCompleted}
+                  11+ {hero.projectsCompleted}
                 </span>
               </motion.div>
             </div>

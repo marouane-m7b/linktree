@@ -69,8 +69,9 @@ const SkillsSection = () => {
 
   const languageSkills = [
     { lang: "Arabic", flag: "🇲🇦", level: translations.skills.languageLevels.native },
-    { lang: "French", flag: "🇫🇷", level: translations.skills.languageLevels.fluent },
-    { lang: "English", flag: "🇺🇸", level: translations.skills.languageLevels.fluent },
+    { lang: "French", flag: "🇫🇷", level: translations.skills.languageLevels.intermediate },
+    { lang: "English", flag: "🇺🇸", level: translations.skills.languageLevels.intermediate },
+    // { lang: "Japanese", flag: "🇯🇵", level: translations.skills.languageLevels.basic },
   ];
 
   const filteredSkills =

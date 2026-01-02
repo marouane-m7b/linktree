@@ -55,6 +55,8 @@ export const UI_TRANSLATIONS = {
       languageLevels: {
         native: "Native",
         fluent: "Fluent",
+        intermediate: "Intermediate",
+        basic: "Basic",
       },
     },
     work: {
@@ -282,6 +284,8 @@ export const UI_TRANSLATIONS = {
       languageLevels: {
         native: "Langue Maternelle",
         fluent: "Courant",
+        intermediate: "Intermédiaire",
+        basic: "Basique",
       },
     },
     work: {
@@ -509,6 +513,8 @@ export const UI_TRANSLATIONS = {
       languageLevels: {
         native: "لغة أم",
         fluent: "بطلاقة",
+        intermediate: "متوسط",
+        basic: "أساسي",
       },
     },
     work: {

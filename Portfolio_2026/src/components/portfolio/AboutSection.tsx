@@ -39,10 +39,10 @@ const AboutSection = () => {
   ];
 
   const stats = [
-    { value: "5+", label: translations.about.stats.experience },
-    { value: "50+", label: translations.about.stats.projects },
-    { value: "30+", label: translations.about.stats.clients },
-    { value: "10+", label: translations.about.stats.technologies },
+    { value: "3+", label: translations.about.stats.experience },
+    { value: "11+", label: translations.about.stats.projects },
+    { value: "2+", label: translations.about.stats.clients },
+    { value: "5+", label: translations.about.stats.technologies },
   ];
 
   const containerVariants = {
