@@ -6,6 +6,11 @@ import { UI_TRANSLATIONS } from "@/lib/translations";
 
 import EnsetIcon from "../../assets/enset.jpg";
 import OfpptIcon from "../../assets/ofppt.png";
+import GoogleIcon from "../../assets/google.jpg";
+import IbmIcon from "../../assets/ibm.jpg";
+import MetaIcon from "../../assets/meta.jpg";
+import VanderbiltIcon from "../../assets/vanderbilt.png";
+import WorldSkillsIcon from "../../assets/worldskills.jpg";
 
 const defaultCertImage = "https://marketplace.canva.com/EAF5ZVffmZw/1/0/1600w/canva-modern-vintage-certificate-of-achievement-yMEujoaa8Hs.jpg";
 
@@ -18,7 +23,7 @@ const certifications = [
     credentialUrl: "",
     skills: ["Web Technologies", "Full Stack Development"],
     image: defaultCertImage,
-    iconImage: EnsetIcon,
+    iconImage: WorldSkillsIcon,
   },
   {
     title: "Introduction to Modern AI",
@@ -28,7 +33,7 @@ const certifications = [
     credentialUrl: "",
     skills: ["Artificial Intelligence", "Machine Learning"],
     image: defaultCertImage,
-    iconImage: OfpptIcon,
+    iconImage: EnsetIcon,
   },
   {
     title: "IBM IT Scrum Master Specialization",
@@ -38,7 +43,7 @@ const certifications = [
     credentialUrl: "#",
     skills: ["Scrum", "Agile"],
     image: defaultCertImage,
-    iconImage: EnsetIcon,
+    iconImage: IbmIcon,
   },
   {
     title: "Meta Front-End Developer Professional Certificate",
@@ -48,7 +53,7 @@ const certifications = [
     credentialUrl: "#",
     skills: ["React.js", "JavaScript"],
     image: defaultCertImage,
-    iconImage: OfpptIcon,
+    iconImage: MetaIcon,
   },
   {
     title: "Introduction to Git and GitHub",
@@ -58,7 +63,7 @@ const certifications = [
     credentialUrl: "#",
     skills: ["Git", "Collaborative Problem Solving"],
     image: defaultCertImage,
-    iconImage: EnsetIcon,
+    iconImage: GoogleIcon,
   },
   {
     title: "Prompt Engineering for Educators Specialization",
@@ -68,7 +73,7 @@ const certifications = [
     credentialUrl: "#",
     skills: ["Prompt Engineering", "AI"],
     image: defaultCertImage,
-    iconImage: OfpptIcon,
+    iconImage: VanderbiltIcon,
   },
 ];
 
@@ -129,7 +134,7 @@ const CertificationsSection = () => {
                 {/* Certificate Image */}
                 <button
                   onClick={() => setSelectedCert(cert)}
-                  className="relative w-full h-32 mb-4 rounded-xl overflow-hidden border-2 border-primary/20 group-hover:border-primary/40 transition-all duration-300"
+                  className="relative w-full h-52 mb-4 rounded-xl overflow-hidden border-2 border-primary/20 group-hover:border-primary/40 transition-all duration-300"
                 >
                   <img
                     src={cert.image}
