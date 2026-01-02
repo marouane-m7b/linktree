@@ -10,26 +10,14 @@ import GoogleIcon from "../../assets/google.jpg";
 import IbmIcon from "../../assets/ibm.jpg";
 import MetaIcon from "../../assets/meta.jpg";
 import VanderbiltIcon from "../../assets/vanderbilt.png";
-import WorldSkillsIcon from "../../assets/worldskills.jpg";
 
 import GitCert from "../../assets/Certifications/Git And Github Google.jpg";
 import IbmCert from "../../assets/Certifications/IBM Scrum Master.jpg";
 import MetaCert from "../../assets/Certifications/Meta Front-End Developer.jpg";
 import PromptCert from "../../assets/Certifications/Prompt Engineering.jpg";
-
-const defaultCertImage = "https://marketplace.canva.com/EAF5ZVffmZw/1/0/1600w/canva-modern-vintage-certificate-of-achievement-yMEujoaa8Hs.jpg";
+import EnsetAiCert from "../../assets/Certifications/Enset AI.jpg";
 
 const certifications = [
-  {
-    title: "🥇 1ère Place Nationale – WorldSkills Maroc (Web Technologies)",
-    issuer: "WorldSkills Morocco",
-    date: "Jul 2025",
-    credentialId: "",
-    credentialUrl: "",
-    skills: ["Web Technologies", "Full Stack Development"],
-    image: defaultCertImage,
-    iconImage: WorldSkillsIcon,
-  },
   {
     title: "Introduction to Modern AI",
     issuer: "ENSET Mohammedia",
@@ -37,7 +25,7 @@ const certifications = [
     credentialId: "24ba0533-132f-429f-b30c-a5334d646241",
     credentialUrl: "",
     skills: ["Artificial Intelligence", "Machine Learning"],
-    image: defaultCertImage,
+    image: EnsetAiCert,
     iconImage: EnsetIcon,
   },
   {
@@ -119,7 +107,7 @@ const CertificationsSection = () => {
 
         {/* Certifications Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          {certifications.map((cert, index) => (
+          {certifications.map((cert, index) => 
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 30 }}
@@ -139,7 +127,7 @@ const CertificationsSection = () => {
                 {/* Certificate Image */}
                 <button
                   onClick={() => setSelectedCert(cert)}
-                  className="relative w-full h-52 mb-4 rounded-xl overflow-hidden border-2 border-primary/20 group-hover:border-primary/40 transition-all duration-300"
+                  className="relative w-full h-60 mb-4 rounded-xl overflow-hidden border-2 border-primary/20 group-hover:border-primary/40 transition-all duration-300"
                 >
                   <img
                     src={cert.image}
@@ -211,7 +199,7 @@ const CertificationsSection = () => {
                 </div>
               </div>
             </motion.div>
-          ))}
+          )}
         </div>
       </div>
 

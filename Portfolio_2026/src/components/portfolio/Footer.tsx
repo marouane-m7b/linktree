@@ -17,37 +17,34 @@ const Footer = () => {
           {/* Logo */}
           <motion.a
             href="#home"
-            className="flex items-center gap-2 group"
+            className="flex items-center gap-2 group w-full md:w-1/3 justify-center md:justify-start"
             whileHover={{ scale: 1.05 }}
           >
-            {/* <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary via-secondary to-accent flex items-center justify-center shadow-lg shadow-primary/30">
-              <span className="font-orbitron font-bold text-background text-lg">M</span>
-            </div> */}
             <span className="font-orbitron font-bold text-xl text-primary group-hover:text-glow-cyan transition-all">
               M7B
             </span>
           </motion.a>
 
           {/* Social Links */}
-          <div className="flex gap-6">
+          <div className="flex gap-6 w-full md:w-1/3 justify-center">
             {socialLinks.map((social, index) => (
               <motion.a
-                key={index}
-                href={social.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-primary transition-colors"
-                whileHover={{ scale: 1.2, rotate: 10 }}
-                whileTap={{ scale: 0.9 }}
-                aria-label={social.label}
+          key={index}
+          href={social.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-muted-foreground hover:text-primary transition-colors"
+          whileHover={{ scale: 1.2, rotate: 10 }}
+          whileTap={{ scale: 0.9 }}
+          aria-label={social.label}
               >
-                <social.icon className="w-5 h-5" />
+          <social.icon className="w-5 h-5" />
               </motion.a>
             ))}
           </div>
 
           {/* Copyright */}
-          <p className="font-rajdhani text-muted-foreground text-sm flex items-center gap-2">
+          <p className="font-rajdhani text-muted-foreground text-sm flex items-center justify-center md:justify-end gap-2 w-full md:w-1/3">
             © {currentYear} Marouane Mahboub. All rights
             reserved.
           </p>
