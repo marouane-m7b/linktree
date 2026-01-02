@@ -4,6 +4,16 @@ import { FaBriefcase, FaGraduationCap } from "react-icons/fa";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { UI_TRANSLATIONS } from "@/lib/translations";
 
+import AlbriIcon from "../../assets/albri.jpg";
+import EnsetIcon from "../../assets/enset.jpg";
+import JdidaIcon from "../../assets/jdida.jpg";
+import WorldSkillsIcon from "../../assets/worldskills.jpg";
+import OfpptIcon from "../../assets/ofppt.png";
+import IntellicoIcon from "../../assets/intellico.jpg";
+import SupemirIcon from "../../assets/supemir.jpg";
+import FreelanceIcon from "../../assets/freelance.jpg";
+import BacIcon from "../../assets/bac.png";
+
 const initialExperiences = [
   // --- Education (Future/Current) ---
   {
@@ -14,6 +24,7 @@ const initialExperiences = [
     originalDescription:
       "Advanced studies in Distributed Systems and Artificial Intelligence.",
     platforms: [],
+    icon: EnsetIcon,
   },
   {
     type: "work",
@@ -23,6 +34,7 @@ const initialExperiences = [
     originalDescription:
       "Intensive national preparation program for WorldSkills Shanghai 2026. Focus on advanced back-end development, database optimization, and international standards using React.js and Laravel.",
     platforms: [],
+    icon: WorldSkillsIcon,
   },
   {
     type: "education",
@@ -32,6 +44,7 @@ const initialExperiences = [
     originalDescription:
       "Focused on applied mathematics and computer science. Skills: UML, SQL, JEE, PHP, JavaScript.",
     platforms: [],
+    icon: JdidaIcon,
   },
   // --- Work Experience ---
   {
@@ -42,6 +55,7 @@ const initialExperiences = [
     originalDescription:
       "Developed a card management system (creation, validation, site management). Contributed to functional analysis, UML modeling, and defense preparation using Spring Boot and React.js.",
     platforms: [],
+    icon: OfpptIcon,
   },
   {
     type: "work",
@@ -51,6 +65,7 @@ const initialExperiences = [
     originalDescription:
       "Developed the mobile version of an e-commerce application using React Native and TypeScript. Improved performance and ergonomics for wholesale suppliers, integrated with a Laravel backend.",
     platforms: [],
+    icon: AlbriIcon,
   },
   {
     type: "work",
@@ -60,6 +75,7 @@ const initialExperiences = [
     originalDescription:
       "Taught Front-end (React JS & Redux) and Mobile development (React Native). Introduced Agile methodologies and trained students on Scrum Master roles and responsibilities.",
     platforms: [],
+    icon: SupemirIcon,
   },
   {
     type: "work",
@@ -69,6 +85,7 @@ const initialExperiences = [
     originalDescription:
       "Developed a continuing education platform using React and Laravel. Ranked 8th out of 38 groups. Focused on teamwork, project management, and high-quality code delivery.",
     platforms: [],
+    icon: IntellicoIcon,
   },
   {
     type: "work",
@@ -78,6 +95,7 @@ const initialExperiences = [
     originalDescription:
       "Built a complete Unified Commerce platform (Web & Mobile). Used Laravel, React, and Redux for the web app to streamline wholesale and retail purchasing processes.",
     platforms: [],
+    icon: AlbriIcon,
   },
   // --- Previous Education & Early Work ---
   {
@@ -88,6 +106,7 @@ const initialExperiences = [
     originalDescription:
       "Comprehensive training in full-stack development. Skills: React.js, Laravel, Redux, Scrum, SQL, and UML.",
     platforms: [],
+    icon: OfpptIcon,
   },
   {
     type: "work",
@@ -97,6 +116,7 @@ const initialExperiences = [
     originalDescription:
       "Developed 'Syaqati', a driving education website featuring user authentication, level progression, and community forums using PHP and JavaScript.",
     platforms: [],
+    icon: FreelanceIcon,
   },
   // {
   //   type: "education",
@@ -113,6 +133,7 @@ const initialExperiences = [
     period: "Sep 2018 - Jun 2021",
     originalDescription: "High school diploma with a focus on scientific subjects.",
     platforms: [],
+    icon: BacIcon,
   },
 ];
 
@@ -189,11 +210,7 @@ const ExperienceSection = () => {
                             : "bg-secondary/20 text-secondary"
                         }`}
                       >
-                        {exp.type === "work" ? (
-                          <FaBriefcase className="w-5 h-5" />
-                        ) : (
-                          <FaGraduationCap className="w-6 h-6" />
-                        )}
+                        <img src={exp.icon} alt={exp.originalCompany} className="w-full h-full object-cover rounded-md" />
                       </div>
                       <div className="flex-1">
                         <h3 className="font-orbitron text-lg font-bold text-card-foreground">
