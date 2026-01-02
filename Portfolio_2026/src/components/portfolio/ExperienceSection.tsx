@@ -3,40 +3,113 @@ import { useRef } from "react";
 import { FaBriefcase, FaGraduationCap } from "react-icons/fa";
 
 const experiences = [
+  // --- Education (Future/Current) ---
   {
-    type: "work",
-    title: "Freelance Developer",
-    company: "Self-Employed",
-    period: "2022 - Present",
+    type: "education",
+    title: "Master's Degree, Distributed Systems & AI (SDIA)",
+    company: "ENSET Mohammedia",
+    period: "Nov 2025 - Jun 2027",
     description:
-      "Building custom web and mobile applications for clients worldwide. Specializing in React, Laravel, and React Native development.",
-    platforms: ["Khamsat", "Upwork", "Fiverr"],
+      "Advanced studies in Distributed Systems and Artificial Intelligence.",
+    platforms: [],
   },
   {
     type: "work",
-    title: "Full Stack Developer",
-    company: "Various Projects",
-    period: "2020 - 2022",
+    title: "Competitor – WorldSkills Morocco (Web Technologies)",
+    company: "WorldSkills International",
+    period: "Jun 2025 - Nov 2025",
     description:
-      "Developed multiple web applications using modern technologies. Collaborated with teams to deliver high-quality software solutions.",
+      "Intensive national preparation program for WorldSkills Shanghai 2026. Focus on advanced back-end development, database optimization, and international standards using React.js and Laravel.",
     platforms: [],
   },
   {
     type: "education",
-    title: "Software Engineering",
+    title: "Professional License, Computer Science & Applied Math",
+    company: "Université Chouaïb Doukkali El Jadida",
+    period: "Sep 2024 - Jul 2025",
+    description:
+      "Focused on applied mathematics and computer science. Skills: UML, SQL, JEE, PHP, JavaScript.",
+    platforms: [],
+  },
+  // --- Work Experience ---
+  {
+    type: "work",
+    title: "Web Developer (PFE Internship)",
     company: "OFPPT",
-    period: "2019 - 2022",
+    period: "Apr 2025 - May 2025",
     description:
-      "Specialized in software development with focus on web technologies, databases, and software engineering principles.",
+      "Developed a card management system (creation, validation, site management). Contributed to functional analysis, UML modeling, and defense preparation using Spring Boot and React.js.",
     platforms: [],
   },
   {
-    type: "education",
-    title: "Baccalaureate in Science",
-    company: "High School",
-    period: "2018 - 2019",
+    type: "work",
+    title: "Mobile Developer (Internship)",
+    company: "Albri SARL",
+    period: "Apr 2024 - Jun 2024",
     description:
-      "Focused on mathematics and physics, building a strong foundation for technical education.",
+      "Developed the mobile version of an e-commerce application using React Native and TypeScript. Improved performance and ergonomics for wholesale suppliers, integrated with a Laravel backend.",
+    platforms: [],
+  },
+  {
+    type: "work",
+    title: "Web Development & Agile Trainer",
+    company: "SUPEMIR (Freelance)",
+    period: "Feb 2024 - May 2024",
+    description:
+      "Taught Front-end (React JS & Redux) and Mobile development (React Native). Introduced Agile methodologies and trained students on Scrum Master roles and responsibilities.",
+    platforms: [],
+  },
+  {
+    type: "work",
+    title: "Full Stack Developer (Hackathon)",
+    company: "Intellico Consulting",
+    period: "May 2024",
+    description:
+      "Developed a continuing education platform using React and Laravel. Ranked 8th out of 38 groups. Focused on teamwork, project management, and high-quality code delivery.",
+    platforms: [],
+  },
+  {
+    type: "work",
+    title: "Web Developer (Internship)",
+    company: "Albri SARL",
+    period: "Jan 2024 - Mar 2024",
+    description:
+      "Built a complete Unified Commerce platform (Web & Mobile). Used Laravel, React, and Redux for the web app to streamline wholesale and retail purchasing processes.",
+    platforms: [],
+  },
+  // --- Previous Education & Early Work ---
+  {
+    type: "education",
+    title: "Specialized Technician, Computer Science",
+    company: "Institut Spécialisé de Technologie Appliquée Sidi Moumen",
+    period: "Sep 2022 - Jun 2024",
+    description:
+      "Comprehensive training in full-stack development. Skills: React.js, Laravel, Redux, Scrum, SQL, and UML.",
+    platforms: [],
+  },
+  {
+    type: "work",
+    title: "Freelance Web Developer",
+    company: "Self-Employed",
+    period: "Dec 2022 - May 2023",
+    description:
+      "Developed 'Syaqati', a driving education website featuring user authentication, level progression, and community forums using PHP and JavaScript.",
+    platforms: [],
+  },
+  // {
+  //   type: "education",
+  //   title: "Biology Studies (1st Year)",
+  //   company: "Faculté des Sciences Ben M’Sik",
+  //   period: "Nov 2021 - Jun 2022",
+  //   description: "Fundamental studies in Biology.",
+  //   platforms: [],
+  // },
+  {
+    type: "education",
+    title: "Baccalaureate, Science",
+    company: "Lycée El Mokhtar Essoussi",
+    period: "Sep 2018 - Jun 2021",
+    description: "High school diploma with a focus on scientific subjects.",
     platforms: [],
   },
 ];
@@ -119,8 +192,8 @@ const ExperienceSection = () => {
                           {exp.company}
                         </p>
                       </div>
-                      <span className="font-orbitron text-xs text-primary bg-primary/10 px-3 py-1 rounded-full">
-                        {exp.period}
+                      <span className="font-orbitron text-xs text-primary bg-primary/10 px-3 py-2 rounded-xl text-center whitespace-pre-line leading-tight shrink-0">
+                        {exp.period.replace(" - ", "\n")}
                       </span>
                     </div>
 

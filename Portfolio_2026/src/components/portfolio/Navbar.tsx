@@ -71,9 +71,9 @@ const Navbar = () => {
               className="flex items-center gap-2 group"
               whileHover={{ scale: 1.05 }}
             >
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary via-secondary to-accent flex items-center justify-center shadow-lg shadow-primary/30">
+              {/* <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary via-secondary to-accent flex items-center justify-center shadow-lg shadow-primary/30">
                 <span className="font-orbitron font-bold text-background text-lg">M</span>
-              </div>
+              </div> */}
               <span className="font-orbitron font-bold text-xl text-primary group-hover:text-glow-cyan transition-all">
                 M7B
               </span>
