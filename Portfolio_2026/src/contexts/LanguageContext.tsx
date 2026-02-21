@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
 
-type Language = "en" | "fr" | "ar";
+type Language = "en" | "fr" | "ar" | "ja";
 
 interface LanguageContextType {
   lang: Language;
@@ -27,6 +27,13 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
     localStorage.setItem("portfolio_lang", lang);
     // Set dir attribute on html for RTL languages like Arabic
     document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+    
+    // Apply Japanese theme
+    if (lang === "ja") {
+      document.documentElement.classList.add("japan-theme");
+    } else {
+      document.documentElement.classList.remove("japan-theme");
+    }
   }, [lang]);
 
   return (

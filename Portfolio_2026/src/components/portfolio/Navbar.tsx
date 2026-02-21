@@ -127,6 +127,14 @@ const Navbar = () => {
                 >
                   AR
                 </button>
+                <button
+                  onClick={() => setLang("ja")}
+                  className={`px-2 py-1 rounded-md text-xs font-bold ${
+                    lang === "ja" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-primary"
+                  }`}
+                >
+                  🇯🇵
+                </button>
               </div>
             </div>
 
@@ -224,6 +232,16 @@ const Navbar = () => {
                     }`}
                   >
                     AR
+                  </button>
+                  <button
+                    onClick={() => setLang("ja")}
+                    className={`px-3 py-1.5 rounded-lg text-sm font-bold border-2 transition-all duration-300 ${
+                      lang === "ja"
+                        ? "bg-gradient-to-r from-primary to-secondary text-primary-foreground border-transparent shadow-lg shadow-accent/50"
+                        : "text-primary border-primary/30 hover:border-primary"
+                    }`}
+                  >
+                    🇯🇵
                   </button>
                 </div>
                 <motion.a

@@ -21,6 +21,7 @@ const QUESTIONS_DB = [
       en: "What city was I born in?",
       fr: "Dans quelle ville suis-je né ?",
       ar: "في أي مدينة وُلدت؟",
+      ja: "私はどの都市で生まれましたか？",
     },
   },
 
@@ -30,6 +31,7 @@ const QUESTIONS_DB = [
       en: "What is one of my dream travel destinations?",
       fr: "Quelle est une de mes destinations de rêve ?",
       ar: "ما هي إحدى وجهات السفر التي أحلم بها؟",
+      ja: "私の夢の旅行先の一つは何ですか？",
     },
   },
 
@@ -39,6 +41,7 @@ const QUESTIONS_DB = [
       en: "What city do I currently live in?",
       fr: "Dans quelle ville j'habite actuellement ?",
       ar: "في أي مدينة أعيش حاليًا؟",
+      ja: "私は現在どの都市に住んでいますか？",
     },
   },
 
@@ -48,6 +51,7 @@ const QUESTIONS_DB = [
       en: "What is one of my favorite TV shows?",
       fr: "Quelle est une de mes séries préférées ?",
       ar: "ما هو أحد برامجي التلفزيونية المفضلة؟",
+      ja: "私の好きなテレビ番組の一つは何ですか？",
     },
   },
 
@@ -57,6 +61,7 @@ const QUESTIONS_DB = [
       en: "What is one of my favorite animals?",
       fr: "Quel est un de mes animaux préférés ?",
       ar: "ما هو أحد حيواناتي المفضلة؟",
+      ja: "私の好きな動物の一つは何ですか？",
     },
   },
 
@@ -66,6 +71,7 @@ const QUESTIONS_DB = [
       en: "What is one of my favorite video games?",
       fr: "Quel est un de mes jeux vidéo préférés ?",
       ar: "ما هي إحدى ألعاب الفيديو المفضلة لدي؟",
+      ja: "私の好きなビデオゲームの一つは何ですか？",
     },
   },
 
@@ -75,6 +81,7 @@ const QUESTIONS_DB = [
       en: "What was one of my favorite subjects in high school?",
       fr: "Quelle était une de mes matières préférées au lycée ?",
       ar: "ما هي إحدى موادي المفضلة في الثانوية؟",
+      ja: "高校で好きだった科目の一つは何ですか？",
     },
   },
 
@@ -84,6 +91,7 @@ const QUESTIONS_DB = [
       en: "What is one of my favorite anime?",
       fr: "Quel est un de mes animés préférés ?",
       ar: "ما هو أحد الأنميات المفضلة لدي؟",
+      ja: "私の好きなアニメの一つは何ですか？",
     },
   },
 
@@ -94,6 +102,7 @@ const QUESTIONS_DB = [
       en: "What is one of my favorite colors?",
       fr: "Quelle est une de mes couleurs préférées ?",
       ar: "ما هو أحد ألواني المفضلة؟",
+      ja: "私の好きな色の一つは何ですか？",
     },
   },
 
@@ -103,6 +112,7 @@ const QUESTIONS_DB = [
       en: "What is one of my favorite sports?",
       fr: "Quel est un de mes sports préférés ?",
       ar: "ما هي إحدى رياضاتي المفضلة؟",
+      ja: "私の好きなスポーツの一つは何ですか？",
     },
   },
 
@@ -112,6 +122,7 @@ const QUESTIONS_DB = [
       en: "What is one of my hobbies?",
       fr: "Quel est un de mes passe-temps ?",
       ar: "ما هي إحدى هواياتي؟",
+      ja: "私の趣味の一つは何ですか？",
     },
   },
 ];
@@ -137,6 +148,13 @@ const UI_TEXT = {
     unlock: "اكشف عالمي",
     placeholder: "إجابتك...",
     select: "اختر سؤالاً",
+  },
+  ja: {
+    title: "私の秘密の空間",
+    sub: "友達限定！私のことを知っていることを証明するために3つの質問に答えてください",
+    unlock: "私の世界を明らかにする",
+    placeholder: "あなたの答え...",
+    select: "質問を選択",
   },
 };
 
@@ -667,6 +685,16 @@ export default function PasswordGate() {
             }`}
           >
             🇲🇦 AR
+          </button>
+          <button
+            onClick={() => setLang("ja")}
+            className={`px-3 py-1.5 rounded-lg text-xs font-black border-2 transition-all duration-300 ${
+              lang === "ja"
+                ? "bg-gradient-to-r from-primary to-secondary text-primary-foreground border-transparent shadow-lg shadow-accent/50 font-bold"
+                : "text-primary border-primary/30 hover:border-primary"
+            }`}
+          >
+            🇯🇵 JA
           </button>
         </div>
 
