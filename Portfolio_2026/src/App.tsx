@@ -7,6 +7,7 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Linktree from "./Linktree";
+import FloatingLanguageSwitcher from "./components/portfolio/FloatingLanguageSwitcher";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <LanguageProvider>
+          <FloatingLanguageSwitcher />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/linktree" element={<Linktree />} />

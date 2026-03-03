@@ -61,11 +61,10 @@ const Navbar = () => {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled
-            ? "bg-background/80 backdrop-blur-xl border-b border-primary/20"
-            : "bg-transparent"
-        }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
+          ? "bg-background/80 backdrop-blur-xl border-b border-primary/20"
+          : "bg-transparent"
+          }`}
         dir={lang === "ar" ? "rtl" : "ltr"}
       >
         <div className="container mx-auto px-6 py-4">
@@ -95,47 +94,12 @@ const Navbar = () => {
                     e.preventDefault();
                     handleNavClick(item.href);
                   }}
-                  className={`nav-link ${
-                    activeSection === item.href.slice(1) ? "text-primary active" : ""
-                  }`}
+                  className={`nav-link ${activeSection === item.href.slice(1) ? "text-primary active" : ""
+                    }`}
                 >
                   {translations.navbar[item.key as keyof typeof translations.navbar]}
                 </a>
               ))}
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setLang("en")}
-                  className={`px-2 py-1 rounded-md text-xs font-bold ${
-                    lang === "en" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-primary"
-                  }`}
-                >
-                  EN
-                </button>
-                <button
-                  onClick={() => setLang("fr")}
-                  className={`px-2 py-1 rounded-md text-xs font-bold ${
-                    lang === "fr" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-primary"
-                  }`}
-                >
-                  FR
-                </button>
-                <button
-                  onClick={() => setLang("ar")}
-                  className={`px-2 py-1 rounded-md text-xs font-bold ${
-                    lang === "ar" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-primary"
-                  }`}
-                >
-                  AR
-                </button>
-                <button
-                  onClick={() => setLang("ja")}
-                  className={`px-2 py-1 rounded-md text-xs font-bold ${
-                    lang === "ja" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-primary"
-                  }`}
-                >
-                  🇯🇵
-                </button>
-              </div>
             </div>
 
             {/* Theme Toggle & CTA Button */}
@@ -193,57 +157,15 @@ const Navbar = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className={`font-orbitron text-2xl uppercase tracking-wider ${
-                      activeSection === item.href.slice(1)
-                        ? "text-primary text-glow-cyan"
-                        : "text-muted-foreground hover:text-primary"
-                    } transition-colors`}
+                    className={`font-orbitron text-2xl uppercase tracking-wider ${activeSection === item.href.slice(1)
+                      ? "text-primary text-glow-cyan"
+                      : "text-muted-foreground hover:text-primary"
+                      } transition-colors`}
                   >
                     {translations.navbar[item.key as keyof typeof translations.navbar]}
                   </motion.a>
                 ))}
-                <div className="flex items-center gap-2 mt-4">
-                  <button
-                    onClick={() => setLang("en")}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-bold border-2 transition-all duration-300 ${
-                      lang === "en"
-                        ? "bg-gradient-to-r from-primary to-secondary text-primary-foreground border-transparent shadow-lg shadow-primary/50"
-                        : "text-primary border-primary/30 hover:border-primary"
-                    }`}
-                  >
-                    EN
-                  </button>
-                  <button
-                    onClick={() => setLang("fr")}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-bold border-2 transition-all duration-300 ${
-                      lang === "fr"
-                        ? "bg-gradient-to-r from-primary to-secondary text-primary-foreground border-transparent shadow-lg shadow-secondary/50"
-                        : "text-primary border-primary/30 hover:border-primary"
-                    }`}
-                  >
-                    FR
-                  </button>
-                  <button
-                    onClick={() => setLang("ar")}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-bold border-2 transition-all duration-300 ${
-                      lang === "ar"
-                        ? "bg-gradient-to-r from-primary to-secondary text-primary-foreground border-transparent shadow-lg shadow-accent/50"
-                        : "text-primary border-primary/30 hover:border-primary"
-                    }`}
-                  >
-                    AR
-                  </button>
-                  <button
-                    onClick={() => setLang("ja")}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-bold border-2 transition-all duration-300 ${
-                      lang === "ja"
-                        ? "bg-gradient-to-r from-primary to-secondary text-primary-foreground border-transparent shadow-lg shadow-accent/50"
-                        : "text-primary border-primary/30 hover:border-primary"
-                    }`}
-                  >
-                    🇯🇵
-                  </button>
-                </div>
+
                 <motion.a
                   href="#contact"
                   onClick={(e) => {

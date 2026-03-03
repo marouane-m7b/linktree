@@ -22,6 +22,7 @@ const QUESTIONS_DB = [
       fr: "Dans quelle ville suis-je né ?",
       ar: "في أي مدينة وُلدت؟",
       ja: "私はどの都市で生まれましたか？",
+      tz: "ⵎⴰⵏⵉ ⵖ ⵍⵓⵍⵖ?",
     },
   },
 
@@ -32,6 +33,7 @@ const QUESTIONS_DB = [
       fr: "Quelle est une de mes destinations de rêve ?",
       ar: "ما هي إحدى وجهات السفر التي أحلم بها؟",
       ja: "私の夢の旅行先の一つは何ですか？",
+      tz: "ⵎⴰⵏ ⵜⴰⵎⴰⵣⵉⵔⵜ ⴰⵢⵔⵉⵅ ⴰⴷ ⵙⵔⵙ ⵙⴰⴼⵔⵖ?",
     },
   },
 
@@ -42,6 +44,7 @@ const QUESTIONS_DB = [
       fr: "Dans quelle ville j'habite actuellement ?",
       ar: "في أي مدينة أعيش حاليًا؟",
       ja: "私は現在どの都市に住んでいますか？",
+      tz: "ⵎⴰⵏⵉ ⵖ ⴷⴷⵔⵖ ⴷⵖⵉⴽ?",
     },
   },
 
@@ -52,6 +55,7 @@ const QUESTIONS_DB = [
       fr: "Quelle est une de mes séries préférées ?",
       ar: "ما هو أحد برامجي التلفزيونية المفضلة؟",
       ja: "私の好きなテレビ番組の一つは何ですか？",
+      tz: "ⵎⴰⵜⴰ ⵍⴱⴰⵔⵏⴰⵎⵊ ⵉⵏⵓ ⵏ ⵜⵉⵍⵉⴼⵉⵣⵢⵓⵏ ⵍⵍⵉ ⵙⴰ ⵜⴼⵔⵔⴰⵊⵖ?",
     },
   },
 
@@ -62,6 +66,7 @@ const QUESTIONS_DB = [
       fr: "Quel est un de mes animaux préférés ?",
       ar: "ما هو أحد حيواناتي المفضلة؟",
       ja: "私の好きな動物の一つは何ですか？",
+      tz: "ⵎⴰⵜⴰ ⵍⵃⴰⵢⴰⵡⴰⵏ ⵉⵏⵓ ⴰⵢⵔⵉⵅ?",
     },
   },
 
@@ -72,6 +77,7 @@ const QUESTIONS_DB = [
       fr: "Quel est un de mes jeux vidéo préférés ?",
       ar: "ما هي إحدى ألعاب الفيديو المفضلة لدي؟",
       ja: "私の好きなビデオゲームの一つは何ですか？",
+      tz: "ⵎⴰⵜⴰ ⵍⵇⵉⵚⵜ ⵏ ⵍⴼⵉⴷⵢⵓ ⵉⵏⵓ ⴰⵢⵔⵉⵅ?",
     },
   },
 
@@ -82,6 +88,7 @@ const QUESTIONS_DB = [
       fr: "Quelle était une de mes matières préférées au lycée ?",
       ar: "ما هي إحدى موادي المفضلة في الثانوية؟",
       ja: "高校で好きだった科目の一つは何ですか？",
+      tz: "ⵎⴰⵜⴰ ⵍⵎⴰⴷⴰⵜ ⵉⵏⵓ ⵏ ⵓⵙⵉⵏⴰⵏ ⴰⵢⵔⵉⵅ?",
     },
   },
 
@@ -92,6 +99,7 @@ const QUESTIONS_DB = [
       fr: "Quel est un de mes animés préférés ?",
       ar: "ما هو أحد الأنميات المفضلة لدي؟",
       ja: "私の好きなアニメの一つは何ですか？",
+      tz: "ⵎⴰⵜⴰ ⵍⴰⵏⵉⵎⵉ ⵉⵏⵓ ⴰⵢⵔⵉⵅ?",
     },
   },
 
@@ -103,6 +111,7 @@ const QUESTIONS_DB = [
       fr: "Quelle est une de mes couleurs préférées ?",
       ar: "ما هو أحد ألواني المفضلة؟",
       ja: "私の好きな色の一つは何ですか？",
+      tz: "ⵎⴰⵜⴰ ⵍⵍⵓⵏ ⵉⵏⵓ ⴰⵢⵔⵉⵅ?",
     },
   },
 
@@ -113,6 +122,7 @@ const QUESTIONS_DB = [
       fr: "Quel est un de mes sports préférés ?",
       ar: "ما هي إحدى رياضاتي المفضلة؟",
       ja: "私の好きなスポーツの一つは何ですか？",
+      tz: "ⵎⴰⵜⴰ ⵜⴰⵢⵔⵉ ⵉⵏⵓ ⵏ ⵡⴰⴷⴷⴰⵍ?",
     },
   },
 
@@ -123,6 +133,7 @@ const QUESTIONS_DB = [
       fr: "Quel est un de mes passe-temps ?",
       ar: "ما هي إحدى هواياتي؟",
       ja: "私の趣味の一つは何ですか？",
+      tz: "ⵎⴰⵜⴰ ⵍⵀⵉⵡⴰⵢⴰⵜ ⵉⵏⵓ?",
     },
   },
 ];
@@ -155,6 +166,13 @@ const UI_TEXT = {
     unlock: "私の世界を明らかにする",
     placeholder: "あなたの答え...",
     select: "質問を選択",
+  },
+  tz: {
+    title: "ⴰⵎⴽⴰⵏ ⵉⵏⵓ ⵓⵙⵍⵉⴳ",
+    sub: "ⵉⵎⴷⴷⵓⴽⴽⴰⵍ ⵡⴰⵀⴰ! ⵊⴰⵡⴰⴱ ⴼ 3 ⵏ ⵉⵙⵇⵙⵉⵜⴰⵏ ⴰⴼⴰⴷ ⴰⴷ ⵜⵙⵙⵏⵜ ⴰⵢⴰ",
+    unlock: "ⵙⵙⵏ ⴰⵎⴰⴷⴰⵍ ⵉⵏⵓ",
+    placeholder: "ⴰⵡⴰⵍ ⵏⵏⴽ...",
+    select: "ⴼⵔⵏ ⴰⵙⵇⵙⵉ",
   },
 };
 
@@ -219,9 +237,8 @@ const ThemeToggle = ({ lang }) => {
   return (
     <button
       onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-      className={`absolute top-4 ${
-        lang === "ar" ? "right-4" : "left-4"
-      } z-20 p-2 rounded-full bg-black/20 dark:bg-white/20 text-white backdrop-blur-sm`}
+      className={`absolute top-4 ${lang === "ar" ? "right-4" : "left-4"
+        } z-20 p-2 rounded-full bg-black/20 dark:bg-white/20 text-white backdrop-blur-sm`}
     >
       {theme === "light" ? (
         <Moon className="h-5 w-5 text-cyber-purple" />
@@ -471,9 +488,8 @@ export default function PasswordGate() {
     return (
       <Background>
         <div
-          className={`w-full bg-card/80 dark:bg-black/80 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden border-2 border-primary/30 animate-fade-in relative ${
-            lang === "ar" ? "font-cairo" : ""
-          }`}
+          className={`w-full bg-card/80 dark:bg-black/80 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden border-2 border-primary/30 animate-fade-in relative ${lang === "ar" ? "font-cairo" : ""
+            }`}
         >
           <ThemeToggle lang={lang} />
           {/* Glowing border animation */}
@@ -643,9 +659,8 @@ export default function PasswordGate() {
   return (
     <Background>
       <div
-        className={`relative bg-card/90 dark:bg-black/90 backdrop-blur-xl rounded-2xl shadow-2xl p-6 w-full border-2 border-primary/50 transition-transform ${
-          shake ? "animate-shake" : ""
-        } ${lang === "ar" ? "font-cairo" : ""}`}
+        className={`relative bg-card/90 dark:bg-black/90 backdrop-blur-xl rounded-2xl shadow-2xl p-6 w-full border-2 border-primary/50 transition-transform ${shake ? "animate-shake" : ""
+          } ${lang === "ar" ? "font-cairo" : ""}`}
         dir={lang === "ar" ? "rtl" : "ltr"}
       >
         <ThemeToggle lang={lang} />
@@ -654,49 +669,6 @@ export default function PasswordGate() {
         <div className="absolute top-0 right-0 w-20 h-20 border-r-2 border-t-2 border-secondary/50 rounded-tr-2xl"></div>
         <div className="absolute bottom-0 left-0 w-20 h-20 border-l-2 border-b-2 border-secondary/50 rounded-bl-2xl"></div>
         <div className="absolute bottom-0 right-0 w-20 h-20 border-r-2 border-b-2 border-primary/50 rounded-br-2xl"></div>
-
-        <div className="relative z-10 flex justify-end gap-2 mb-6">
-          <button
-            onClick={() => setLang("en")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-black border-2 transition-all duration-300 ${
-              lang === "en"
-                ? "bg-gradient-to-r from-primary to-secondary text-primary-foreground border-transparent shadow-lg shadow-primary/50 font-bold"
-                : "text-primary border-primary/30 hover:border-primary"
-            }`}
-          >
-            🇺🇸 EN
-          </button>
-          <button
-            onClick={() => setLang("fr")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-black border-2 transition-all duration-300 ${
-              lang === "fr"
-                ? "bg-gradient-to-r from-primary to-secondary text-primary-foreground border-transparent shadow-lg shadow-secondary/50 font-bold"
-                : "text-primary border-primary/30 hover:border-primary"
-            }`}
-          >
-            🇫🇷 FR
-          </button>
-          <button
-            onClick={() => setLang("ar")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-black border-2 transition-all duration-300 ${
-              lang === "ar"
-                ? "bg-gradient-to-r from-primary to-secondary text-primary-foreground border-transparent shadow-lg shadow-accent/50 font-bold"
-                : "text-primary border-primary/30 hover:border-primary"
-            }`}
-          >
-            🇲🇦 AR
-          </button>
-          <button
-            onClick={() => setLang("ja")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-black border-2 transition-all duration-300 ${
-              lang === "ja"
-                ? "bg-gradient-to-r from-primary to-secondary text-primary-foreground border-transparent shadow-lg shadow-accent/50 font-bold"
-                : "text-primary border-primary/30 hover:border-primary"
-            }`}
-          >
-            🇯🇵 JA
-          </button>
-        </div>
 
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-28 h-28 bg-gradient-to-br from-primary via-secondary to-accent rounded-2xl mb-4 shadow-lg shadow-primary/50 relative animate-pulse-glow">
@@ -772,28 +744,25 @@ export default function PasswordGate() {
                             }
                             className={`
                       w-full px-4 py-3 border-2 rounded-xl outline-none transition-all text-sm font-bold
-                      ${
-                        inputStatus[index] === "error"
-                          ? "border-red-500 bg-red-500/10 text-red-400 shadow-lg shadow-red-500/30"
-                          : inputStatus[index] === "correct"
-                          ? "border-green-500 bg-green-500/10 text-green-400 shadow-lg shadow-green-500/30"
-                          : "border-primary/30 bg-card/50 dark:bg-black/50 text-foreground focus:border-primary focus:shadow-lg focus:shadow-primary/30"
-                      }
-                      ${
-                        inputStatus[index] === "correct" ||
-                        loadingIndex !== null
-                          ? "cursor-not-allowed"
-                          : ""
-                      }
+                      ${inputStatus[index] === "error"
+                                ? "border-red-500 bg-red-500/10 text-red-400 shadow-lg shadow-red-500/30"
+                                : inputStatus[index] === "correct"
+                                  ? "border-green-500 bg-green-500/10 text-green-400 shadow-lg shadow-green-500/30"
+                                  : "border-primary/30 bg-card/50 dark:bg-black/50 text-foreground focus:border-primary focus:shadow-lg focus:shadow-primary/30"
+                              }
+                      ${inputStatus[index] === "correct" ||
+                                loadingIndex !== null
+                                ? "cursor-not-allowed"
+                                : ""
+                              }
                     `}
                             placeholder={UI_TEXT[lang].placeholder}
                             autoComplete="off"
                           />
 
                           <div
-                            className={`absolute ${
-                              lang === "ar" ? "left-3" : "right-3"
-                            } top-3`}
+                            className={`absolute ${lang === "ar" ? "left-3" : "right-3"
+                              } top-3`}
                           >
                             {inputStatus[index] === "correct" && (
                               <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center animate-bounce">
@@ -892,14 +861,13 @@ export default function PasswordGate() {
                       step < activeQuestionIndex
                         ? "100%"
                         : step === activeQuestionIndex
-                        ? "50%"
-                        : "0%",
+                          ? "50%"
+                          : "0%",
                   }}
-                  className={`h-full rounded-full transition-all duration-500 ${
-                    step < activeQuestionIndex
-                      ? "bg-green-500"
-                      : "bg-primary"
-                  } ${step === activeQuestionIndex ? "animate-pulse" : ""}`}
+                  className={`h-full rounded-full transition-all duration-500 ${step < activeQuestionIndex
+                    ? "bg-green-500"
+                    : "bg-primary"
+                    } ${step === activeQuestionIndex ? "animate-pulse" : ""}`}
                 />
               </div>
             ))}

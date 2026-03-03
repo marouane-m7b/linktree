@@ -8,6 +8,7 @@ interface CyberBackgroundProps {
 const CyberBackground = ({ children }: CyberBackgroundProps) => {
   const { lang } = useLanguage();
   const [petals, setPetals] = useState<Array<{ id: number; left: number; delay: number; duration: number }>>([]);
+  const [yazParticles, setYazParticles] = useState<Array<{ id: number; left: number; top: number; delay: number; duration: number }>>([]);
 
   useEffect(() => {
     if (lang === "ja") {
@@ -19,8 +20,21 @@ const CyberBackground = ({ children }: CyberBackgroundProps) => {
         duration: 8 + Math.random() * 4,
       }));
       setPetals(newPetals);
+      setYazParticles([]);
+    } else if (lang === "tz") {
+      // Generate random floating Yaz particles for Tamazight theme scattered across the screen
+      const newYaz = Array.from({ length: 15 }, (_, i) => ({
+        id: i,
+        left: Math.random() * 100,
+        top: Math.random() * 100,
+        delay: Math.random() * 10,
+        duration: 20 + Math.random() * 10, // Slower, relaxed floating duration
+      }));
+      setYazParticles(newYaz);
+      setPetals([]);
     } else {
       setPetals([]);
+      setYazParticles([]);
     }
   }, [lang]);
 
@@ -28,7 +42,12 @@ const CyberBackground = ({ children }: CyberBackgroundProps) => {
     <div className="min-h-screen w-full bg-background relative overflow-hidden">
       {/* Animated grid background */}
       <div className="fixed inset-0 z-0">
-        <div className={`absolute inset-0 ${lang === "ja" ? "bg-gradient-to-br from-red-50/20 via-background to-red-100/20 dark:from-red-950/20 dark:via-background dark:to-red-900/20" : "bg-gradient-to-br from-secondary/10 via-background to-primary/10"}`}></div>
+        <div className={`absolute inset-0 ${lang === "ja"
+          ? "bg-gradient-to-br from-red-50/20 via-background to-red-100/20 dark:from-red-950/20 dark:via-background dark:to-red-900/20"
+          : lang === "tz"
+            ? "bg-gradient-to-br from-orange-50/20 via-background to-orange-100/20 dark:from-orange-950/20 dark:via-background dark:to-orange-900/20 dune-pattern"
+            : "bg-gradient-to-br from-secondary/10 via-background to-primary/10"
+          }`}></div>
         <div
           className="absolute inset-0 animate-grid-move"
           style={{
@@ -39,7 +58,7 @@ const CyberBackground = ({ children }: CyberBackgroundProps) => {
             backgroundSize: "60px 60px",
           }}
         ></div>
-        
+
         {/* Glowing orbs */}
         {lang === "ja" ? (
           <>
@@ -47,6 +66,13 @@ const CyberBackground = ({ children }: CyberBackgroundProps) => {
             <div className="absolute top-20 right-20 w-64 h-64 bg-red-500 rounded-full mix-blend-screen filter blur-3xl opacity-20 rising-sun"></div>
             <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-red-600 rounded-full mix-blend-screen filter blur-3xl opacity-10 animate-pulse" style={{ animationDelay: "1s" }}></div>
             <div className="absolute top-1/2 left-1/2 w-48 h-48 bg-red-400 rounded-full mix-blend-screen filter blur-3xl opacity-15 animate-pulse" style={{ animationDelay: "2s" }}></div>
+          </>
+        ) : lang === "tz" ? (
+          <>
+            {/* Saharan/Amazigh effect for Tamazight theme */}
+            <div className="absolute top-20 right-20 w-96 h-96 bg-orange-500 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-pulse"></div>
+            <div className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] bg-red-800 rounded-full mix-blend-screen filter blur-3xl opacity-10 animate-pulse" style={{ animationDelay: "1s" }}></div>
+            <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-blue-600 rounded-full mix-blend-screen filter blur-3xl opacity-15 animate-pulse" style={{ animationDelay: "2s" }}></div>
           </>
         ) : (
           <>
@@ -78,6 +104,22 @@ const CyberBackground = ({ children }: CyberBackgroundProps) => {
             animationDuration: `${petal.duration}s`,
           }}
         />
+      ))}
+
+      {/* Yaz particles for Tamazight theme */}
+      {lang === "tz" && yazParticles.map((particle) => (
+        <div
+          key={`yaz-${particle.id}`}
+          className="yaz-particle"
+          style={{
+            left: `${particle.left}%`,
+            top: `${particle.top}%`,
+            animationDelay: `${particle.delay}s`,
+            animationDuration: `${particle.duration}s`,
+          }}
+        >
+          ⵣ
+        </div>
       ))}
 
       {/* Scanline effect */}
