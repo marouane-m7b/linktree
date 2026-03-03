@@ -696,15 +696,63 @@ a, button, [role="button"], input[type="submit"], .cursor-pointer {
   opacity: 0.6;
 }
 
-/* Cherry blossom animation */
-@keyframes sakura-fall {
+/* Cherry blossom animation - with random horizontal drift */
+@keyframes sakura-fall-1 {
   0% {
-    transform: translateY(-10px) rotate(0deg);
+    transform: translateY(-10px) translateX(0) rotate(0deg);
     opacity: 1;
   }
-
+  25% {
+    transform: translateY(25vh) translateX(30px) rotate(90deg);
+  }
+  50% {
+    transform: translateY(50vh) translateX(-20px) rotate(180deg);
+  }
+  75% {
+    transform: translateY(75vh) translateX(40px) rotate(270deg);
+  }
   100% {
-    transform: translateY(100vh) rotate(360deg);
+    transform: translateY(100vh) translateX(-10px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes sakura-fall-2 {
+  0% {
+    transform: translateY(-10px) translateX(0) rotate(0deg);
+    opacity: 1;
+  }
+  25% {
+    transform: translateY(25vh) translateX(-40px) rotate(90deg);
+  }
+  50% {
+    transform: translateY(50vh) translateX(25px) rotate(180deg);
+  }
+  75% {
+    transform: translateY(75vh) translateX(-30px) rotate(270deg);
+  }
+  100% {
+    transform: translateY(100vh) translateX(15px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes sakura-fall-3 {
+  0% {
+    transform: translateY(-10px) translateX(0) rotate(0deg);
+    opacity: 1;
+  }
+  25% {
+    transform: translateY(25vh) translateX(20px) rotate(90deg);
+  }
+  50% {
+    transform: translateY(50vh) translateX(-35px) rotate(180deg);
+  }
+  75% {
+    transform: translateY(75vh) translateX(25px) rotate(270deg);
+  }
+  100% {
+    transform: translateY(100vh) translateX(-20px) rotate(360deg);
     opacity: 0;
   }
 }
@@ -715,9 +763,20 @@ a, button, [role="button"], input[type="submit"], .cursor-pointer {
   height: 10px;
   background: hsl(355 85% 70%);
   border-radius: 50% 0 50% 0;
-  animation: sakura-fall 10s linear infinite;
   pointer-events: none;
   z-index: 1;
+}
+
+.japan-theme .sakura-petal:nth-child(3n) {
+  animation: sakura-fall-1 10s linear infinite;
+}
+
+.japan-theme .sakura-petal:nth-child(3n+1) {
+  animation: sakura-fall-2 12s linear infinite;
+}
+
+.japan-theme .sakura-petal:nth-child(3n+2) {
+  animation: sakura-fall-3 11s linear infinite;
 }
 
 /* Rising sun effect */
