@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Linktree from "./Linktree";
 import FloatingLanguageSwitcher from "./components/portfolio/FloatingLanguageSwitcher";
+import FloatingTazrzit from "./components/portfolio/FloatingTazrzit";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,7 @@ const App = () => (
       <BrowserRouter>
         <LanguageProvider>
           <FloatingLanguageSwitcher />
+          <FloatingTazrzit />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/linktree" element={<Linktree />} />
