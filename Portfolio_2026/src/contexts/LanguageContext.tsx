@@ -41,6 +41,13 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
     } else {
       document.documentElement.classList.remove("tamazight-theme");
     }
+
+    // Apply Arabic theme
+    if (lang === "ar") {
+      document.documentElement.classList.add("arabic-theme");
+    } else {
+      document.documentElement.classList.remove("arabic-theme");
+    }
   }, [lang]);
 
   return (

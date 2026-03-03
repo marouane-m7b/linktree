@@ -276,6 +276,96 @@
     --gradient-tz: linear-gradient(135deg, hsl(25 90% 60%), hsl(15 80% 60%), hsl(217 90% 65%));
     --gradient-tz-glow: linear-gradient(135deg, hsl(25 90% 60% / 0.3), hsl(217 90% 65% / 0.3));
   }
+
+  /* Arabic Theme - Islamic/Middle Eastern aesthetic */
+  .arabic-theme {
+    /* Light mode - Gold and Emerald theme */
+    --background: 45 25% 97%;
+    --foreground: 160 30% 15%;
+
+    --card: 45 20% 98%;
+    --card-foreground: 160 30% 20%;
+
+    --popover: 45 20% 98%;
+    --popover-foreground: 160 30% 20%;
+
+    --primary: 160 70% 40%;
+    --primary-foreground: 45 25% 97%;
+
+    --secondary: 45 95% 55%;
+    --secondary-foreground: 160 30% 15%;
+
+    --accent: 200 80% 45%;
+    --accent-foreground: 45 25% 97%;
+
+    --muted: 45 20% 92%;
+    --muted-foreground: 160 20% 45%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 45 25% 97%;
+
+    --border: 45 20% 88%;
+    --input: 45 20% 92%;
+    --ring: 160 70% 40%;
+
+    /* Arabic custom colors */
+    --ar-emerald: 160 70% 40%;
+    --ar-gold: 45 95% 55%;
+    --ar-turquoise: 200 80% 45%;
+    --ar-ivory: 45 25% 97%;
+
+    /* Glow effects */
+    --glow-emerald: 0 0 20px hsl(160 70% 40% / 0.4);
+    --glow-gold: 0 0 20px hsl(45 95% 55% / 0.4);
+
+    /* Gradients */
+    --gradient-ar: linear-gradient(135deg, hsl(160 70% 40%), hsl(45 95% 55%), hsl(200 80% 45%));
+    --gradient-ar-glow: linear-gradient(135deg, hsl(160 70% 40% / 0.2), hsl(45 95% 55% / 0.2));
+  }
+
+  .arabic-theme.dark {
+    --background: 160 25% 8%;
+    --foreground: 45 30% 95%;
+
+    --card: 160 25% 12%;
+    --card-foreground: 45 30% 95%;
+
+    --popover: 160 25% 12%;
+    --popover-foreground: 45 30% 95%;
+
+    --primary: 160 70% 50%;
+    --primary-foreground: 160 25% 8%;
+
+    --secondary: 45 95% 60%;
+    --secondary-foreground: 160 25% 8%;
+
+    --accent: 200 80% 55%;
+    --accent-foreground: 160 25% 8%;
+
+    --muted: 160 25% 18%;
+    --muted-foreground: 45 20% 70%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 45 30% 95%;
+
+    --border: 160 25% 25%;
+    --input: 160 25% 20%;
+    --ring: 160 70% 50%;
+
+    /* Arabic custom colors - dark mode */
+    --ar-emerald: 160 70% 50%;
+    --ar-gold: 45 95% 60%;
+    --ar-turquoise: 200 80% 55%;
+    --ar-ivory: 45 30% 95%;
+
+    /* Glow effects */
+    --glow-emerald: 0 0 25px hsl(160 70% 50% / 0.6);
+    --glow-gold: 0 0 25px hsl(45 95% 60% / 0.6);
+
+    /* Gradients */
+    --gradient-ar: linear-gradient(135deg, hsl(160 70% 50%), hsl(45 95% 60%), hsl(200 80% 55%));
+    --gradient-ar-glow: linear-gradient(135deg, hsl(160 70% 50% / 0.3), hsl(45 95% 60% / 0.3));
+  }
 }
 
 @layer base {
@@ -684,17 +774,6 @@ a, button, [role="button"], input[type="submit"], .cursor-pointer {
 }
 
 /* Samurai-inspired decorative elements */
-.japan-theme .section-title::before {
-  content: '⚔';
-  margin-right: 0.5rem;
-  opacity: 0.6;
-}
-
-.japan-theme .section-title::after {
-  content: '⚔';
-  margin-left: 0.5rem;
-  opacity: 0.6;
-}
 
 /* Cherry blossom animation - with random horizontal drift */
 @keyframes sakura-fall-1 {
@@ -881,20 +960,6 @@ a, button, [role="button"], input[type="submit"], .cursor-pointer {
 }
 
 /* Amazigh-inspired decorative elements */
-.tamazight-theme .section-title::before {
-  content: 'ⵣ';
-  /* Yaz symbol */
-  margin-right: 0.5rem;
-  opacity: 0.8;
-  color: hsl(var(--tz-blue));
-}
-
-.tamazight-theme .section-title::after {
-  content: 'ⵣ';
-  margin-left: 0.5rem;
-  opacity: 0.8;
-  color: hsl(var(--tz-blue));
-}
 
 /* Floating Yaz symbol animation */
 @keyframes yaz-float {
@@ -938,4 +1003,106 @@ a, button, [role="button"], input[type="submit"], .cursor-pointer {
 /* Sand dune gradient effect */
 .tamazight-theme .dune-pattern {
   background: radial-gradient(ellipse at bottom, hsl(var(--tz-orange)/0.2) 0%, transparent 60%);
+}
+
+
+/* Arabic Theme Specific Styles */
+.arabic-theme .cyber-text {
+  @apply text-transparent bg-clip-text bg-gradient-to-r from-[hsl(var(--ar-emerald))] via-[hsl(var(--ar-gold))] to-[hsl(var(--ar-turquoise))];
+}
+
+.arabic-theme .cyber-border {
+  @apply border-2 border-primary/40 hover:border-primary transition-all duration-300;
+}
+
+.arabic-theme .cyber-glow {
+  box-shadow: var(--glow-emerald);
+}
+
+.arabic-theme .cyber-card {
+  @apply relative bg-card/90 backdrop-blur-xl rounded-2xl border-2 border-primary/20 overflow-hidden;
+}
+
+.arabic-theme .cyber-card::before {
+  content: '';
+  @apply absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5;
+}
+
+.arabic-theme .cyber-button {
+  @apply relative px-8 py-3 bg-transparent border-2 border-primary rounded-lg font-bold text-primary uppercase tracking-widest transition-all duration-300;
+}
+
+.arabic-theme .cyber-button:hover {
+  @apply bg-primary text-white shadow-[0_0_30px_hsl(160_70%_40%/0.5)];
+}
+
+.arabic-theme .text-glow-cyan {
+  text-shadow: 0 0 10px hsl(160 70% 40% / 0.5), 0 0 20px hsl(160 70% 40% / 0.3);
+}
+
+/* Islamic geometric pattern decorations */
+
+/* Geometric star pattern animation */
+@keyframes star-rotate {
+  0% {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.15;
+  }
+  50% {
+    transform: rotate(180deg) scale(1.1);
+    opacity: 0.25;
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+    opacity: 0.15;
+  }
+}
+
+.arabic-theme .geometric-star {
+  position: fixed;
+  pointer-events: none;
+  z-index: 1;
+  animation: star-rotate 20s linear infinite;
+}
+
+/* Arabesque pattern background */
+.arabic-theme .arabesque-pattern {
+  background-image: 
+    radial-gradient(circle at 20% 30%, hsl(var(--ar-emerald) / 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, hsl(var(--ar-gold) / 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, hsl(var(--ar-turquoise) / 0.08) 0%, transparent 50%);
+}
+
+/* Mosque dome inspired glow */
+@keyframes dome-glow {
+  0%, 100% {
+    box-shadow: 0 0 30px hsl(var(--ar-emerald) / 0.3);
+  }
+  50% {
+    box-shadow: 0 0 50px hsl(var(--ar-gold) / 0.4);
+  }
+}
+
+.arabic-theme .dome-glow {
+  animation: dome-glow 6s ease-in-out infinite;
+}
+
+/* Calligraphy-inspired flowing lines */
+@keyframes calligraphy-flow {
+  0% {
+    stroke-dashoffset: 1000;
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0.3;
+  }
+}
+
+.arabic-theme .calligraphy-line {
+  stroke-dasharray: 1000;
+  animation: calligraphy-flow 8s ease-in-out infinite;
 }

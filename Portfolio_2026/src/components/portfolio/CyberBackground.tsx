@@ -9,6 +9,7 @@ const CyberBackground = ({ children }: CyberBackgroundProps) => {
   const { lang } = useLanguage();
   const [petals, setPetals] = useState<Array<{ id: number; left: number; delay: number; duration: number }>>([]);
   const [yazParticles, setYazParticles] = useState<Array<{ id: number; left: number; top: number; delay: number; duration: number }>>([]);
+  const [geometricStars, setGeometricStars] = useState<Array<{ id: number; left: number; top: number; delay: number; size: number }>>([]);
 
   useEffect(() => {
     if (lang === "ja") {
@@ -21,20 +22,11 @@ const CyberBackground = ({ children }: CyberBackgroundProps) => {
       }));
       setPetals(newPetals);
       setYazParticles([]);
-    } else if (lang === "tz") {
-      // Generate random floating Yaz particles for Tamazight theme scattered across the screen
-      const newYaz = Array.from({ length: 15 }, (_, i) => ({
-        id: i,
-        left: Math.random() * 100,
-        top: Math.random() * 100,
-        delay: Math.random() * 10,
-        duration: 20 + Math.random() * 10, // Slower, relaxed floating duration
-      }));
-      setYazParticles(newYaz);
-      setPetals([]);
+      setGeometricStars([]);
     } else {
       setPetals([]);
       setYazParticles([]);
+      setGeometricStars([]);
     }
   }, [lang]);
 
@@ -46,7 +38,9 @@ const CyberBackground = ({ children }: CyberBackgroundProps) => {
           ? "bg-gradient-to-br from-red-50/20 via-background to-red-100/20 dark:from-red-950/20 dark:via-background dark:to-red-900/20"
           : lang === "tz"
             ? "bg-gradient-to-br from-orange-50/20 via-background to-orange-100/20 dark:from-orange-950/20 dark:via-background dark:to-orange-900/20 dune-pattern"
-            : "bg-gradient-to-br from-secondary/10 via-background to-primary/10"
+            : lang === "ar"
+              ? "bg-gradient-to-br from-emerald-50/20 via-background to-amber-100/20 dark:from-emerald-950/20 dark:via-background dark:to-amber-900/20 arabesque-pattern"
+              : "bg-gradient-to-br from-secondary/10 via-background to-primary/10"
           }`}></div>
         <div
           className="absolute inset-0 animate-grid-move"
@@ -73,6 +67,13 @@ const CyberBackground = ({ children }: CyberBackgroundProps) => {
             <div className="absolute top-20 right-20 w-96 h-96 bg-orange-500 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-pulse"></div>
             <div className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] bg-red-800 rounded-full mix-blend-screen filter blur-3xl opacity-10 animate-pulse" style={{ animationDelay: "1s" }}></div>
             <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-blue-600 rounded-full mix-blend-screen filter blur-3xl opacity-15 animate-pulse" style={{ animationDelay: "2s" }}></div>
+          </>
+        ) : lang === "ar" ? (
+          <>
+            {/* Mosque dome glow effect for Arabic theme */}
+            <div className="absolute top-20 right-20 w-96 h-96 bg-emerald-500 rounded-full mix-blend-screen filter blur-3xl opacity-20 dome-glow"></div>
+            <div className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] bg-amber-500 rounded-full mix-blend-screen filter blur-3xl opacity-15 animate-pulse" style={{ animationDelay: "1s" }}></div>
+            <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-teal-500 rounded-full mix-blend-screen filter blur-3xl opacity-15 animate-pulse" style={{ animationDelay: "2s" }}></div>
           </>
         ) : (
           <>
@@ -104,22 +105,6 @@ const CyberBackground = ({ children }: CyberBackgroundProps) => {
             animationDuration: `${petal.duration}s`,
           }}
         />
-      ))}
-
-      {/* Yaz particles for Tamazight theme */}
-      {lang === "tz" && yazParticles.map((particle) => (
-        <div
-          key={`yaz-${particle.id}`}
-          className="yaz-particle"
-          style={{
-            left: `${particle.left}%`,
-            top: `${particle.top}%`,
-            animationDelay: `${particle.delay}s`,
-            animationDuration: `${particle.duration}s`,
-          }}
-        >
-          ⵣ
-        </div>
       ))}
 
       {/* Scanline effect */}
