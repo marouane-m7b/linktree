@@ -48,6 +48,13 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
     } else {
       document.documentElement.classList.remove("arabic-theme");
     }
+
+    // Apply French theme
+    if (lang === "fr") {
+      document.documentElement.classList.add("french-theme");
+    } else {
+      document.documentElement.classList.remove("french-theme");
+    }
   }, [lang]);
 
   return (

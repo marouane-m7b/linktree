@@ -39,8 +39,10 @@ const CyberBackground = ({ children }: CyberBackgroundProps) => {
           : lang === "tz"
             ? "bg-gradient-to-br from-orange-50/20 via-background to-orange-100/20 dark:from-orange-950/20 dark:via-background dark:to-orange-900/20 dune-pattern"
             : lang === "ar"
-              ? "bg-gradient-to-br from-emerald-50/20 via-background to-amber-100/20 dark:from-emerald-950/20 dark:via-background dark:to-amber-900/20 arabesque-pattern"
-              : "bg-gradient-to-br from-secondary/10 via-background to-primary/10"
+              ? "bg-gradient-to-br from-gray-50/20 via-background to-gray-100/20 dark:from-gray-950/20 dark:via-background dark:to-gray-900/20 arabesque-pattern"
+              : lang === "fr"
+                ? "bg-gradient-to-br from-blue-50/20 via-background to-red-50/20 dark:from-blue-950/20 dark:via-background dark:to-red-900/20 parisian-pattern"
+                : "bg-gradient-to-br from-secondary/10 via-background to-primary/10"
           }`}></div>
         <div
           className="absolute inset-0 animate-grid-move"
@@ -70,10 +72,17 @@ const CyberBackground = ({ children }: CyberBackgroundProps) => {
           </>
         ) : lang === "ar" ? (
           <>
-            {/* Mosque dome glow effect for Arabic theme */}
-            <div className="absolute top-20 right-20 w-96 h-96 bg-emerald-500 rounded-full mix-blend-screen filter blur-3xl opacity-20 dome-glow"></div>
-            <div className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] bg-amber-500 rounded-full mix-blend-screen filter blur-3xl opacity-15 animate-pulse" style={{ animationDelay: "1s" }}></div>
-            <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-teal-500 rounded-full mix-blend-screen filter blur-3xl opacity-15 animate-pulse" style={{ animationDelay: "2s" }}></div>
+            {/* Monochrome glow effect for Arabic theme */}
+            <div className="absolute top-20 right-20 w-96 h-96 bg-gray-400 rounded-full mix-blend-screen filter blur-3xl opacity-15 dome-glow"></div>
+            <div className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] bg-gray-500 rounded-full mix-blend-screen filter blur-3xl opacity-10 animate-pulse" style={{ animationDelay: "1s" }}></div>
+            <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-gray-300 rounded-full mix-blend-screen filter blur-3xl opacity-12 animate-pulse" style={{ animationDelay: "2s" }}></div>
+          </>
+        ) : lang === "fr" ? (
+          <>
+            {/* Tricolor glow effect for French theme */}
+            <div className="absolute top-20 right-20 w-96 h-96 bg-blue-500 rounded-full mix-blend-screen filter blur-3xl opacity-20 eiffel-glow"></div>
+            <div className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] bg-red-500 rounded-full mix-blend-screen filter blur-3xl opacity-15 animate-pulse" style={{ animationDelay: "1s" }}></div>
+            <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-blue-400 rounded-full mix-blend-screen filter blur-3xl opacity-15 animate-pulse" style={{ animationDelay: "2s" }}></div>
           </>
         ) : (
           <>
