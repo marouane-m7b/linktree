@@ -1387,10 +1387,10 @@ body.transition-active [style*="lt-vignette"] {
 }
 
 
-/* Disable all animations when toggle is off */
-body.animations-disabled *,
-body.animations-disabled *::before,
-body.animations-disabled *::after {
+/* Disable all animations when toggle is off, EXCEPT language transitions */
+body.animations-disabled *:not(.lang-transition):not(.lang-transition *),
+body.animations-disabled *:not(.lang-transition):not(.lang-transition *)::before,
+body.animations-disabled *:not(.lang-transition):not(.lang-transition *)::after {
   animation: none !important;
   transition: none !important;
 }

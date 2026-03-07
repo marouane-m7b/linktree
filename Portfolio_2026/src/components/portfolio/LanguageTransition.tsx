@@ -154,6 +154,7 @@ const LanguageTransition = () => {
 
       {/* ── Background: hero image + gradient overlay ── */}
       <div
+        className="lang-transition"
         style={{
           position: "fixed",
           inset: 0,
@@ -231,6 +232,7 @@ const LanguageTransition = () => {
       ].map((r, i) => (
         <div
           key={i}
+          className="lang-transition"
           style={{
             position: "fixed",
             zIndex: 9999,
@@ -250,6 +252,7 @@ const LanguageTransition = () => {
 
       {/* ── Center symbol ── */}
       <div
+        className="lang-transition"
         style={{
           position: "fixed",
           zIndex: 10001,
@@ -277,6 +280,7 @@ const LanguageTransition = () => {
 
       {/* ── Language label ── */}
       <div
+        className="lang-transition"
         style={{
           position: "fixed",
           zIndex: 10001,
