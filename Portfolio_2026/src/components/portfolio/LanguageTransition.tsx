@@ -44,7 +44,7 @@ const LANG_CONFIG: Record<
   },
   ar: {
     gradient: ["#050505", "#1f2937", "#374151"],
-    symbol: "ع",
+    symbol: "ض",
     label: "العربية",
     heroImage: arabicHero,
     dir: "rtl",
