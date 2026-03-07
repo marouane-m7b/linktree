@@ -52,8 +52,11 @@ const VALID_ANSWERS = {
     "better call saul",
     "bcs",
     "game of thrones",
+    "games of thrones",
     "got",
     "breaking bad",
+    "le trone de fer",
+    "game of throne",
   ],
 
   animal: [
@@ -79,6 +82,9 @@ const VALID_ANSWERS = {
     "rdr",
     "red dead redemption 2",
     "rdr2",
+    "pes",
+    "pro evolution soccer",
+    "بيس",
   ],
 
   subject: [
@@ -94,15 +100,31 @@ const VALID_ANSWERS = {
     "hunter x hunter",
     "hxh",
     "هنتر",
+    "hunter hunter",
     "dragon ball",
     "dragon ball z",
     "dragon ball super",
     "db",
     "dbz",
     "dbs",
+    "دراغون بول",
+    "naruto",
+    "ناروتو",
+    "naruto shippuden",
   ],
 
-  color: ["cyan", "black", "white"],
+  color: [
+    "cyan",
+    "black",
+    "white",
+    "green",
+    "vert",
+    "أخضر",
+    "noir",
+    "أسود",
+    "blanc",
+    "أبيض",
+  ],
 
   sport: [
     "football",
@@ -110,7 +132,6 @@ const VALID_ANSWERS = {
     "chess",
     "كرة القدم",
     "الشطرنج",
-    "football français",
     "échecs",
   ],
 
@@ -122,7 +143,9 @@ const VALID_ANSWERS = {
     "jeux vidéo",
     "ألعاب",
     "anime",
+    "الانمي",
     "الأنمي",
+    "أنمي",
     "movies",
     "films",
     "أفلام",
