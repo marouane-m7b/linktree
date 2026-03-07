@@ -55,7 +55,6 @@ const FloatingLanguageSwitcher = () => {
                 className="flex items-center justify-center w-14 h-14 rounded-full bg-primary/10 backdrop-blur-md border border-primary/30 text-primary shadow-lg hover:shadow-primary/25 hover:bg-primary/20 transition-all duration-300"
             >
                 <div className="relative flex items-center justify-center">
-                    <Globe className="w-6 h-6 absolute transition-opacity duration-300 opacity-20" />
                     <span className="font-bold font-orbitron text-lg z-10">{activeLang.flag}</span>
                 </div>
             </motion.button>
