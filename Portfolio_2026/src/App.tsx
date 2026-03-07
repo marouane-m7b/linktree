@@ -9,6 +9,7 @@ import NotFound from "./pages/NotFound";
 import Linktree from "./Linktree";
 import FloatingLanguageSwitcher from "./components/portfolio/FloatingLanguageSwitcher";
 import FloatingTazrzit from "./components/portfolio/FloatingTazrzit";
+import LanguageTransition from "./components/portfolio/LanguageTransition";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => (
         <LanguageProvider>
           <FloatingLanguageSwitcher />
           <FloatingTazrzit />
+          <LanguageTransition />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/linktree" element={<Linktree />} />
