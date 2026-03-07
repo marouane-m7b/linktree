@@ -6,6 +6,7 @@ import frenchHero   from "@/assets/French_Hero.jpg";
 import arabicHero   from "@/assets/Arabic_Hero.jpg";
 import amazighHero  from "@/assets/Amazigh_Hero.jpg";
 import englishHero  from "@/assets/English_Hero.jpg";
+import russianHero  from "@/assets/Russian_Hero.jpg";
 
 const LANG_CONFIG: Record<
   Language,
@@ -57,6 +58,14 @@ const LANG_CONFIG: Record<
     heroImage: frenchHero,
     dir: "ltr",
     accentColor: "#93c5fd",
+  },
+  ru: {
+    gradient: ["#0a0a2e", "#c41e3a", "#ffffff"],
+    symbol: "Яя",
+    label: "Русский",
+    heroImage: russianHero,
+    dir: "ltr",
+    accentColor: "#ef4444",
   },
 };
 

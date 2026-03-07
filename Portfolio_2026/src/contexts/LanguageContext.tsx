@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
 
-export type Language = "en" | "fr" | "ar" | "ja" | "tz";
+export type Language = "en" | "fr" | "ar" | "ja" | "tz" | "ru";
 
 interface LanguageContextType {
   lang: Language;
@@ -54,6 +54,13 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
       document.documentElement.classList.add("french-theme");
     } else {
       document.documentElement.classList.remove("french-theme");
+    }
+
+    // Apply Russian theme
+    if (lang === "ru") {
+      document.documentElement.classList.add("russian-theme");
+    } else {
+      document.documentElement.classList.remove("russian-theme");
     }
   }, [lang]);
 

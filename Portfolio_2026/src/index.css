@@ -1255,6 +1255,145 @@ a, button, [role="button"], input[type="submit"], .cursor-pointer {
 }
 
 
+/* Russian Theme - Soviet/Russian aesthetic */
+.russian-theme {
+  /* Light mode - Red, White, Blue theme */
+  --background: 0 0% 97%;
+  --foreground: 0 0% 15%;
+
+  --card: 0 0% 98%;
+  --card-foreground: 0 0% 20%;
+
+  --popover: 0 0% 98%;
+  --popover-foreground: 0 0% 20%;
+
+  --primary: 0 75% 50%;
+  --primary-foreground: 0 0% 97%;
+
+  --secondary: 220 85% 55%;
+  --secondary-foreground: 0 0% 97%;
+
+  --accent: 0 0% 100%;
+  --accent-foreground: 0 0% 15%;
+
+  --muted: 0 0% 92%;
+  --muted-foreground: 0 0% 45%;
+
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 97%;
+
+  --border: 0 10% 88%;
+  --input: 0 10% 92%;
+  --ring: 0 75% 50%;
+
+  /* Russian custom colors */
+  --ru-red: 0 75% 50%;
+  --ru-blue: 220 85% 55%;
+  --ru-white: 0 0% 100%;
+  --ru-gold: 45 100% 50%;
+
+  /* Glow effects */
+  --glow-red: 0 0 20px hsl(0 75% 50% / 0.4);
+  --glow-blue: 0 0 20px hsl(220 85% 55% / 0.4);
+
+  /* Gradients */
+  --gradient-ru: linear-gradient(135deg, hsl(0 0% 100%), hsl(220 85% 55%), hsl(0 75% 50%));
+  --gradient-ru-glow: linear-gradient(135deg, hsl(0 75% 50% / 0.2), hsl(220 85% 55% / 0.2));
+}
+
+.russian-theme.dark {
+  --background: 0 0% 8%;
+  --foreground: 0 0% 95%;
+
+  --card: 0 0% 12%;
+  --card-foreground: 0 0% 95%;
+
+  --popover: 0 0% 12%;
+  --popover-foreground: 0 0% 95%;
+
+  --primary: 0 75% 55%;
+  --primary-foreground: 0 0% 8%;
+
+  --secondary: 220 85% 60%;
+  --secondary-foreground: 0 0% 8%;
+
+  --accent: 0 0% 90%;
+  --accent-foreground: 0 0% 8%;
+
+  --muted: 0 0% 18%;
+  --muted-foreground: 0 0% 70%;
+
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 95%;
+
+  --border: 0 10% 25%;
+  --input: 0 10% 20%;
+  --ring: 0 75% 55%;
+
+  /* Russian custom colors - dark mode */
+  --ru-red: 0 75% 55%;
+  --ru-blue: 220 85% 60%;
+  --ru-white: 0 0% 90%;
+  --ru-gold: 45 100% 55%;
+
+  /* Glow effects */
+  --glow-red: 0 0 25px hsl(0 75% 55% / 0.6);
+  --glow-blue: 0 0 25px hsl(220 85% 60% / 0.6);
+
+  /* Gradients */
+  --gradient-ru: linear-gradient(135deg, hsl(0 0% 90%), hsl(220 85% 60%), hsl(0 75% 55%));
+  --gradient-ru-glow: linear-gradient(135deg, hsl(0 75% 55% / 0.3), hsl(220 85% 60% / 0.3));
+}
+
+/* Russian Theme Specific Styles */
+.russian-theme .cyber-text {
+  @apply text-transparent bg-clip-text bg-gradient-to-r from-[hsl(var(--ru-white))] via-[hsl(var(--ru-blue))] to-[hsl(var(--ru-red))];
+}
+
+.russian-theme .cyber-border {
+  @apply border-2 border-primary/40 hover:border-primary transition-all duration-300;
+}
+
+.russian-theme .cyber-glow {
+  box-shadow: var(--glow-red);
+}
+
+.russian-theme .cyber-card {
+  @apply relative bg-card/90 backdrop-blur-xl rounded-2xl border-2 border-primary/20 overflow-hidden;
+}
+
+.russian-theme .cyber-card::before {
+  content: '';
+  @apply absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5;
+}
+
+.russian-theme .cyber-button {
+  @apply relative px-8 py-3 bg-transparent border-2 border-primary rounded-lg font-bold text-primary uppercase tracking-widest transition-all duration-300;
+}
+
+.russian-theme .cyber-button:hover {
+  @apply bg-primary text-white shadow-[0_0_30px_hsl(0_75%_50%/0.5)];
+}
+
+.russian-theme .text-glow-cyan {
+  text-shadow: 0 0 10px hsl(0 75% 50% / 0.5), 0 0 20px hsl(0 75% 50% / 0.3);
+}
+
+/* Kremlin/Soviet inspired glow */
+@keyframes kremlin-glow {
+  0%, 100% {
+    box-shadow: 0 0 30px hsl(0 75% 50% / 0.3);
+  }
+  50% {
+    box-shadow: 0 0 50px hsl(220 85% 55% / 0.4);
+  }
+}
+
+.russian-theme .kremlin-glow {
+  animation: kremlin-glow 6s ease-in-out infinite;
+}
+
+
 /* Language Transition Styles */
 .shoji-door {
   width: 50%;
