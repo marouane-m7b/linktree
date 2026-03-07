@@ -120,17 +120,25 @@ const LanguageTransition = () => {
     prevLangRef.current = lang;
     if (timerRef.current) clearTimeout(timerRef.current);
 
+    // Pause all background animations
+    document.body.classList.add('transition-active');
+
     setImgLoaded(false);
     setDisplayLang(lang);
     setPhase("in");
 
     timerRef.current = setTimeout(() => {
       setPhase("out");
-      timerRef.current = setTimeout(() => setPhase("idle"), 520);
+      timerRef.current = setTimeout(() => {
+        setPhase("idle");
+        // Resume animations after transition
+        document.body.classList.remove('transition-active');
+      }, 520);
     }, 1000);
 
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
+      document.body.classList.remove('transition-active');
     };
   }, [lang]);
 

@@ -1368,3 +1368,38 @@ a, button, [role="button"], input[type="submit"], .cursor-pointer {
   50% { clip-path: inset(0 0 0 0); }
   100% { clip-path: inset(0 0 0 100%); }
 }
+
+
+/* Pause all animations during language transition */
+body.transition-active * {
+  animation-play-state: paused !important;
+}
+
+/* Keep only the transition animations running */
+body.transition-active [style*="lt-curtain"],
+body.transition-active [style*="lt-hero"],
+body.transition-active [style*="lt-ripple"],
+body.transition-active [style*="lt-symbol"],
+body.transition-active [style*="lt-label"],
+body.transition-active [style*="lt-shimmer"],
+body.transition-active [style*="lt-vignette"] {
+  animation-play-state: running !important;
+}
+
+
+/* Disable all animations when toggle is off */
+body.animations-disabled *,
+body.animations-disabled *::before,
+body.animations-disabled *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Keep essential UI interactions smooth even with animations off */
+body.animations-disabled button,
+body.animations-disabled a,
+body.animations-disabled input,
+body.animations-disabled select,
+body.animations-disabled textarea {
+  transition: opacity 0.15s ease, transform 0.15s ease !important;
+}
