@@ -1,14 +1,130 @@
-<!doctype html>
-<html lang="en" class="dark">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-    <title>portfolio</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- ============================================================
+       SEO MASTER FILE — m7b.me — Marouane Mahboub
+       Drop these tags into the <head> of your Portfolio_2026
+       ============================================================ -->
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ✅ PRIMARY TITLE — most important tag -->
+  <title>Marouane Mahboub | m7b | Frontend Developer — Casablanca</title>
+
+  <!-- ✅ META DESCRIPTION — shown in Google snippet -->
+  <meta name="description"
+    content="Marouane Mahboub (m7b, marwane mahboub, ma7boub) — Frontend Developer & UI/UX Designer based in Casablanca, Morocco. Building fast, beautiful web experiences. Portfolio at m7b.me." />
+
+  <!-- ✅ KEYWORDS — still used by Bing, Yahoo, DuckDuckGo -->
+  <meta name="keywords"
+    content="Marouane Mahboub, Marwane Mahboub, m7b, ma7boub, marouane ma7boub, مروان محبوب, مروان, frontend developer morocco, web developer casablanca, UI designer morocco, portfolio m7b.me" />
+
+  <!-- ✅ AUTHOR & ROBOTS -->
+  <meta name="author" content="Marouane Mahboub" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="googlebot" content="index, follow" />
+
+  <!-- ✅ CANONICAL URL — prevents duplicate content -->
+  <link rel="canonical" href="https://www.m7b.me/" />
+
+  <!-- ✅ OPEN GRAPH — for Facebook, LinkedIn, WhatsApp previews -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.m7b.me/" />
+  <meta property="og:title" content="Marouane Mahboub — m7b | Frontend Developer" />
+  <meta property="og:description"
+    content="Portfolio of Marouane Mahboub (m7b) — Frontend Developer & UI Designer from Casablanca, Morocco." />
+  <meta property="og:image" content="https://www.m7b.me/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="m7b.me — Marouane Mahboub" />
+
+  <!-- ✅ TWITTER CARD -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Marouane Mahboub — m7b | Frontend Developer" />
+  <meta name="twitter:description"
+    content="Portfolio of Marouane Mahboub (m7b) — Frontend Developer & UI Designer from Casablanca, Morocco." />
+  <meta name="twitter:image" content="https://www.m7b.me/og-image.jpg" />
+
+  <!-- ✅ JSON-LD STRUCTURED DATA — Google's favorite format -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://www.m7b.me/#person",
+        "name": "Marouane Mahboub",
+        "alternateName": ["Marwane Mahboub", "m7b", "ma7boub", "Marouane ma7boub", "مروان محبوب"],
+        "url": "https://www.m7b.me",
+        "image": "https://www.m7b.me/og-image.jpg",
+        "description": "Frontend Developer and UI/UX Designer based in Casablanca, Morocco.",
+        "jobTitle": "Frontend Developer & UI Designer",
+        "knowsAbout": ["Frontend Development", "UI Design", "Web Development", "React", "JavaScript"],
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Casablanca",
+          "addressCountry": "MA"
+        },
+        "sameAs": [
+          "https://www.m7b.me",
+          "https://github.com/m7b",
+          "https://linkedin.com/in/marouane-mahboub"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://www.m7b.me/#website",
+        "url": "https://www.m7b.me",
+        "name": "m7b.me — Marouane Mahboub Portfolio",
+        "description": "Portfolio of Marouane Mahboub, Frontend Developer & UI Designer from Casablanca, Morocco.",
+        "author": { "@id": "https://www.m7b.me/#person" },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://www.m7b.me/?s={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "ProfilePage",
+        "@id": "https://www.m7b.me/#profilepage",
+        "url": "https://www.m7b.me",
+        "name": "Marouane Mahboub — Portfolio",
+        "about": { "@id": "https://www.m7b.me/#person" },
+        "mainEntity": { "@id": "https://www.m7b.me/#person" }
+      }
+    ]
+  }
+  </script>
+
+  <!-- ✅ PRECONNECT for performance (helps ranking) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+
+  <!-- ✅ THEME COLOR -->
+  <meta name="theme-color" content="#000000" />
+
+  <!-- ✅ FAVICON hints -->
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+</head>
+
+<body>
+  <div style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;"
+    aria-hidden="true">
+    <h1>Marouane Mahboub — Frontend Developer & UI Designer</h1>
+    <p>
+      Marouane Mahboub, also known as Marwane Mahboub, m7b, ma7boub, and Marouane ma7boub,
+      is a Frontend Developer and UI/UX Designer based in Casablanca, Morocco.
+      Portfolio available at m7b.me.
+    </p>
+  </div>
+
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+
+</body>
+
 </html>
