@@ -23,136 +23,83 @@ const normalize = (str) => {
 };
 
 const VALID_ANSWERS = {
-  city_born: ["casablanca", "casa", "الدار البيضاء", "كازا"],
-
-  dream_dest: [
-    "japan",
-    "japon",
-    "tokyo",
-    "اليابان",
-    "russia",
-    "روسيا",
-    "korea",
-    "south korea",
-    "كوريا",
-    "saudi arabia",
-    "saudia",
-    "السعودية",
-    "mekkah",
-    "mecca",
-    "مكة",
-    "madinah",
-    "medina",
-    "المدينة",
+  city_born: [
+    "casablanca",
+    "casa",
+    "الدار البيضاء",
+    "كازا",
+    "casablanka",
+    "kazablanca",
+    "kaza"
   ],
 
-  current_city: ["mohammedia", "المحمدية"],
+  dream_dest: [
+    "japan", "japon", "tokyo", "اليابان",
+    "germany", "allemagne", "ألمانيا", "المانيا", "lalman", "l'allemagne", "لالمان", "alaman", "alamanya",
+    "korea", "south korea", "كوريا", "كوريا الجنوبية",
+    "saudi arabia", "saudia", "ksa", "السعودية",
+    "mekkah", "mecca", "makkah", "مكة", "مكة المكرمة",
+    "madinah", "medina", "المدينة", "المدينة المنورة"
+  ],
+
+  current_city: [
+    "mohammedia", "المحمدية", "mohammadieh", "mohamadia", "muhammadiyah", "mohammediya",
+    "casablanca", "casa", "الدار البيضاء", "كازا", "casablanka", "kazablanca", "kaza"
+  ],
 
   tv_show: [
-    "better call saul",
-    "bcs",
-    "game of thrones",
-    "games of thrones",
-    "got",
-    "breaking bad",
-    "le trone de fer",
-    "game of throne",
+    "better call saul", "bcs",
+    "game of thrones", "games of thrones", "got", "le trone de fer", "game of throne", "صراع العروش",
+    "breaking bad", "bb", "brba", "بريكينج باد",
+    "daredevil", "ديرديفيل",
+    "loki", "لوكي"
   ],
 
   animal: [
-    "cats",
-    "cat",
-    "chat",
-    "chats",
-    "قطة",
-    "قط",
-    "القطط",
-    "cheval",
-    "horse",
-    "حصان",
-    "خيول",
+    "cats", "cat", "chat", "chats", "قطة", "قط", "القطط", "kitty",
+    "cheval", "horse", "horses", "حصان", "خيول", "خيل"
   ],
 
   game: [
-    "resident evil",
-    "re",
-    "ريزدنت ايفل",
-    "red dead redemption",
-    "red dead",
-    "rdr",
-    "red dead redemption 2",
-    "rdr2",
-    "pes",
-    "pro evolution soccer",
-    "بيس",
+    "resident evil", "re", "ريزدنت ايفل",
+    "pes", "pro evolution soccer", "بيس",
+    "ghost of tsushima", "ghost", "شبح تسوشيما",
+    "elden ring", "er", "الدن رينغ"
   ],
 
   subject: [
-    "svt",
-    "biology",
-    "biologie",
-    "science vie et terre",
-    "علوم الحياة و الارض",
-    "svt high school",
+    "svt", "biology", "biologie", "science vie et terre", "علوم الحياة و الارض", "svt high school", "science", "العلوم"
   ],
 
   anime: [
-    "hunter x hunter",
-    "hxh",
-    "هنتر",
-    "hunter hunter",
-    "dragon ball",
-    "dragon ball z",
-    "dragon ball super",
-    "db",
-    "dbz",
-    "dbs",
-    "دراغون بول",
-    "naruto",
-    "ناروتو",
-    "naruto shippuden",
+    "hunter x hunter", "hxh", "هنتر", "hunter hunter", "hunterxhunter",
+    "dragon ball", "dragon ball z", "dragon ball super", "db", "dbz", "dbs", "دراغون بول",
+    "naruto", "ناروتو", "naruto shippuden",
+    "one piece", "op", "ون بيس",
+    "attack on titan", "aot", "shingeki no kyojin", "snk", "هجوم العمالقة",
+    "death note", "مذكرة الموت",
+    "bleach", "بليتش"
   ],
 
   color: [
-    "cyan",
-    "black",
-    "white",
-    "green",
-    "vert",
-    "أخضر",
-    "noir",
-    "أسود",
-    "blanc",
-    "أبيض",
+    "cyan", "سماوي",
+    "black", "noir", "أسود",
+    "white", "blanc", "أبيض",
+    "green", "vert", "أخضر"
   ],
 
   sport: [
-    "football",
-    "soccer",
-    "chess",
-    "كرة القدم",
-    "الشطرنج",
-    "échecs",
+    "football", "soccer", "foot", "كرة القدم", "كورة",
+    "chess", "الشطرنج", "échecs"
   ],
 
   hobby: [
-    "coding",
-    "programmation",
-    "البرمجة",
-    "gaming",
-    "jeux vidéo",
-    "ألعاب",
-    "anime",
-    "الانمي",
-    "الأنمي",
-    "أنمي",
-    "movies",
-    "films",
-    "أفلام",
-    "gym",
-    "fitness",
-    "الرياضة",
-  ],
+    "coding", "programmation", "البرمجة", "code",
+    "gaming", "jeux vidéo", "ألعاب", "video games",
+    "anime", "الانمي", "الأنمي", "أنمي",
+    "movies", "films", "أفلام", "cinema",
+    "gym", "fitness", "الرياضة", "workout"
+  ]
 };
 
 const logToDiscord = async (message, color = 3447003) => {
