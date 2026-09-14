@@ -24,6 +24,7 @@ import {
   SiJira,
   SiCanva,
   SiUbuntu,
+  SiArchlinux,
   SiLinuxmint,
   SiKalilinux,
   SiUml,
@@ -122,6 +123,7 @@ const operatingSystems = [
     color: "#0078D6",
   },
   { name: "Ubuntu", icon: SiUbuntu, category: "os", color: "#E95420" },
+  { name: "Arch Linux", icon: SiArchlinux, category: "os", color: "#1793D1" },
   { name: "Linux Mint", icon: SiLinuxmint, category: "os", color: "#87CF3E" },
   { name: "Kali Linux", icon: SiKalilinux, category: "os", color: "#557C94" },
 ];
