@@ -1,64 +1,74 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
+import { FaExternalLinkAlt, FaYoutube } from "react-icons/fa";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { UI_TRANSLATIONS } from "@/lib/translations";
-
-const PLACEHOLDER_IMAGE = "https://www.sliderrevolution.com/wp-content/uploads/2024/09/what-is-a-hero-section.jpg";
+import ofpptAbsenceImage from "@/assets/Projects/Ofppt_Absence.jpg";
+import ofpptEstablishmentImage from "@/assets/Projects/Ofppt_Etab.jpg";
+import ecommerceImage from "@/assets/Projects/Ecommerce.png";
+import cognitadoImage from "@/assets/Projects/Cognitado.jpg";
+import gpaImage from "@/assets/Projects/GPA_Bac.jpg";
+import moviesImage from "@/assets/Projects/Movies.jpg";
+import siya9atiImage from "@/assets/Projects/Siya9ati.jpg";
 
 const initialProjects = [
   {
     originalTitle: "OFPPT Absence Manager",
-    image: PLACEHOLDER_IMAGE,
+    image: ofpptAbsenceImage,
     tags: ["React Js", "Laravel", "Material UI", "MySQL"],
     category: ["react", "laravel", "fullstack"],
-    github: "#",
-    demo: "#",
+    links: [{ url: "https://www.youtube.com/watch?v=OeQKoDtrgZs", type: "youtube" }],
     color: "primary",
   },
   {
     originalTitle: "ZM Store",
-    image: PLACEHOLDER_IMAGE,
+    image: ecommerceImage,
     tags: ["React Js", "Laravel", "MySQL", "Git"],
     category: ["react", "laravel", "fullstack"],
-    github: "#",
-    demo: "#",
+    links: [{ url: "https://mostaql.com/portfolio/2299929-unified-commerce-mobile", type: "website" }],
     color: "secondary",
   },
   {
     originalTitle: "OFPPT Establishments Cards Manager",
-    image: PLACEHOLDER_IMAGE,
+    image: ofpptEstablishmentImage,
     tags: ["Spring Boot", "React Js", "MySQL", "Spring Security"],
     category: ["react", "fullstack"],
-    github: "#",
-    demo: "#",
+    links: [{ url: "https://www.youtube.com/watch?v=AnA_hifaxbU", type: "youtube" }],
     color: "accent",
   },
   {
     originalTitle: "Movies Reviews System",
-    image: PLACEHOLDER_IMAGE,
+    image: moviesImage,
     tags: ["Jakarta EE", "JavaScript", "MySQL", "JDBC"],
     category: ["fullstack"],
-    github: "#",
-    demo: "#",
+    links: [{ url: "https://www.youtube.com/watch?v=hvjqyGa_ua0", type: "youtube" }],
     color: "primary",
   },
   {
     originalTitle: "Baccalaureate GPA Calculator",
-    image: PLACEHOLDER_IMAGE,
+    image: gpaImage,
     tags: ["HTML", "CSS", "JavaScript", "Mobile"],
     category: ["mobile"],
-    github: "#",
-    demo: "#",
+    links: [{ url: "https://www.youtube.com/watch?v=qdPSBcK0adU&pp=0gcJCf4LAYcqIYzv", type: "youtube" }],
     color: "secondary",
   },
   {
     originalTitle: "سياقتي - Driving Learning Platform",
-    image: PLACEHOLDER_IMAGE,
+    image: siya9atiImage,
     tags: ["JavaScript", "PHP", "HTML", "CSS"],
     category: ["fullstack"],
-    github: "#",
-    demo: "#",
+    links: [
+      { url: "https://siya9ati.unaux.com", type: "website" },
+      { url: "https://www.youtube.com/@ncoodew", type: "youtube" },
+    ],
+    color: "accent",
+  },
+  {
+    originalTitle: "CogniTado AI",
+    image: cognitadoImage,
+    tags: ["JavaFX", "Spring AI", "JDBC", "Google Calendar"],
+    category: ["fullstack"],
+    links: [{ url: "https://www.youtube.com/watch?v=ESe_f_gRfMA", type: "youtube" }],
     color: "accent",
   },
 ];
@@ -172,11 +182,11 @@ const WorkSection = () => {
                 ></div>
 
                 {/* Image */}
-                <div className="relative h-48 overflow-hidden">
+                <div className="relative aspect-video overflow-hidden bg-background/70">
                   <img
                     src={project.image}
                     alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
                   />
                   <div
                     className={`absolute inset-0 bg-gradient-to-t ${
@@ -190,26 +200,23 @@ const WorkSection = () => {
 
                   {/* Overlay on hover */}
                   <div className="absolute inset-0 bg-background/80 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                    <motion.a
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      className="w-12 h-12 rounded-full bg-card border border-primary/50 flex items-center justify-center text-primary hover:bg-primary hover:text-background transition-all"
-                    >
-                      <FaGithub className="w-5 h-5" />
-                    </motion.a>
-                    <motion.a
-                      href={project.demo}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      className="w-12 h-12 rounded-full bg-card border border-secondary/50 flex items-center justify-center text-secondary hover:bg-secondary hover:text-background transition-all"
-                    >
-                      <FaExternalLinkAlt className="w-4 h-4" />
-                    </motion.a>
+                    {project.links.map((link) => {
+                      const LinkIcon = link.type === "youtube" ? FaYoutube : FaExternalLinkAlt;
+                      return (
+                        <motion.a
+                          key={link.url}
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={link.type === "youtube" ? "Watch on YouTube" : "Open project website"}
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          className="w-12 h-12 rounded-full bg-card border border-secondary/50 flex items-center justify-center text-secondary hover:bg-secondary hover:text-background transition-all"
+                        >
+                          <LinkIcon className="w-4 h-4" />
+                        </motion.a>
+                      );
+                    })}
                   </div>
                 </div>
 

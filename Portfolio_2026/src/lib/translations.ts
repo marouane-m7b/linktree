@@ -98,6 +98,10 @@ export const UI_TRANSLATIONS = {
           title: "Syaqati - Driving Learning Platform",
           description: "A website for learning driving: forum, exams, explanations, and interaction for safe driving in Morocco.",
         },
+        {
+          title: "CogniTado AI - Intelligent Project Management",
+          description: "A JavaFX desktop application that uses Spring AI to automate task planning, synchronize Google Calendar, and visualize projects with Gantt and Kanban boards.",
+        },
       ],
     },
     experience: {
@@ -328,6 +332,10 @@ export const UI_TRANSLATIONS = {
         {
           title: "Syaqati - Plateforme d'Apprentissage de la Conduite",
           description: "Un site web pour l'apprentissage de la conduite : forum, examens, explications et interaction pour une conduite sûre au Maroc.",
+        },
+        {
+          title: "CogniTado AI - Gestion de Projets Intelligente",
+          description: "Une application desktop JavaFX qui utilise Spring AI pour automatiser la planification des tâches, synchroniser Google Calendar et visualiser les projets avec des tableaux Gantt et Kanban.",
         },
       ],
     },
@@ -560,6 +568,10 @@ export const UI_TRANSLATIONS = {
           title: "سياقتي - منصة تعلم القيادة",
           description: "موقع إلكتروني لتعلم القيادة: منتدى، امتحانات، شروحات، وتفاعل من أجل قيادة آمنة في المغرب.",
         },
+        {
+          title: "CogniTado AI - إدارة المشاريع الذكية",
+          description: "تطبيق سطح مكتب باستخدام JavaFX وSpring AI لأتمتة تخطيط المهام ومزامنة تقويم Google وعرض المشاريع عبر مخططات Gantt وKanban.",
+        },
       ],
     },
     experience: {
@@ -791,6 +803,10 @@ export const UI_TRANSLATIONS = {
           title: "Syaqati - 運転学習プラットフォーム",
           description: "運転を学ぶためのウェブサイト：フォーラム、試験、説明、モロッコでの安全運転のための交流。",
         },
+        {
+          title: "CogniTado AI - インテリジェントなプロジェクト管理",
+          description: "Spring AIを活用してタスク計画、Googleカレンダーとの同期、GanttとKanbanによるプロジェクト可視化を自動化するJavaFXデスクトップアプリ。",
+        },
       ],
     },
     experience: {
@@ -1021,6 +1037,10 @@ export const UI_TRANSLATIONS = {
           title: "Syaqati - Driving Learning Platform",
           description: "A website for learning driving: forum, exams, explanations, and interaction for safe driving in Morocco.",
         },
+        {
+          title: "CogniTado AI - Intelligent Project Management",
+          description: "A JavaFX desktop application that uses Spring AI to automate task planning, synchronize Google Calendar, and visualize projects with Gantt and Kanban boards.",
+        },
       ],
     },
     experience: {
@@ -1250,6 +1270,10 @@ export const UI_TRANSLATIONS = {
         {
           title: "Syaqati - Платформа обучения вождению",
           description: "Веб-сайт для обучения вождению: форум, экзамены, объяснения и взаимодействие для безопасного вождения в Марокко.",
+        },
+        {
+          title: "CogniTado AI - Интеллектуальное управление проектами",
+          description: "Настольное приложение JavaFX, использующее Spring AI для автоматизации планирования задач, синхронизации с Google Calendar и визуализации проектов на досках Gantt и Kanban.",
         },
       ],
     },
