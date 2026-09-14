@@ -108,7 +108,7 @@ const logToDiscord = async (message, color = 3447003) => {
   if (!DISCORD_WEBHOOK) return;
 
   try {
-    await fetch(DISCORD_WEBHOOK, {
+    const response = await fetch(DISCORD_WEBHOOK, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -122,6 +122,9 @@ const logToDiscord = async (message, color = 3447003) => {
         ],
       }),
     });
+    if (!response.ok) {
+      throw new Error(`Discord returned ${response.status}: ${await response.text()}`);
+    }
   } catch (e) {
     console.error("Webhook Error", e);
   }
@@ -131,7 +134,7 @@ const logToEmail = async (message) => {
   if (!RESEND_API_KEY || !NOTIFICATION_EMAIL) return;
 
   try {
-    await fetch("https://api.resend.com/emails", {
+    const response = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${RESEND_API_KEY}`,
@@ -144,6 +147,9 @@ const logToEmail = async (message) => {
         text: message,
       }),
     });
+    if (!response.ok) {
+      throw new Error(`Resend returned ${response.status}: ${await response.text()}`);
+    }
   } catch (e) {
     console.error("Email notification error", e);
   }
@@ -169,7 +175,7 @@ app.post("/api/verify-token", (req, res) => {
   }
 });
 
-app.post("/api/verify", (req, res) => {
+app.post("/api/verify", async (req, res) => {
   const { questionId, answer } = req.body;
 
   if (!VALID_ANSWERS[questionId]) return res.json({ success: false });
@@ -179,12 +185,12 @@ app.post("/api/verify", (req, res) => {
   );
 
   if (isCorrect) {
-    logNotification(
+    await logNotification(
       `💡 **Correct Answer:** ${questionId} - **Answer:** ${answer}`,
       16776960
     );
   } else {
-    logNotification(
+    await logNotification(
       `❌ **Incorrect Answer:** ${questionId} - **Attempt:** ${answer}`,
       15548997
     );
@@ -193,7 +199,7 @@ app.post("/api/verify", (req, res) => {
   res.json({ success: isCorrect });
 });
 
-app.post("/api/unlock", (req, res) => {
+app.post("/api/unlock", async (req, res) => {
   const { selections } = req.body;
 
   let allCorrect = true;
@@ -209,10 +215,10 @@ app.post("/api/unlock", (req, res) => {
   });
 
   if (allCorrect) {
-    logNotification(`🔓 **ACCESS GRANTED**\nUser unlocked the profile.`, 5763719);
+    await logNotification(`🔓 **ACCESS GRANTED**\nUser unlocked the profile.`, 5763719);
     return res.json({ success: true, token: a_very_long_and_very_secure_token });
   } else {
-    logNotification(
+    await logNotification(
       `⚠️ **Failed Attempt**\nUser tried:\n${summary.join("\n")}`,
       15548997
     );
@@ -220,9 +226,9 @@ app.post("/api/unlock", (req, res) => {
   }
 });
 
-app.post("/api/log", (req, res) => {
+app.post("/api/log", async (req, res) => {
   const { message, color } = req.body;
-  logNotification(message, color);
+  await logNotification(message, color);
   res.json({ success: true });
 });
 
