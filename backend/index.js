@@ -8,6 +8,8 @@ app.use(cors());
 app.use(express.json());
 
 const DISCORD_WEBHOOK = process.env.DISCORD_WEBHOOK_URL;
+const RESEND_API_KEY = process.env.RESEND_API_KEY;
+const NOTIFICATION_EMAIL = "marouane.ma7boub@gmail.com";
 const a_very_long_and_very_secure_token = process.env.SECURE_TOKEN;
 
 const normalize = (str) => {
@@ -104,6 +106,7 @@ const VALID_ANSWERS = {
 
 const logToDiscord = async (message, color = 3447003) => {
   if (!DISCORD_WEBHOOK) return;
+
   try {
     await fetch(DISCORD_WEBHOOK, {
       method: "POST",
@@ -122,6 +125,35 @@ const logToDiscord = async (message, color = 3447003) => {
   } catch (e) {
     console.error("Webhook Error", e);
   }
+};
+
+const logToEmail = async (message) => {
+  if (!RESEND_API_KEY || !NOTIFICATION_EMAIL) return;
+
+  try {
+    await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${RESEND_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: "Portfolio <onboarding@resend.dev>",
+        to: [NOTIFICATION_EMAIL],
+        subject: "New portfolio notification",
+        text: message,
+      }),
+    });
+  } catch (e) {
+    console.error("Email notification error", e);
+  }
+};
+
+const logNotification = async (message, color = 3447003) => {
+  await Promise.allSettled([
+    logToDiscord(message, color),
+    logToEmail(message),
+  ]);
 };
 
 app.get("/", (req, res) => {
@@ -147,12 +179,12 @@ app.post("/api/verify", (req, res) => {
   );
 
   if (isCorrect) {
-    logToDiscord(
+    logNotification(
       `💡 **Correct Answer:** ${questionId} - **Answer:** ${answer}`,
       16776960
     );
   } else {
-    logToDiscord(
+    logNotification(
       `❌ **Incorrect Answer:** ${questionId} - **Attempt:** ${answer}`,
       15548997
     );
@@ -177,10 +209,10 @@ app.post("/api/unlock", (req, res) => {
   });
 
   if (allCorrect) {
-    logToDiscord(`🔓 **ACCESS GRANTED**\nUser unlocked the profile.`, 5763719);
+    logNotification(`🔓 **ACCESS GRANTED**\nUser unlocked the profile.`, 5763719);
     return res.json({ success: true, token: a_very_long_and_very_secure_token });
   } else {
-    logToDiscord(
+    logNotification(
       `⚠️ **Failed Attempt**\nUser tried:\n${summary.join("\n")}`,
       15548997
     );
@@ -190,7 +222,7 @@ app.post("/api/unlock", (req, res) => {
 
 app.post("/api/log", (req, res) => {
   const { message, color } = req.body;
-  logToDiscord(message, color);
+  logNotification(message, color);
   res.json({ success: true });
 });
 
