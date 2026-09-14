@@ -130,6 +130,48 @@ const logToDiscord = async (message, color = 3447003) => {
   }
 };
 
+const escapeHtml = (value) =>
+  value.replace(/[&<>'"]/g, (character) => {
+    const entities = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      "'": "&#39;",
+      '"': "&quot;",
+    };
+    return entities[character];
+  });
+
+const createEmailHtml = (message) => {
+  const formattedMessage = escapeHtml(message)
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    .replace(/\n/g, "<br />");
+
+  return `
+    <!doctype html>
+    <html lang="en">
+      <body style="margin:0;background:#f4f7fb;color:#172033;font-family:Arial,sans-serif;">
+        <div style="padding:40px 16px;">
+          <div style="max-width:600px;margin:0 auto;background:#ffffff;border:1px solid #e2e8f0;border-radius:16px;overflow:hidden;">
+            <div style="padding:24px 28px;background:#102a43;color:#ffffff;">
+              <div style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#9fb3c8;">Portfolio</div>
+              <h1 style="margin:8px 0 0;font-size:24px;line-height:1.3;font-weight:700;">New notification</h1>
+            </div>
+            <div style="padding:28px;">
+              <div style="padding:20px;background:#f8fafc;border:1px solid #e5e7eb;border-radius:10px;font-size:15px;line-height:1.7;">
+                ${formattedMessage}
+              </div>
+            </div>
+            <div style="padding:16px 28px;border-top:1px solid #edf2f7;color:#718096;font-size:12px;">
+              Sent automatically from your portfolio contact system.
+            </div>
+          </div>
+        </div>
+      </body>
+    </html>
+  `;
+};
+
 const logToEmail = async (message) => {
   if (!RESEND_API_KEY || !NOTIFICATION_EMAIL) return;
 
@@ -145,6 +187,7 @@ const logToEmail = async (message) => {
         to: [NOTIFICATION_EMAIL],
         subject: "New portfolio notification",
         text: message,
+        html: createEmailHtml(message),
       }),
     });
     if (!response.ok) {
