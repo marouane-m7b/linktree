@@ -1,12 +1,9 @@
 import { useEffect, useState, useRef } from "react";
 import { useLanguage, Language } from "@/contexts/LanguageContext";
 
-import japanHero    from "@/assets/Japan_Hero.jpg";
 import frenchHero   from "@/assets/French_Hero.jpg";
 import arabicHero   from "@/assets/Arabic_Hero.jpg";
-import amazighHero  from "@/assets/Amazigh_Hero.jpg";
 import englishHero  from "@/assets/English_Hero.jpg";
-import russianHero  from "@/assets/Russian_Hero.jpg";
 
 const LANG_CONFIG: Record<
   Language,
@@ -26,23 +23,7 @@ const LANG_CONFIG: Record<
     heroImage: englishHero,
     dir: "ltr",
     accentColor: "#a78bfa",
-  },
-  ja: {
-    gradient: ["#1a0000", "#dc2626", "#7f1d1d"],
-    symbol: "日",
-    label: "日本語",
-    heroImage: japanHero,
-    dir: "ltr",
-    accentColor: "#fca5a5",
-  },
-  tz: {
-    gradient: ["#1c0a00", "#ea580c", "#78350f"],
-    symbol: "ⵣ",
-    label: "Tamazight",
-    heroImage: amazighHero,
-    dir: "ltr",
-    accentColor: "#fb923c",
-  },
+  },
   ar: {
     gradient: ["#050505", "#1f2937", "#374151"],
     symbol: "ض",
@@ -58,14 +39,6 @@ const LANG_CONFIG: Record<
     heroImage: frenchHero,
     dir: "ltr",
     accentColor: "#93c5fd",
-  },
-  ru: {
-    gradient: ["#0a0a2e", "#c41e3a", "#ffffff"],
-    symbol: "Яя",
-    label: "Русский",
-    heroImage: russianHero,
-    dir: "ltr",
-    accentColor: "#ef4444",
   },
 };
 
@@ -338,3 +311,5 @@ const LanguageTransition = () => {
 };
 
 export default LanguageTransition;
+
+

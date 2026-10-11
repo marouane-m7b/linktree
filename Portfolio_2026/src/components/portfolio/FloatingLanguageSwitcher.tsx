@@ -6,9 +6,6 @@ const languages: { code: Language; nativeLabel: string; flag: string }[] = [
     { code: "en", nativeLabel: "English", flag: "🇬🇧" },
     { code: "fr", nativeLabel: "Français", flag: "🇫🇷" },
     { code: "ar", nativeLabel: "العربية", flag: "🇸🇦" },
-    { code: "ja", nativeLabel: "日本語", flag: "🇯🇵" },
-    { code: "ru", nativeLabel: "Русский", flag: "🇷🇺" },
-    { code: "tz", nativeLabel: "ⵜⴰⵎⴰⵣⵉⵖⵜ", flag: "ⵣ" },
 ];
 
 const FloatingLanguageSwitcher = () => {
