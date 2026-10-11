@@ -2,7 +2,6 @@ assets-source/
 scripts/
 node_modules/
 dist/
-*.glb
 .env*
 public/knight.glb
 public/malenia-elden-ring-low-poly.glb
@@ -10,3 +9,10 @@ public/tree-light.glb
 public/world/samurai/Samurai.glb
 public/world/samurai/Female_Samurai.glb
 public/world/samurai/Texture.png
+
+# Raw models in the project root only
+/lowpoly_samurai_rigged.glb
+/malenia-_elden_ring-_low_poly.glb
+/tree.glb
+/tree_scan_free.glb
+/tree_blossome.glb
