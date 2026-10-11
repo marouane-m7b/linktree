@@ -1,0 +1,12 @@
+assets-source/
+scripts/
+node_modules/
+dist/
+*.glb
+.env*
+public/knight.glb
+public/malenia-elden-ring-low-poly.glb
+public/tree-light.glb
+public/world/samurai/Samurai.glb
+public/world/samurai/Female_Samurai.glb
+public/world/samurai/Texture.png

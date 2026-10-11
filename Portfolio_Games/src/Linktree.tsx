@@ -1,0 +1,952 @@
+import { useState, useEffect, useRef } from "react";
+import { FaInstagram, FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa";
+import { Sun, Moon } from "lucide-react";
+import confetti from "canvas-confetti";
+import { Link } from "react-router-dom";
+
+import { useTheme } from "@/hooks/use-theme";
+
+import goodreadsIcon from "./assets/goodreads.png";
+import malIcon from "./assets/myanimelist.png";
+import backloggdIcon from "./assets/backloggd.png";
+import letterboxdIcon from "./assets/letterboxd.png";
+import serializedIcon from "./assets/serializd.png";
+import youtubeIcon from "./assets/youtube.png";
+import musashiProfile from "./assets/musashi.jpg";
+import friendsImage from "./assets/friends.avif";
+const QUESTIONS_DB = [
+  {
+    id: "city_born",
+    text: {
+      en: "What city was I born in?",
+      fr: "Dans quelle ville suis-je né ?",
+      ar: "في أي مدينة وُلدت؟",
+      ja: "私はどの都市で生まれましたか？",
+      tz: "ⵎⴰⵏⵉ ⵖ ⵍⵓⵍⵖ?",
+    },
+  },
+
+  {
+    id: "dream_dest",
+    text: {
+      en: "What is one of my dream travel destinations?",
+      fr: "Quelle est une de mes destinations de rêve ?",
+      ar: "ما هي إحدى وجهات السفر التي أحلم بها؟",
+      ja: "私の夢の旅行先の一つは何ですか？",
+      tz: "ⵎⴰⵏ ⵜⴰⵎⴰⵣⵉⵔⵜ ⴰⵢⵔⵉⵅ ⴰⴷ ⵙⵔⵙ ⵙⴰⴼⵔⵖ?",
+    },
+  },
+
+  {
+    id: "current_city",
+    text: {
+      en: "What city do I currently live in?",
+      fr: "Dans quelle ville j'habite actuellement ?",
+      ar: "في أي مدينة أعيش حاليًا؟",
+      ja: "私は現在どの都市に住んでいますか？",
+      tz: "ⵎⴰⵏⵉ ⵖ ⴷⴷⵔⵖ ⴷⵖⵉⴽ?",
+    },
+  },
+
+  {
+    id: "tv_show",
+    text: {
+      en: "What is one of my favorite TV shows?",
+      fr: "Quelle est une de mes séries préférées ?",
+      ar: "ما هو أحد برامجي التلفزيونية المفضلة؟",
+      ja: "私の好きなテレビ番組の一つは何ですか？",
+      tz: "ⵎⴰⵜⴰ ⵍⴱⴰⵔⵏⴰⵎⵊ ⵉⵏⵓ ⵏ ⵜⵉⵍⵉⴼⵉⵣⵢⵓⵏ ⵍⵍⵉ ⵙⴰ ⵜⴼⵔⵔⴰⵊⵖ?",
+    },
+  },
+
+  {
+    id: "animal",
+    text: {
+      en: "What is one of my favorite animals?",
+      fr: "Quel est un de mes animaux préférés ?",
+      ar: "ما هو أحد حيواناتي المفضلة؟",
+      ja: "私の好きな動物の一つは何ですか？",
+      tz: "ⵎⴰⵜⴰ ⵍⵃⴰⵢⴰⵡⴰⵏ ⵉⵏⵓ ⴰⵢⵔⵉⵅ?",
+    },
+  },
+
+  {
+    id: "game",
+    text: {
+      en: "What is one of my favorite video games?",
+      fr: "Quel est un de mes jeux vidéo préférés ?",
+      ar: "ما هي إحدى ألعاب الفيديو المفضلة لدي؟",
+      ja: "私の好きなビデオゲームの一つは何ですか？",
+      tz: "ⵎⴰⵜⴰ ⵍⵇⵉⵚⵜ ⵏ ⵍⴼⵉⴷⵢⵓ ⵉⵏⵓ ⴰⵢⵔⵉⵅ?",
+    },
+  },
+
+  {
+    id: "subject",
+    text: {
+      en: "What was one of my favorite subjects in high school?",
+      fr: "Quelle était une de mes matières préférées au lycée ?",
+      ar: "ما هي إحدى موادي المفضلة في الثانوية؟",
+      ja: "高校で好きだった科目の一つは何ですか？",
+      tz: "ⵎⴰⵜⴰ ⵍⵎⴰⴷⴰⵜ ⵉⵏⵓ ⵏ ⵓⵙⵉⵏⴰⵏ ⴰⵢⵔⵉⵅ?",
+    },
+  },
+
+  {
+    id: "anime",
+    text: {
+      en: "What is one of my favorite anime?",
+      fr: "Quel est un de mes animés préférés ?",
+      ar: "ما هو أحد الأنميات المفضلة لدي؟",
+      ja: "私の好きなアニメの一つは何ですか？",
+      tz: "ⵎⴰⵜⴰ ⵍⴰⵏⵉⵎⵉ ⵉⵏⵓ ⴰⵢⵔⵉⵅ?",
+    },
+  },
+
+  // 🆕 NEW QUESTIONS
+  {
+    id: "color",
+    text: {
+      en: "What is one of my favorite colors?",
+      fr: "Quelle est une de mes couleurs préférées ?",
+      ar: "ما هو أحد ألواني المفضلة؟",
+      ja: "私の好きな色の一つは何ですか？",
+      tz: "ⵎⴰⵜⴰ ⵍⵍⵓⵏ ⵉⵏⵓ ⴰⵢⵔⵉⵅ?",
+    },
+  },
+
+  {
+    id: "sport",
+    text: {
+      en: "What is one of my favorite sports?",
+      fr: "Quel est un de mes sports préférés ?",
+      ar: "ما هي إحدى رياضاتي المفضلة؟",
+      ja: "私の好きなスポーツの一つは何ですか？",
+      tz: "ⵎⴰⵜⴰ ⵜⴰⵢⵔⵉ ⵉⵏⵓ ⵏ ⵡⴰⴷⴷⴰⵍ?",
+    },
+  },
+
+  {
+    id: "hobby",
+    text: {
+      en: "What is one of my hobbies?",
+      fr: "Quel est un de mes passe-temps ?",
+      ar: "ما هي إحدى هواياتي؟",
+      ja: "私の趣味の一つは何ですか？",
+      tz: "ⵎⴰⵜⴰ ⵍⵀⵉⵡⴰⵢⴰⵜ ⵉⵏⵓ?",
+    },
+  },
+];
+
+const UI_TEXT = {
+  en: {
+    title: "My Private Space",
+    sub: "Friends only! Answer 3 questions to prove you know me",
+    unlock: "Reveal My World",
+    placeholder: "Your answer...",
+    select: "Select a question",
+  },
+  fr: {
+    title: "Mon Espace Privé",
+    sub: "Réservé aux amis ! Réponds à 3 questions pour prouver que tu me connais",
+    unlock: "Révéler Mon Monde",
+    placeholder: "Votre réponse...",
+    select: "Choisir une question",
+  },
+  ar: {
+    title: "مساحتي الخاصة",
+    sub: "للأصدقاء فقط! أجب عن 3 أسئلة لإثبات معرفتك بي",
+    unlock: "اكشف عالمي",
+    placeholder: "إجابتك...",
+    select: "اختر سؤالاً",
+  },
+  ja: {
+    title: "私の秘密の空間",
+    sub: "友達限定！私のことを知っていることを証明するために3つの質問に答えてください",
+    unlock: "私の世界を明らかにする",
+    placeholder: "あなたの答え...",
+    select: "質問を選択",
+  },
+  tz: {
+    title: "ⴰⵎⴽⴰⵏ ⵉⵏⵓ ⵓⵙⵍⵉⴳ",
+    sub: "ⵉⵎⴷⴷⵓⴽⴽⴰⵍ ⵡⴰⵀⴰ! ⵊⴰⵡⴰⴱ ⴼ 3 ⵏ ⵉⵙⵇⵙⵉⵜⴰⵏ ⴰⴼⴰⴷ ⴰⴷ ⵜⵙⵙⵏⵜ ⴰⵢⴰ",
+    unlock: "ⵙⵙⵏ ⴰⵎⴰⴷⴰⵍ ⵉⵏⵓ",
+    placeholder: "ⴰⵡⴰⵍ ⵏⵏⴽ...",
+    select: "ⴼⵔⵏ ⴰⵙⵇⵙⵉ",
+  },
+};
+
+const LINK_THEMES = {
+  Books: { color: 9205843, emoji: "📚" },
+  "Anime & Manga": { color: 3042722, emoji: "⛩️" },
+  Games: { color: 15158332, emoji: "🎮" },
+  Movies: { color: 4439247, emoji: "🎬" },
+  "TV Shows": { color: 1752220, emoji: "📺" },
+  Instagram: { color: 13453419, emoji: "📸" },
+  GitHub: { color: 2303786, emoji: "💻" },
+  LinkedIn: { color: 299355, emoji: "💼" },
+};
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+const Background = ({ children }) => (
+  <div className="min-h-screen w-full flex items-center justify-center p-4 bg-background relative overflow-hidden">
+    {/* Animated grid background */}
+    <div className="fixed inset-0 z-0">
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-background to-cyan-900/20 dark:from-purple-900/20 dark:via-black dark:to-cyan-900/20"></div>
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: `
+          linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px)
+        `,
+          backgroundSize: "50px 50px",
+          animation: "gridMove 20s linear infinite",
+        }}
+      ></div>
+      {/* Glowing orbs */}
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-pulse"></div>
+      <div
+        className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-pulse"
+        style={{ animationDelay: "1s" }}
+      ></div>
+      <div
+        className="absolute top-1/2 left-1/2 w-64 h-64 bg-pink-500 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-pulse"
+        style={{ animationDelay: "2s" }}
+      ></div>
+    </div>
+
+    {/* Scanline effect */}
+    <div className="fixed inset-0 z-20 pointer-events-none opacity-5 dark:opacity-5">
+      <div
+        className="absolute inset-0 bg-gradient-to-b from-transparent via-white to-transparent"
+        style={{
+          height: "200%",
+          animation: "scanline 8s linear infinite",
+        }}
+      ></div>
+    </div>
+
+    <div className="relative z-10 w-full max-w-md">{children}</div>
+  </div>
+);
+const ThemeToggle = ({ lang }) => {
+  const { theme, setTheme } = useTheme();
+
+  return (
+    <button
+      onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+      className={`absolute top-4 ${lang === "ar" ? "right-4" : "left-4"
+        } z-20 p-2 rounded-full bg-black/20 dark:bg-white/20 text-white backdrop-blur-sm`}
+    >
+      {theme === "light" ? (
+        <Moon className="h-5 w-5 text-cyber-purple" />
+      ) : (
+        <Sun className="h-5 w-5 text-cyber-cyan" />
+      )}
+    </button>
+  );
+};
+export default function PasswordGate() {
+  const { theme, setTheme } = useTheme();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [lang, setLang] = useState("en");
+  const [selections, setSelections] = useState({ 0: null, 1: null, 2: null });
+  const [userAnswers, setUserAnswers] = useState({ 0: "", 1: "", 2: "" });
+  const [inputStatus, setInputStatus] = useState({
+    0: "neutral",
+    1: "neutral",
+    2: "neutral",
+  });
+  const [shake, setShake] = useState(false);
+  const [loadingIndex, setLoadingIndex] = useState(null);
+  const [activeQuestionIndex, setActiveQuestionIndex] = useState(0);
+
+  const hasLoggedVisit = useRef(false);
+  const isCheckingAuth = useRef(false);
+
+  const callApi = async (endpoint, body) => {
+    try {
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      return await res.json();
+    } catch (e) {
+      return { success: false, error: e.message };
+    }
+  };
+
+  const handleLinkClick = (e, name, url) => {
+    if (url.startsWith("/")) {
+      return;
+    }
+    e.preventDefault();
+
+    const theme = LINK_THEMES[name] || { color: 3447003, emoji: "🔗" };
+
+    callApi(`${API_BASE_URL}/api/log`, {
+      message: `${theme.emoji} User clicked on **${name}**`,
+      color: theme.color,
+    });
+
+    window.open(url, "_blank");
+  };
+
+  useEffect(() => {
+    if (!hasLoggedVisit.current) {
+      callApi(`${API_BASE_URL}/api/log`, {
+        message: "👀 **New Visitor** on the page.",
+        color: 3447003,
+      });
+      hasLoggedVisit.current = true;
+    }
+    const token = localStorage.getItem("friend_token");
+    if (token) {
+      callApi(`${API_BASE_URL}/api/verify-token`, { token }).then((result) => {
+        if (result.success) {
+          setIsAuthenticated(true);
+          callApi(`${API_BASE_URL}/api/log`, {
+            message: "🎉 **Friend Entered!** (via token)",
+            color: 5763719, // Green color for success
+          });
+        }
+      });
+    }
+  }, []);
+
+  const handleCheckAnswer = async (index) => {
+    const questionId = selections[index];
+    const rawInput = userAnswers[index] || "";
+
+    if (
+      rawInput.length < 1 ||
+      inputStatus[index] === "correct" ||
+      loadingIndex !== null
+    ) {
+      return;
+    }
+
+    setLoadingIndex(index);
+    // Reset error status before re-checking
+    setInputStatus((prev) => ({ ...prev, [index]: "neutral" }));
+
+    try {
+      const result = await callApi(`${API_BASE_URL}/api/verify`, {
+        questionId,
+        answer: rawInput,
+      });
+
+      if (result.success) {
+        setInputStatus((prev) => ({ ...prev, [index]: "correct" }));
+        if (activeQuestionIndex < 2) {
+          setActiveQuestionIndex(activeQuestionIndex + 1);
+        }
+      } else {
+        setInputStatus((prev) => ({ ...prev, [index]: "error" }));
+        setShake(true);
+        setTimeout(() => setShake(false), 500);
+      }
+    } finally {
+      setLoadingIndex(null);
+    }
+  };
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const correctCount = Object.values(inputStatus).filter(
+        (s) => s === "correct"
+      ).length;
+
+      if (correctCount === 3 && !isCheckingAuth.current) {
+        isCheckingAuth.current = true;
+
+        const authPayload = {
+          selections: Object.keys(selections).reduce((acc, key) => {
+            acc[key] = { id: selections[key], answer: userAnswers[key] };
+            return acc;
+          }, {}),
+        };
+
+        const authRes = await callApi(
+          `${API_BASE_URL}/api/unlock`,
+          authPayload
+        );
+
+        if (authRes.success) {
+          localStorage.setItem("friend_token", authRes.token);
+          confetti({ particleCount: 150, spread: 90, origin: { y: 0.6 } });
+          setTimeout(() => setIsAuthenticated(true), 300);
+        } else {
+          setShake(true);
+          setTimeout(() => setShake(false), 500);
+          isCheckingAuth.current = false;
+        }
+      }
+    };
+
+    checkAuth();
+  }, [inputStatus, selections, userAnswers]);
+
+  const handleSelectionChange = (index, value) => {
+    setSelections((prev) => ({ ...prev, [index]: value }));
+    setUserAnswers((prev) => ({ ...prev, [index]: "" }));
+    setInputStatus((prev) => ({ ...prev, [index]: "neutral" }));
+  };
+
+  const handleInputChange = (index, value) => {
+    setUserAnswers((prev) => ({ ...prev, [index]: value }));
+  };
+
+  const getAvailableQuestions = (currentIndex) => {
+    // Get all selected question IDs except for the current one
+    const otherSelectedIds = Object.keys(selections)
+      .filter((key) => parseInt(key) !== currentIndex)
+      .map((key) => selections[key]);
+
+    return QUESTIONS_DB.filter(
+      // The question is available if it's not in the list of other selected IDs...
+      (q) =>
+        !otherSelectedIds.includes(q.id) ||
+        // ... or if it IS the currently selected question for this dropdown
+        q.id === selections[currentIndex]
+    );
+  };
+
+  if (isAuthenticated) {
+    const socialLinks = [
+      {
+        name: "Instagram",
+        url: "https://instagram.com/marwane_m7b",
+        icon: FaInstagram,
+      },
+      {
+        name: "GitHub",
+        url: "https://github.com/marouane-m7b",
+        icon: FaGithub,
+      },
+      {
+        name: "LinkedIn",
+        url: "https://www.linkedin.com/in/m7b/",
+        icon: FaLinkedin,
+      },
+      {
+        name: "Email",
+        url: "mailto:marouane.ma7boub@gmail.com",
+        icon: FaEnvelope,
+      },
+    ];
+
+    const links = [
+      // { title: 'Books', url: 'https://www.goodreads.com/marouane_m7b', gradient: 'from-amber-600 via-yellow-500 to-amber-600', glow: 'shadow-amber-500/50', iconImg: goodreadsIcon },
+      {
+        title: "Portfolio",
+        url: "/",
+        gradient: "from-cyber-purple via-cyber-pink to-red-500",
+        glow: "shadow-cyber-purple/50",
+        iconImg: musashiProfile,
+      },
+      {
+        title: "Movies",
+        url: "https://boxd.it/c4xHT",
+        gradient: "from-orange-500 via-yellow-500 to-orange-500",
+        glow: "shadow-orange-500/50",
+        iconImg: letterboxdIcon,
+      },
+      {
+        title: "Anime & Manga",
+        url: "https://myanimelist.net/profile/marouane_m7b",
+        gradient: "from-cyber-blue via-cyber-cyan to-cyber-blue",
+        glow: "shadow-cyber-blue/50",
+        iconImg: malIcon,
+      },
+      {
+        title: "TV Shows",
+        url: "https://www.serializd.com/user/marouane_m7b/diary",
+        gradient: "from-teal-500 via-green-500 to-teal-500",
+        glow: "shadow-teal-500/50",
+        iconImg: serializedIcon,
+      },
+      {
+        title: "Games",
+        url: "https://backloggd.com/u/marouane_m7b/games",
+        gradient: "from-red-500 via-cyber-pink to-cyber-purple",
+        glow: "shadow-red-500/50",
+        iconImg: backloggdIcon,
+      },
+      {
+        title: "Projects",
+        url: "https://www.youtube.com/playlist?list=PLvBHBS59bn0gttTZbAL00N7Zq8Hk36JQL",
+        gradient: "from-red-600 via-red-500 to-red-600",
+        glow: "shadow-red-500/50",
+        iconImg: youtubeIcon,
+      },
+    ];
+
+    return (
+      <Background>
+        <div
+          className={`w-full bg-card/80 dark:bg-black/80 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden border-2 border-primary/30 animate-fade-in relative ${lang === "ar" ? "font-cairo" : ""
+            }`}
+        >
+          <ThemeToggle lang={lang} />
+          {/* Glowing border animation */}
+          <div className="absolute inset-0 rounded-3xl animate-border-glow pointer-events-none"></div>
+
+          <div className="p-8 relative">
+            <div className="flex flex-col items-center mb-8">
+              <div className="relative group mb-6">
+                {/* Rotating rings */}
+                <div className="absolute -inset-4 animate-spin-slow">
+                  <div className="h-full w-full rounded-full border-2 border-primary/30 border-t-primary"></div>
+                </div>
+                <div className="absolute -inset-6 animate-spin-slow-reverse">
+                  <div className="h-full w-full rounded-full border-2 border-secondary/30 border-r-secondary"></div>
+                </div>
+
+                <div className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-primary shadow-lg shadow-primary/50">
+                  <img
+                    src={musashiProfile}
+                    alt="Profile"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+
+              <div className="text-center space-y-3 relative z-10">
+                {/* Name Section - Smaller (2xl), Solid Cyan, Matched Badge */}
+                <div className="flex items-center justify-center gap-1.5">
+                  <h1 className="text-2xl font-bold text-primary tracking-tight drop-shadow-[0_0_8px_hsl(var(--primary)/0.4)]">
+                    Marouane Mahboub
+                  </h1>
+
+                  {/* Verified Badge - Sized to match text (w-6 h-6) */}
+                  <span className="text-primary animate-pulse">
+                    <svg
+                      className="w-6 h-6"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </span>
+                </div>
+
+                {/* Subtitle */}
+                <div className="inline-block relative">
+                  <div className="absolute -inset-1 bg-accent/20 blur-sm rounded-lg"></div>
+                  <p className="relative font-mono text-accent text-[10px] font-bold uppercase tracking-widest drop-shadow-[0_0_5px_hsl(var(--accent)/0.5)]">
+                    Software Engineer • AI & LLM
+                  </p>
+                </div>
+
+                {/* HUD Loading Bar */}
+                <div className="flex flex-col items-center justify-center mt-2 gap-1">
+                  <div className="flex gap-1">
+                    {[...Array(20)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="h-1 w-1 bg-primary transform -skew-x-12"
+                        style={{
+                          animation: `pulse 1.5s infinite ${i * 0.05}s`,
+                          opacity: 0.3,
+                        }}
+                      ></div>
+                    ))}
+                  </div>
+                  {/* <span className="text-[9px] text-cyan-500/50 font-mono tracking-widest uppercase animate-pulse">
+                    System Online
+                  </span> */}
+                </div>
+              </div>
+
+              <div className="flex gap-6 mt-6">
+                {socialLinks.map((social, index) => (
+                  <a
+                    key={index}
+                    href={social.url}
+                    onClick={(e) => handleLinkClick(e, social.name, social.url)}
+                    className="relative group cursor-pointer"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary rounded-full blur opacity-0 group-hover:opacity-75 transition-all duration-300"></div>
+                    <div className="relative text-primary hover:text-white transition-all duration-300 transform hover:scale-125 hover:rotate-12">
+                      <social.icon className="w-7 h-7" />
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              {links.map((link, index) => {
+                const isInternal = link.url.startsWith("/");
+                const linkContent = (
+                  <>
+                    <div
+                      className={`absolute -inset-0.5 bg-gradient-to-r ${link.gradient} rounded-2xl blur opacity-40 group-hover:opacity-100 transition duration-300 ${link.glow}`}
+                    ></div>
+                    <div className="relative flex items-center p-4 rounded-2xl bg-card dark:bg-black border-2 border-primary/30 group-hover:border-primary transition-all duration-300 overflow-hidden">
+                      {/* Animated background shimmer */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
+
+                      <div
+                        className={`relative w-12 h-12 bg-background rounded-xl mr-4 flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-12 transition-all duration-300 ${link.glow} shadow-lg overflow-hidden`}
+                      >
+                        <img
+                          src={link.iconImg}
+                          alt={link.title}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <span className="relative text-foreground/80 group-hover:text-foreground font-black text-lg flex-1 tracking-wide transition-colors duration-300">
+                        {link.title}
+                      </span>
+                      <div className="relative w-8 h-8 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-1">
+                        <svg
+                          className="w-4 h-4 text-background"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={3}
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  </>
+                );
+
+                if (isInternal) {
+                  return (
+                    <Link
+                      key={index}
+                      to={link.url}
+                      className="group relative block cursor-pointer"
+                    >
+                      {linkContent}
+                    </Link>
+                  );
+                }
+
+                return (
+                  <a
+                    key={index}
+                    href={link.url}
+                    onClick={(e) => handleLinkClick(e, link.title, link.url)}
+                    className="group relative block cursor-pointer"
+                  >
+                    {linkContent}
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </Background>
+    );
+  }
+
+  return (
+    <Background>
+      <div
+        className={`relative bg-card/90 dark:bg-black/90 backdrop-blur-xl rounded-2xl shadow-2xl p-6 w-full border-2 border-primary/50 transition-transform ${shake ? "animate-shake" : ""
+          } ${lang === "ar" ? "font-cairo" : ""}`}
+        dir={lang === "ar" ? "rtl" : "ltr"}
+      >
+        <ThemeToggle lang={lang} />
+        {/* Corner decorations */}
+        <div className="absolute top-0 left-0 w-20 h-20 border-l-2 border-t-2 border-primary/50 rounded-tl-2xl"></div>
+        <div className="absolute top-0 right-0 w-20 h-20 border-r-2 border-t-2 border-secondary/50 rounded-tr-2xl"></div>
+        <div className="absolute bottom-0 left-0 w-20 h-20 border-l-2 border-b-2 border-secondary/50 rounded-bl-2xl"></div>
+        <div className="absolute bottom-0 right-0 w-20 h-20 border-r-2 border-b-2 border-primary/50 rounded-br-2xl"></div>
+
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center w-28 h-28 bg-gradient-to-br from-primary via-secondary to-accent rounded-2xl mb-4 shadow-lg shadow-primary/50 relative animate-pulse-glow">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary to-secondary rounded-2xl blur-md opacity-50"></div>
+            <img
+              src={friendsImage}
+              alt="Profile"
+              className="w-full h-full object-cover rounded-2xl relative z-10"
+            />
+          </div>
+          <h1 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-accent mb-2 tracking-wider">
+            {UI_TEXT[lang].title}
+          </h1>
+          <p className="text-muted-foreground text-sm font-bold uppercase tracking-widest">
+            {UI_TEXT[lang].sub}
+          </p>
+        </div>
+
+        <div className="space-y-6">
+          {[0, 1, 2].map(
+            (index) =>
+              index === activeQuestionIndex && (
+                <div key={index} className="relative group">
+                  <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-secondary rounded-xl blur opacity-20 group-hover:opacity-40 transition duration-300"></div>
+                  <div className="relative bg-card/50 dark:bg-black/50 rounded-xl p-4 border-2 border-primary/30 group-hover:border-primary/60 transition-all duration-300">
+                    <div className="mb-3">
+                      <label className="block text-[10px] uppercase font-black text-primary mb-2 tracking-widest flex items-center gap-2">
+                        <span className="w-6 h-6 rounded bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-primary-foreground text-xs">
+                          {index + 1}
+                        </span>
+                        {lang === "ar"
+                          ? `السؤال ${index + 1}`
+                          : `Question ${index + 1}`}
+                      </label>
+                      <select
+                        value={selections[index] || ""}
+                        onChange={(e) =>
+                          handleSelectionChange(index, e.target.value)
+                        }
+                        disabled={
+                          loadingIndex !== null ||
+                          inputStatus[index] === "correct"
+                        }
+                        className="w-full bg-card/50 dark:bg-black/50 text-sm font-bold text-foreground outline-none border-2 border-primary/30 rounded-lg p-2 cursor-pointer hover:border-primary transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        <option value="" disabled>
+                          {UI_TEXT[lang].select}
+                        </option>
+                        {getAvailableQuestions(index).map((q) => (
+                          <option
+                            key={q.id}
+                            value={q.id}
+                            className="bg-card dark:bg-black"
+                          >
+                            {q.text[lang]}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {selections[index] && (
+                      <>
+                        <div className="relative">
+                          <input
+                            type="text"
+                            value={userAnswers[index] || ""}
+                            onChange={(e) =>
+                              handleInputChange(index, e.target.value)
+                            }
+                            disabled={
+                              inputStatus[index] === "correct" ||
+                              loadingIndex !== null
+                            }
+                            className={`
+                      w-full px-4 py-3 border-2 rounded-xl outline-none transition-all text-sm font-bold
+                      ${inputStatus[index] === "error"
+                                ? "border-red-500 bg-red-500/10 text-red-400 shadow-lg shadow-red-500/30"
+                                : inputStatus[index] === "correct"
+                                  ? "border-green-500 bg-green-500/10 text-green-400 shadow-lg shadow-green-500/30"
+                                  : "border-primary/30 bg-card/50 dark:bg-black/50 text-foreground focus:border-primary focus:shadow-lg focus:shadow-primary/30"
+                              }
+                      ${inputStatus[index] === "correct" ||
+                                loadingIndex !== null
+                                ? "cursor-not-allowed"
+                                : ""
+                              }
+                    `}
+                            placeholder={UI_TEXT[lang].placeholder}
+                            autoComplete="off"
+                          />
+
+                          <div
+                            className={`absolute ${lang === "ar" ? "left-3" : "right-3"
+                              } top-3`}
+                          >
+                            {inputStatus[index] === "correct" && (
+                              <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center animate-bounce">
+                                <svg
+                                  className="w-4 h-4 text-white"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={3}
+                                    d="M5 13l4 4L19 7"
+                                  />
+                                </svg>
+                              </div>
+                            )}
+                            {inputStatus[index] === "error" && (
+                              <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center animate-pulse">
+                                <svg
+                                  className="w-4 h-4 text-white"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={3}
+                                    d="M6 18L18 6M6 6l12 12"
+                                  />
+                                </svg>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {inputStatus[index] !== "correct" && (
+                          <div className="mt-4">
+                            <button
+                              onClick={() => handleCheckAnswer(index)}
+                              disabled={
+                                !userAnswers[index] ||
+                                userAnswers[index].length < 1 ||
+                                loadingIndex !== null
+                              }
+                              className="relative w-full group"
+                            >
+                              <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-secondary rounded-lg blur opacity-40 group-hover:opacity-80 transition duration-300 disabled:opacity-0"></div>
+                              <div className="relative w-full bg-card/80 dark:bg-black/80 text-foreground font-black py-2.5 px-6 rounded-lg border-2 border-primary/50 group-hover:text-background transition-all uppercase tracking-widest text-xs disabled:bg-gray-800 disabled:text-gray-500 disabled:border-gray-700 disabled:cursor-not-allowed h-10 flex items-center justify-center">
+                                {loadingIndex === index ? (
+                                  <svg
+                                    className="animate-spin h-5 w-5 text-white"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <circle
+                                      className="opacity-25"
+                                      cx="12"
+                                      cy="12"
+                                      r="10"
+                                      stroke="currentColor"
+                                      strokeWidth="4"
+                                    ></circle>
+                                    <path
+                                      className="opacity-75"
+                                      fill="currentColor"
+                                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                    ></path>
+                                  </svg>
+                                ) : (
+                                  "Check"
+                                )}
+                              </div>
+                            </button>
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </div>
+                </div>
+              )
+          )}
+
+          <div className="flex justify-center gap-2 my-6">
+            {[0, 1, 2].map((step) => (
+              <div
+                key={step}
+                className="w-1/3 h-2 rounded-full bg-cyan-900/50"
+              >
+                <div
+                  style={{
+                    width:
+                      step < activeQuestionIndex
+                        ? "100%"
+                        : step === activeQuestionIndex
+                          ? "50%"
+                          : "0%",
+                  }}
+                  className={`h-full rounded-full transition-all duration-500 ${step < activeQuestionIndex
+                    ? "bg-green-500"
+                    : "bg-primary"
+                    } ${step === activeQuestionIndex ? "animate-pulse" : ""}`}
+                />
+              </div>
+            ))}
+          </div>
+
+          <button
+            disabled={true}
+            className="relative w-full mt-6 group cursor-not-allowed"
+          >
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-gray-600 to-gray-700 rounded-xl blur opacity-50"></div>
+            <div className="relative bg-gradient-to-r from-gray-700 to-gray-800 text-gray-400 font-black py-4 px-6 rounded-xl border-2 border-gray-600 uppercase tracking-wider">
+              {UI_TEXT[lang].unlock} (Auto)
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <style>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: scale(0.9) translateY(20px); }
+          to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .animate-fade-in {
+          animation: fadeIn 0.6s ease-out forwards;
+        }
+        @keyframes shake {
+          0%, 100% { transform: translateX(0) rotate(0deg); }
+          25% { transform: translateX(-10px) rotate(-2deg); }
+          75% { transform: translateX(10px) rotate(2deg); }
+        }
+        .animate-shake {
+          animation: shake 0.4s ease-in-out;
+        }
+        @keyframes gridMove {
+          0% { transform: translateY(0); }
+          100% { transform: translateY(50px); }
+        }
+        @keyframes scanline {
+          0% { transform: translateY(-100%); }
+          100% { transform: translateY(100%); }
+        }
+        @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        @keyframes spin-slow-reverse {
+          from { transform: rotate(360deg); }
+          to { transform: rotate(0deg); }
+        }
+        .animate-spin-slow {
+          animation: spin-slow 8s linear infinite;
+        }
+        .animate-spin-slow-reverse {
+          animation: spin-slow-reverse 12s linear infinite;
+        }
+        @keyframes border-glow {
+          0%, 100% { box-shadow: 0 0 20px hsl(var(--primary) / 0.3); }
+          50% { box-shadow: 0 0 40px hsl(var(--secondary) / 0.5); }
+        }
+        .animate-border-glow {
+          animation: border-glow 3s ease-in-out infinite;
+        }
+        @keyframes pulse-glow {
+          0%, 100% { box-shadow: 0 0 20px hsl(var(--primary) / 0.5); }
+          50% { box-shadow: 0 0 40px hsl(var(--secondary) / 0.8); }
+        }
+        .animate-pulse-glow {
+          animation: pulse-glow 2s ease-in-out infinite;
+        }
+        @keyframes text-shimmer {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        .animate-text-shimmer {
+          background-size: 200% 200%;
+          animation: text-shimmer 4s ease-in-out infinite;
+        }
+      `}</style>
+    </Background>
+  );
+}

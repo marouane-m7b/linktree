@@ -1,0 +1,39 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+.env
+# Local asset downloads and preparation files
+/assets-source/
+/scripts/
+/*.glb
+/.vercel/
+.env.*
+# Archived models no longer used by the website
+/public/knight.glb
+/public/malenia-elden-ring-low-poly.glb
+/public/tree-light.glb
+/public/world/samurai/Samurai.glb
+/public/world/samurai/Female_Samurai.glb
+/public/world/samurai/Texture.png
